@@ -12,7 +12,7 @@ const options: firebird.Options = {
   pageSize: parseInt(process.env.DB_PAGE_SIZE!)
 };
 
-export const getDatabaseConnection = (): Promise<firebird.Database> => {
+export const getApiDatabaseConnection = (): Promise<firebird.Database> => {
   return new Promise<firebird.Database>((resolve, reject) => {
     firebird.attach(options, (err, db) => {
       if (err) {
