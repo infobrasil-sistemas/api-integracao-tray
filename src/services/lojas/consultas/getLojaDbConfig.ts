@@ -1,6 +1,6 @@
-import { getApiDatabaseConnection } from '../config/db/database';
+import { getApiDatabaseConnection } from "../../../config/db/database";
 
-interface ClientDbConfig {
+interface LojaDbConfig {
   host: string;
   port: number;
   database: string;
@@ -9,24 +9,23 @@ interface ClientDbConfig {
   pageSize: number;
 }
 
-export async function getClientDbConfig(clienteCodigo: string): Promise<ClientDbConfig> {
+export async function getLojaDbConfig(enderecoCodigo: string): Promise<LojaDbConfig> {
   const mainDb = await getApiDatabaseConnection();
 
-  return new Promise<ClientDbConfig>((resolve, reject) => {
+  return new Promise<LojaDbConfig>((resolve, reject) => {
     mainDb.query(
       `
       SELECT 
-        ETR_HOST ,
-        ETR_PORTA ,
-        ETR_PASSWORD ,
-        ETR_USER , 
-        ETR_CAMINHO ,
-        ETR_ID ,
-        ETR_CNPJ ,
-        UTR_CODIGO
-      FROM ENDERECOS_TRAY WHERE ETR_CODIGO = ?
+        DAD_HOST ,
+        DAD_PORTA ,
+        DAD_PASSWORD ,
+        DAD_USER , 
+        DAD_CAMINHO ,
+        DAD_ID ,
+        DAD_CNPJ ,
+      FROM DADOS_ENDERECO WHERE DAD_CODIGO = ?
       `,
-      [clienteCodigo],
+      [enderecoCodigo],
       (err, result) => {
         if (err) {
           reject(err);
@@ -41,7 +40,7 @@ export async function getClientDbConfig(clienteCodigo: string): Promise<ClientDb
             pageSize: 4096
           });
         } else {
-          reject(new Error('Cliente não encontrado'));
+          reject(new Error('Endereço não encontrado'));
         }
         mainDb.detach();
       }
