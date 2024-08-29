@@ -1,6 +1,6 @@
-import logger from './utils/logger';
 import express from 'express';
 import dotenv from 'dotenv';
+import { cadastrarProdutos } from './functions/produtos/cadastrarProdutos';
 
 dotenv.config();
 
@@ -13,4 +13,5 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`API rodando na porta ${PORT}`);
+  cadastrarProdutos()
 });
