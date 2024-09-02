@@ -1,31 +1,22 @@
 import { ILojaTray } from "../../interfaces/ILojaTray";
+import { atualizarAccessToken } from "../../services/lojas/auth/atualizarAccessToken";
+import { atualizarTokens } from "../../services/lojas/auth/atualizarTokens";
 
-export function tratarTokens(loja: ILojaTray){
-    console.log(loja)
+export async function tratarTokens(loja: ILojaTray){
+    let accessToken: string
     const dataAtual = new Date()
     const dataExpiracaoAcessToken = new Date(loja.LTR_EXPIRATION_ACESS_TOKEN)
     if(dataAtual >= dataExpiracaoAcessToken){
-        console.log("ACESS TOKEN EXPIRADO")
-        
+        const dataExpiracaoRefreshToken = new Date(loja.LTR_EXPIRATION_REFRESH_TOKEN)
+        if(dataAtual >= dataExpiracaoRefreshToken){
+            accessToken = await atualizarTokens(loja) 
+        }
+        else{
+            accessToken = await atualizarAccessToken(loja)
+        }
+        return accessToken 
     }
     else{
-        console.log("ACESS TOKEN VÁLIDO")
-        return loja
+        return loja.LTR_ACCESS_TOKEN
     }
 }
-
-
-    
-    // VERIFICAR SE A DATA DE EXPIRAÇÃO DO REFRESH TOKEN JA PASSOU (10 minutos de sobra)
-        // SE SIM
-            // REALIZAR REQUISIÇÃO UTILIZANDO (CONSUMER_KEY, CONSUMER_SECRET, CODE) PARA OBTER NOVOS DADOS (ACCESS_TOKEN, REFRESH_TOKEN, E DATAS DE EXPIRACAO)
-            // ATUALIZAR DADOS DA TABELA
-            // RETORNAR ACESS TOKEN  
-        // SE NAO
-            // VERIFICAR SE A DATA DE EXPIRAÇÃO DO ACESS TOKEN JA PASSOU (10 minutos de sobra)
-                // SE SIM   
-                    // REALIZAR A REQUISIÇÃO UTILIZANDO REFRESH TOKEN PARA OBTER O NOVO ACESS TOKEN
-                    // ATUALIZAR ACESS TOKEN E DATA DE EXPIRACAO NA TABELA
-                    // RETORNAR ACESS TOKEN
-                // SE NAO
-                    // RETORNAR ACESS TOKEN
