@@ -12,6 +12,10 @@ export interface ILojaTray {
     LTR_DT_CADASTRO: Date;
     LTR_DT_ALTERACAO: Date;
     LTR_CNPJ: string;
+    LTR_LOJAS_ESTOQUE: string,
+    LTR_TIPO_ESTOQUE: number,
+    LTR_LOJA_PRECO: number,
+    LTR_TABELA_PRECO: number,
     DAD_CODIGO: number;
   }
   

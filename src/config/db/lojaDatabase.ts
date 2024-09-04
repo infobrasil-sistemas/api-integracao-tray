@@ -1,6 +1,6 @@
 import firebird from 'node-firebird';
 
-interface ConnectionOptions {
+export interface IConnectionOptions {
   host: string;
   port: number;
   database: string;
@@ -9,7 +9,7 @@ interface ConnectionOptions {
   pageSize: number;
 }
 
-export const getConnection = (options: ConnectionOptions): Promise<firebird.Database> => {
+export const getLojaDatabaseConnection = (options: IConnectionOptions): Promise<firebird.Database> => {
   return new Promise<firebird.Database>((resolve, reject) => {
     firebird.attach(options, (err, db) => {
       if (err) {
