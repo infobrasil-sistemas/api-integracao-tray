@@ -1,7 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { cadastrarProdutos } from './functions/produtos/cadastrarProdutos';
 import logger from './utils/logger';
+
+import { sincronizarCategorias } from './jobs/sincronizarCategorias';
 
 dotenv.config();
 
@@ -12,10 +13,11 @@ app.get('/', (req, res) => {
   res.send('API RODANDO.');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   logger.log({
     level: 'info',
     message: `API rodando na porta ${PORT}.`
   });
-  cadastrarProdutos()
+
+  await sincronizarCategorias()
 });
