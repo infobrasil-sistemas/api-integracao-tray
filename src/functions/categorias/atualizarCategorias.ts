@@ -1,19 +1,19 @@
 import { getLojasDadosTray } from "../../services/lojas/consultas/getLojasDadosTray";
 import logger from "../../utils/logger";
-import { cadastrarGrupos } from "./grupos/cadastrarGrupos";
-import { cadastrarSecoes } from "./secoes/cadastrarSecoes";
+import { atualizarGrupos } from "./grupos/atualizarGrupos";
+import { atualizarSecoes } from "./secoes/atualizarSecoes";
 
-export async function cadastrarCategorias() {
+export async function atualizarCategorias() {
     try {
         const lojas = await getLojasDadosTray()
         for (const loja of lojas) {
-            await cadastrarSecoes(loja)
-            await cadastrarGrupos(loja)
+            await atualizarSecoes(loja)
+            await atualizarGrupos(loja)
         }
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao cadastrar categorias -> ${error}`
+            message: `Erro ao atualizar categorias -> ${error}`
         });
     }
 }

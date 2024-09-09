@@ -13,6 +13,11 @@ export interface ISecaoNaoIntegrada {
     parent_id: string | null
   }
 
+  export interface ISecaoIntegrada {
+    name: string; 
+    id: number
+  }
+
   export interface IGrupoNaoIntegrado {
     GRU_CODIGO: string
     name: string; 
@@ -25,5 +30,11 @@ export interface ISecaoNaoIntegrada {
     keywords: string | null; 
     description: string | null; 
     property: string | null; 
+    parent_id: string
+  }
+
+  export interface IGrupoIntegrado {
+    id: number
+    name: string
     parent_id: string
   }

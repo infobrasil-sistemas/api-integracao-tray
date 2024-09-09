@@ -1,15 +1,15 @@
-import { ILojaTray } from '../../../interfaces/ILojaTray';
-import logger from '../../../utils/logger';
-import { ISecaoNaoIntegrada } from '../interfaces';
+import { ILojaTray } from '../../../../interfaces/ILojaTray';
+import logger from '../../../../utils/logger';
+import { IGrupoNaoIntegrado } from '../../interfaces';
 import axios from 'axios';
-import { getLojaDatabaseConnection, IConnectionOptions } from '../../../config/db/lojaDatabase';
+import { getLojaDatabaseConnection, IConnectionOptions } from '../../../../config/db/lojaDatabase';
 
-export async function cadastrarCategoriaSecao(loja: ILojaTray, dadosConexao: IConnectionOptions, accessToken: string, secao: ISecaoNaoIntegrada) {
+export async function enviarGrupo(loja: ILojaTray, dadosConexao: IConnectionOptions, accessToken: string, grupo: IGrupoNaoIntegrado) {
     try {
-        const { SEC_CODIGO, ...secaoSemCodigo } = secao
+        const { GRU_CODIGO, ...grupoSemCodigo } = grupo
 
         const requestBody = {
-            Category: secaoSemCodigo
+            Category: grupoSemCodigo
         }
 
         const response = await axios.post(`${loja.LTR_API_HOST}/categories?access_token=${accessToken}`, requestBody);
@@ -18,15 +18,15 @@ export async function cadastrarCategoriaSecao(loja: ILojaTray, dadosConexao: ICo
             const conexao = await getLojaDatabaseConnection(dadosConexao)
 
             const updateQuery = `
-                UPDATE SECCAO SEC
+                UPDATE GRUPOSPRO GRU
                 SET 
-                    SEC_ID_ECOMMERCE = ?
-                WHERE SEC.SEC_CODIGO = ?
+                    GRU_ID_ECOMMERCE = ?
+                WHERE GRU.GRU_CODIGO = ?
             `;
 
             const params = [
                 parseInt(response.data.id),
-                SEC_CODIGO
+                GRU_CODIGO
             ];
 
             await new Promise((resolve, reject) => {
@@ -40,20 +40,20 @@ export async function cadastrarCategoriaSecao(loja: ILojaTray, dadosConexao: ICo
 
             logger.log({
                 level: 'info',
-                message: `Seção ${secao.name} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
+                message: `Grupo ${grupo.name} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
             });
 
         }
         else {
             logger.log({
                 level: 'error',
-                message: `Erro ao cadastrar seção ${secao.name} da loja ${loja.LTR_CNPJ}`
+                message: `Erro ao cadastrar grupo ${grupo.name} da loja ${loja.LTR_CNPJ}`
             });
         }
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao cadastrar seção ${secao.name} da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao cadastrar grupo ${grupo.name} da loja ${loja.LTR_CNPJ} -> ${error}`
         });
     }
 
