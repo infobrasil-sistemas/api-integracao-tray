@@ -1,19 +1,9 @@
-import { getLojasDadosTray } from "../../services/lojas/consultas/getLojasDadosTray";
-import logger from "../../utils/logger";
+import { IConnectionOptions } from "../../config/db/lojaDatabase";
+import { ILojaTray } from "../../interfaces/ILojaTray";
 import { atualizarGrupos } from "./grupos/atualizarGrupos";
 import { atualizarSecoes } from "./secoes/atualizarSecoes";
 
-export async function atualizarCategorias() {
-    try {
-        const lojas = await getLojasDadosTray()
-        for (const loja of lojas) {
-            await atualizarSecoes(loja)
-            await atualizarGrupos(loja)
-        }
-    } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro ao atualizar categorias -> ${error}`
-        });
-    }
+export async function atualizarCategorias(loja: ILojaTray, dadosConexao: IConnectionOptions) {
+    await atualizarSecoes(loja, dadosConexao)
+    await atualizarGrupos(loja, dadosConexao)
 }

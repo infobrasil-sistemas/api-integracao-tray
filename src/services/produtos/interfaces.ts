@@ -23,7 +23,7 @@ export interface IProdutoNaoIntegrado {
     availability_days: number | null;
     reference: string;
     hot: number;
-    release_mudar: number;
+    release: number;
     additional_button: string | null;
     related_categories: string | null;
     release_date: string | null;
@@ -31,4 +31,32 @@ export interface IProdutoNaoIntegrado {
     type: string | null;
     content: string | null;
     local: string | null;
+}
+
+export interface IProdutoIntegrado {
+    id: number;
+    ean: string;
+    name: string;
+    ncm: string;
+    description: string;
+    description_small: string;
+    price: number;
+    cost_price: number;
+    promotional_price: number | null;
+    start_promotion: string | null;
+    end_promotion: string | null;
+    brand: string;
+    weight: number;
+    length: number;
+    width: number;
+    height: number;
+    category_id: number;
+    available: number;
+    reference: string;
+}
+
+export interface IEstoqueProduto {
+    id: number;
+    name: string;
+    stock: number;
 }

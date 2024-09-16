@@ -1,3 +1,4 @@
+import { IConnectionOptions } from "../../../config/db/lojaDatabase";
 import { ILojaTray } from "../../../interfaces/ILojaTray";
 import { getSecoesNaoIntegradas } from "../../../services/categorias/consultas/getSecoesNaoIntegradas";
 import { enviarSecao } from "../../../services/categorias/tray/envios/enviarSecao";
@@ -6,9 +7,8 @@ import logger from "../../../utils/logger";
 import { tratarTokens } from "../../../utils/tratarTokens";
 
 
-export async function cadastrarSecoes(loja: ILojaTray) {
+export async function cadastrarSecoes(loja: ILojaTray, dadosConexao: IConnectionOptions) {
     try {
-        const dadosConexao = await getLojaDbConfig(loja.DAD_CODIGO)
         const secoesNaoIntegradas = await getSecoesNaoIntegradas(loja.LTR_CNPJ, dadosConexao)
         if (secoesNaoIntegradas.length > 0) {
             const accessToken = await tratarTokens(loja)

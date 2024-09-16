@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import logger from './utils/logger';
 
 import { sincronizarCategorias } from './jobs/sincronizarCategorias';
+import { sincronizarProdutos } from './jobs/sincronizarProdutos';
 
 dotenv.config();
 
@@ -20,4 +21,5 @@ app.listen(PORT, async () => {
   });
 
   await sincronizarCategorias()
+  await sincronizarProdutos()
 });

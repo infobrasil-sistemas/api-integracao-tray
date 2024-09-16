@@ -1,15 +1,14 @@
+import { IConnectionOptions } from "../../../config/db/lojaDatabase";
 import { ILojaTray } from "../../../interfaces/ILojaTray";
 import { getGruposIntegrados } from "../../../services/categorias/consultas/getGruposIntegrados";
 import { getCategoria } from "../../../services/categorias/tray/consultas/getCategoria";
 import { atualizarCategoria } from "../../../services/categorias/tray/envios/atualizarCategoria";
-import { getLojaDbConfig } from "../../../services/lojas/consultas/getLojaDbConfig";
 import logger from "../../../utils/logger";
 import { tratarTokens } from "../../../utils/tratarTokens";
 
 
-export async function atualizarGrupos(loja: ILojaTray) {
+export async function atualizarGrupos(loja: ILojaTray, dadosConexao: IConnectionOptions) {
     try {
-        const dadosConexao = await getLojaDbConfig(loja.DAD_CODIGO)
         const gruposIntegrados = await getGruposIntegrados(loja.LTR_CNPJ, dadosConexao)
         const accessToken = await tratarTokens(loja)
         for (const grupoIntegrado of gruposIntegrados) {
@@ -31,7 +30,6 @@ export async function atualizarGrupos(loja: ILojaTray) {
                     message: `Erro ao atualizar o grupo ${grupoIntegrado.name} da loja ${loja.LTR_CNPJ} -> ${error}`
                 });
             }
-
         }
     } catch (error) {
         logger.log({
@@ -40,6 +38,4 @@ export async function atualizarGrupos(loja: ILojaTray) {
         });
     }
 
-
-    // const secoesNaoIntegradas = await getSecoesNaoIntegradas(loja.LTR_CNPJ, dadosConexao)
 }

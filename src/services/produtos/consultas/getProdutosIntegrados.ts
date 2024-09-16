@@ -1,10 +1,11 @@
 import { ILojaTray } from './../../../interfaces/ILojaTray';
 import { getLojaDatabaseConnection, IConnectionOptions } from "../../../config/db/lojaDatabase";
 import logger from "../../../utils/logger";
-import { IProdutoNaoIntegrado } from "../interfaces";
+import { IProdutoIntegrado } from "../interfaces";
+import dayjs from 'dayjs';
 
 
-export async function getProdutosNaoIntegrados(loja: ILojaTray, dadosConexao: IConnectionOptions): Promise<IProdutoNaoIntegrado[]> {
+export async function getProdutosIntegrados(loja: ILojaTray, dadosConexao: IConnectionOptions): Promise<IProdutoIntegrado[]> {
     try {
         const conexao = await getLojaDatabaseConnection(dadosConexao)
         let campo_preco;
@@ -64,6 +65,7 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, dadosConexao: IC
 
         const query = `
        SELECT
+        pro.pro_id_ecommerce as "id",
         pro.pro_codigo AS "ean",
         PRO.pro_descfiscal AS "name",
         SUBSTRING(PRO.pro_ncm FROM 1 FOR 8) AS "ncm",
@@ -78,51 +80,42 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, dadosConexao: IC
         est.est_dtinipromocao AS "start_promotion",
         est.est_dtfinpromocao AS "end_promotion",
 
-        CAST(est.ipi_cod_sai AS NUMERIC(9,2)) AS "ipi_value",
         MAR.mar_descricao AS "brand",
-        null AS "model",
 
         CASE
-        WHEN PRO.PRO_PESO is null or PRO.PRO_PESO < 1 THEN 1
-        ELSE CAST(pro.pro_peso AS INTEGER)
+            WHEN PRO.PRO_PESO is null or PRO.PRO_PESO < 1 THEN 1
+            ELSE CAST(pro.pro_peso AS INTEGER)
         END as "weight",
 
         CASE
-        WHEN PRO.pro_comprimento is null or PRO.pro_comprimento < 1 THEN 1
-        ELSE CAST(pro.pro_comprimento AS INTEGER)
+            WHEN PRO.pro_comprimento is null or PRO.pro_comprimento < 1 THEN 1
+            ELSE CAST(pro.pro_comprimento AS INTEGER)
         END as "length",
 
         CASE
-        WHEN PRO.pro_largura is null or PRO.pro_largura < 1 THEN 1
-        ELSE CAST(pro.pro_largura AS INTEGER)
+            WHEN PRO.pro_largura is null or PRO.pro_largura < 1 THEN 1
+            ELSE CAST(pro.pro_largura AS INTEGER)
         END as "width",
 
         CASE
-        WHEN PRO.pro_altura is null or PRO.pro_altura < 1 THEN 1
-        ELSE CAST(pro.pro_altura AS INTEGER)
+            WHEN PRO.pro_altura is null or PRO.pro_altura < 1 THEN 1
+            ELSE CAST(pro.pro_altura AS INTEGER)
         END as "height",
 
-        0 AS "stock",
-
         GRU.gru_id_ecommerce AS "category_id",
-        1 AS "available",
-        null AS "availability",
-        null AS "availability_days",
-        PRO.pro_ref AS "reference",
-        0 AS "hot",
-        0 AS "release",
-        null AS "additional_button",
-        null AS "related_categories",
-        null AS "release_date",
-        null AS "metatag",
-        null AS "type",
-        null AS "content",
-        null AS "local"
+
+        CASE
+            WHEN PRO.pro_situacao = 'A' THEN 1
+            ELSE 0
+        END "available",
+
+        PRO.pro_ref AS "reference"
+
     FROM PRODUTOS PRO
     JOIN ESTOQUE EST ON EST.pro_codigo = PRO.PRO_CODIGO AND EST.LOJ_CODIGO = ?
     JOIN MARCAS MAR ON MAR.mar_codigo = PRO.mar_codigo
     JOIN GRUPOSPRO GRU ON PRO.gru_codigo = GRU.gru_codigo
-    WHERE PRO.PRO_ECOMMERCE = 'S' AND PRO.PRO_ID_ECOMMERCE is null AND PRO.PRO_SITUACAO = 'A'
+    WHERE PRO.PRO_ECOMMERCE = 'S' AND PRO.PRO_ID_ECOMMERCE is not null
 `;
 
         const params = [
@@ -130,11 +123,18 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, dadosConexao: IC
         ]
 
         return new Promise((resolve, reject) => {
-            conexao.query(query, params, (err: any, result: IProdutoNaoIntegrado[]) => {
+            conexao.query(query, params, (err: any, result: IProdutoIntegrado[]) => {
                 if (err) {
                     return reject(err);
                 }
-                resolve(result);
+
+                const produtosFormatados = result.map(produto => ({
+                    ...produto,
+                    start_promotion: produto.start_promotion ? dayjs(produto.start_promotion).format('YYYY-MM-DD') : null,
+                    end_promotion: produto.end_promotion ? dayjs(produto.end_promotion).format('YYYY-MM-DD') : null,
+                    reference: produto.reference === null ? '' : produto.reference
+                }));
+                resolve(produtosFormatados);
             });
         });
     } catch (error) {
@@ -144,6 +144,4 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, dadosConexao: IC
         });
         throw new Error(`Erro de conexao com o banco da loja ${loja.LTR_CNPJ}`)
     }
-
-
 }

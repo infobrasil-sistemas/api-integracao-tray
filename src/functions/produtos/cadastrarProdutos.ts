@@ -1,28 +1,31 @@
+import { IConnectionOptions } from "../../config/db/lojaDatabase";
+import { ILojaTray } from "../../interfaces/ILojaTray";
 import { getLojaDbConfig } from "../../services/lojas/consultas/getLojaDbConfig";
-import { getLojasDadosTray } from "../../services/lojas/consultas/getLojasDadosTray";
 import { getProdutosNaoIntegrados } from "../../services/produtos/consultas/getProdutosNaoIntegrados";
+import { cadastrarProduto } from "../../services/produtos/tray/envios/cadastrarProduto";
+import logger from "../../utils/logger";
+import { tratarTokens } from "../../utils/tratarTokens";
 
-export async function cadastrarProdutos(){
-    const lojas = await getLojasDadosTray()
-    for(const loja of lojas){
-        const dadosConexao = await getLojaDbConfig(loja.DAD_CODIGO)
-        const produtosNaoIntegrados = await getProdutosNaoIntegrados(dadosConexao)
-        console.log(produtosNaoIntegrados)
-        // loop chamando funcao no service pra enviar cada produto nao integrado -> na hora de enviar chamar tratarTokens()
-    
-        
+export async function cadastrarProdutos(loja: ILojaTray, dadosConexao: IConnectionOptions) {
+    try {
+        const produtosNaoIntegrados = await getProdutosNaoIntegrados(loja, dadosConexao)
+        if (produtosNaoIntegrados.length > 0) {
+            const access_token = await tratarTokens(loja)
+            for (const produtoNaoIntegrado of produtosNaoIntegrados) {
+                await cadastrarProduto(loja, dadosConexao, access_token, produtoNaoIntegrado)
+            }
+        }
+        else {
+            logger.log({
+                level: 'info',
+                message: `Nenhum produto novo para a loja ${loja.LTR_CNPJ}`
+            });
+        }
+    } catch (error) {
+        logger.log({
+            level: 'error',
+            message: `Erro na rotina cadastrar produtos da loja ${loja.LTR_CNPJ} -> ${error}`
+        });
     }
+
 }
-
-
-
-// 1. Buscar produtos eccomerce sim que nao estão integrados -> select com todos os dados necessários pra tray
-
-// 2. Percorrendo produtos:
-// 	- tratar e montar objeto
-// 	- enviar
-// 	- atualizar no banco como integrado
-
-// Rotina de produtos:
-// 	1. Atualizar produtos
-// 	2. Cadastrar produtos

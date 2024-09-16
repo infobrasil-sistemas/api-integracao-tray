@@ -1,15 +1,14 @@
+import { IConnectionOptions } from "../../../config/db/lojaDatabase";
 import { ILojaTray } from "../../../interfaces/ILojaTray";
 import { getSecoesIntegradas } from "../../../services/categorias/consultas/getSecoesIntegradas";
 import { getCategoria } from "../../../services/categorias/tray/consultas/getCategoria";
 import { atualizarCategoria } from "../../../services/categorias/tray/envios/atualizarCategoria";
-import { getLojaDbConfig } from "../../../services/lojas/consultas/getLojaDbConfig";
 import logger from "../../../utils/logger";
 import { tratarTokens } from "../../../utils/tratarTokens";
 
 
-export async function atualizarSecoes(loja: ILojaTray) {
+export async function atualizarSecoes(loja: ILojaTray, dadosConexao: IConnectionOptions) {
     try {
-        const dadosConexao = await getLojaDbConfig(loja.DAD_CODIGO)
         const secoesIntegradas = await getSecoesIntegradas(loja.LTR_CNPJ, dadosConexao)
         const accessToken = await tratarTokens(loja)
         for (const secaoIntegrada of secoesIntegradas) {
@@ -39,6 +38,4 @@ export async function atualizarSecoes(loja: ILojaTray) {
         });
     }
 
-
-    // const secoesNaoIntegradas = await getSecoesNaoIntegradas(loja.LTR_CNPJ, dadosConexao)
 }
