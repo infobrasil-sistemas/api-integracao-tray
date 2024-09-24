@@ -3,9 +3,8 @@ import logger from "../../../utils/logger";
 import { IGrupoIntegrado } from "../interfaces";
 
 
-export async function getGruposIntegrados(lojaCnpj: string, dadosConexao: IConnectionOptions): Promise<IGrupoIntegrado[]> {
+export async function getGruposIntegrados(lojaCnpj: string, conexao: any): Promise<IGrupoIntegrado[]> {
     try {
-        const conexao = await getLojaDatabaseConnection(dadosConexao)
 
         const query = `
                 SELECT

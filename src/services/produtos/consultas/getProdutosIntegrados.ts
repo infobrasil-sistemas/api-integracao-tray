@@ -1,13 +1,11 @@
 import { ILojaTray } from './../../../interfaces/ILojaTray';
-import { getLojaDatabaseConnection, IConnectionOptions } from "../../../config/db/lojaDatabase";
 import logger from "../../../utils/logger";
 import { IProdutoIntegrado } from "../interfaces";
 import dayjs from 'dayjs';
 
 
-export async function getProdutosIntegrados(loja: ILojaTray, dadosConexao: IConnectionOptions): Promise<IProdutoIntegrado[]> {
+export async function getProdutosIntegrados(loja: ILojaTray, conexao: any): Promise<IProdutoIntegrado[]> {
     try {
-        const conexao = await getLojaDatabaseConnection(dadosConexao)
         let campo_preco;
         let campo_preco_promocinal;
 

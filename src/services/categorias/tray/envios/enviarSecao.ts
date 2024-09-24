@@ -2,9 +2,8 @@ import { ILojaTray } from '../../../../interfaces/ILojaTray';
 import logger from '../../../../utils/logger';
 import { ISecaoNaoIntegrada } from '../../interfaces';
 import axios from 'axios';
-import { getLojaDatabaseConnection, IConnectionOptions } from '../../../../config/db/lojaDatabase';
 
-export async function enviarSecao(loja: ILojaTray, dadosConexao: IConnectionOptions, accessToken: string, secao: ISecaoNaoIntegrada) {
+export async function enviarSecao(loja: ILojaTray, conexao: any, accessToken: string, secao: ISecaoNaoIntegrada) {
     try {
         const { SEC_CODIGO, ...secaoSemCodigo } = secao
 
@@ -15,7 +14,6 @@ export async function enviarSecao(loja: ILojaTray, dadosConexao: IConnectionOpti
         const response = await axios.post(`${loja.LTR_API_HOST}/categories?access_token=${accessToken}`, requestBody);
 
         if (response.status === 201 || response.status === 200) {
-            const conexao = await getLojaDatabaseConnection(dadosConexao)
 
             const updateQuery = `
                 UPDATE SECCAO SEC

@@ -1,9 +1,8 @@
-import { IConnectionOptions } from "../../config/db/lojaDatabase";
 import { ILojaTray } from "../../interfaces/ILojaTray";
 import { atualizarGrupos } from "./grupos/atualizarGrupos";
 import { atualizarSecoes } from "./secoes/atualizarSecoes";
 
-export async function atualizarCategorias(loja: ILojaTray, dadosConexao: IConnectionOptions) {
-    await atualizarSecoes(loja, dadosConexao)
-    await atualizarGrupos(loja, dadosConexao)
+export async function atualizarCategorias(loja: ILojaTray, conexao: any) {
+    await atualizarSecoes(loja, conexao)
+    await atualizarGrupos(loja, conexao)
 }

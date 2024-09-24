@@ -7,9 +7,9 @@ import logger from "../../../utils/logger";
 import { tratarTokens } from "../../../utils/tratarTokens";
 
 
-export async function atualizarSecoes(loja: ILojaTray, dadosConexao: IConnectionOptions) {
+export async function atualizarSecoes(loja: ILojaTray, conexao: any) {
     try {
-        const secoesIntegradas = await getSecoesIntegradas(loja.LTR_CNPJ, dadosConexao)
+        const secoesIntegradas = await getSecoesIntegradas(loja.LTR_CNPJ, conexao)
         const accessToken = await tratarTokens(loja)
         for (const secaoIntegrada of secoesIntegradas) {
             try {

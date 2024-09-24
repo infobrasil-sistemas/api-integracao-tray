@@ -1,31 +1,28 @@
 import { ILojaTray } from '../../../../interfaces/ILojaTray';
 import logger from '../../../../utils/logger';
-import { IGrupoNaoIntegrado } from '../../interfaces';
 import axios from 'axios';
-import { getLojaDatabaseConnection, IConnectionOptions } from '../../../../config/db/lojaDatabase';
+import { IProdutoVariacaoNaoIntegrado } from '../../interfaces';
 
-export async function enviarGrupo(loja: ILojaTray, conexao: any, accessToken: string, grupo: IGrupoNaoIntegrado) {
+export async function cadastrarVariacao(loja: ILojaTray, conexao: any, accessToken: string, produtoVariacao: IProdutoVariacaoNaoIntegrado) {
     try {
-        const { GRU_CODIGO, ...grupoSemCodigo } = grupo
 
         const requestBody = {
-            Category: grupoSemCodigo
+            Variant: produtoVariacao
         }
 
-        const response = await axios.post(`${loja.LTR_API_HOST}/categories?access_token=${accessToken}`, requestBody);
-
+        const response = await axios.post(`${loja.LTR_API_HOST}/products/variants/?access_token=${accessToken}`, requestBody);
         if (response.status === 201 || response.status === 200) {
 
             const updateQuery = `
-                UPDATE GRUPOSPRO GRU
+                UPDATE PROD_GRADES PRG
                 SET 
-                    GRU_ID_ECOMMERCE = ?
-                WHERE GRU.GRU_CODIGO = ?
+                    PRG_ID_ECOMMERCE = ?
+                WHERE PRG.PRG_CODIGO = ?
             `;
 
             const params = [
                 parseInt(response.data.id),
-                GRU_CODIGO
+                produtoVariacao.ean
             ];
 
             await new Promise((resolve, reject) => {
@@ -39,20 +36,21 @@ export async function enviarGrupo(loja: ILojaTray, conexao: any, accessToken: st
 
             logger.log({
                 level: 'info',
-                message: `Grupo ${grupo.name} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
+                message: `Variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
             });
 
+            return response.data.id
         }
         else {
             logger.log({
                 level: 'error',
-                message: `Erro ao cadastrar grupo ${grupo.name} da loja ${loja.LTR_CNPJ}`
+                message: `Erro ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ}`
             });
         }
-    } catch (error) {
+    } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro ao cadastrar grupo ${grupo.name} da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} -> ${error}`
         });
     }
 

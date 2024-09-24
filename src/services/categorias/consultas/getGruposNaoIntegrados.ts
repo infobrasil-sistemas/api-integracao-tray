@@ -1,11 +1,9 @@
-import { IConnectionOptions, getLojaDatabaseConnection } from "../../../config/db/lojaDatabase";
 import logger from "../../../utils/logger";
 import { IGrupoNaoIntegrado } from "../interfaces";
 
 
-export async function getGruposNaoIntegrados(lojaCnpj: string, dadosConexao: IConnectionOptions): Promise<IGrupoNaoIntegrado[]> {
+export async function getGruposNaoIntegrados(lojaCnpj: string, conexao: any): Promise<IGrupoNaoIntegrado[]> {
     try {
-        const conexao = await getLojaDatabaseConnection(dadosConexao)
 
         const query = `
             SELECT

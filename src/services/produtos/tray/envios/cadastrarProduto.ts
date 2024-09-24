@@ -1,11 +1,10 @@
 import { ILojaTray } from '../../../../interfaces/ILojaTray';
 import logger from '../../../../utils/logger';
 import axios from 'axios';
-import { getLojaDatabaseConnection, IConnectionOptions } from '../../../../config/db/lojaDatabase';
 import { IProdutoNaoIntegrado } from '../../interfaces';
 import dayjs from 'dayjs';
 
-export async function cadastrarProduto(loja: ILojaTray, dadosConexao: IConnectionOptions, accessToken: string, produto: IProdutoNaoIntegrado) {
+export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToken: string, produto: IProdutoNaoIntegrado): Promise<number | undefined> {
     try {
 
         const startPromotionDate = produto.start_promotion ? dayjs(produto.start_promotion).toDate() : null;
@@ -21,7 +20,6 @@ export async function cadastrarProduto(loja: ILojaTray, dadosConexao: IConnectio
 
         const response = await axios.post(`${loja.LTR_API_HOST}/products?access_token=${accessToken}`, requestBody);
         if (response.status === 201 || response.status === 200) {
-            const conexao = await getLojaDatabaseConnection(dadosConexao)
 
             const updateQuery = `
                 UPDATE PRODUTOS PRO
@@ -49,6 +47,7 @@ export async function cadastrarProduto(loja: ILojaTray, dadosConexao: IConnectio
                 message: `Produto ${produto.ean} da loja ${loja.LTR_CNPJ} cadastrado com sucesso.`
             });
 
+            return response.data.id
         }
         else {
             logger.log({

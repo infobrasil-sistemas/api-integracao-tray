@@ -1,12 +1,10 @@
 import { ILojaTray } from './../../../interfaces/ILojaTray';
-import { getLojaDatabaseConnection, IConnectionOptions } from "../../../config/db/lojaDatabase";
 import logger from "../../../utils/logger";
 import { IProdutoNaoIntegrado } from "../interfaces";
 
 
-export async function getProdutosNaoIntegrados(loja: ILojaTray, dadosConexao: IConnectionOptions): Promise<IProdutoNaoIntegrado[]> {
+export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): Promise<IProdutoNaoIntegrado[]> {
     try {
-        const conexao = await getLojaDatabaseConnection(dadosConexao)
         let campo_preco;
         let campo_preco_promocinal;
 

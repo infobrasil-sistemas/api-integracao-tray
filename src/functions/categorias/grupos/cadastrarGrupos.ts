@@ -5,13 +5,13 @@ import { enviarGrupo } from "../../../services/categorias/tray/envios/enviarGrup
 import logger from "../../../utils/logger";
 import { tratarTokens } from "../../../utils/tratarTokens";
 
-export async function cadastrarGrupos(loja: ILojaTray, dadosConexao: IConnectionOptions) {
+export async function cadastrarGrupos(loja: ILojaTray, conexao: IConnectionOptions) {
     try {
-        const gruposNaoIntegrados = await getGruposNaoIntegrados(loja.LTR_CNPJ, dadosConexao)
+        const gruposNaoIntegrados = await getGruposNaoIntegrados(loja.LTR_CNPJ, conexao)
         if (gruposNaoIntegrados.length > 0) {
             const accessToken = await tratarTokens(loja)
             for (const grupo of gruposNaoIntegrados) {
-                await enviarGrupo(loja, dadosConexao, accessToken, grupo)
+                await enviarGrupo(loja, conexao, accessToken, grupo)
             }
         } else {
             logger.log({

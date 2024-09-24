@@ -1,11 +1,9 @@
-import { IConnectionOptions, getLojaDatabaseConnection } from "../../../config/db/lojaDatabase";
 import logger from "../../../utils/logger";
 import { ISecaoIntegrada } from "../interfaces";
 
 
-export async function getSecoesIntegradas(lojaCnpj: string, dadosConexao: IConnectionOptions): Promise<ISecaoIntegrada[]> {
+export async function getSecoesIntegradas(lojaCnpj: string, conexao: any): Promise<ISecaoIntegrada[]> {
     try {
-        const conexao = await getLojaDatabaseConnection(dadosConexao)
 
         const query = `
            SELECT

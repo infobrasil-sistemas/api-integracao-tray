@@ -7,9 +7,9 @@ import logger from "../../../utils/logger";
 import { tratarTokens } from "../../../utils/tratarTokens";
 
 
-export async function atualizarGrupos(loja: ILojaTray, dadosConexao: IConnectionOptions) {
+export async function atualizarGrupos(loja: ILojaTray, conexao: any) {
     try {
-        const gruposIntegrados = await getGruposIntegrados(loja.LTR_CNPJ, dadosConexao)
+        const gruposIntegrados = await getGruposIntegrados(loja.LTR_CNPJ, conexao)
         const accessToken = await tratarTokens(loja)
         for (const grupoIntegrado of gruposIntegrados) {
             try {

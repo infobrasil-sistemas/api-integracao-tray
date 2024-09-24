@@ -3,29 +3,29 @@ import logger from "../../../utils/logger";
 import { IEstoqueProduto } from "../interfaces";
 
 
-export async function getEstoqueProdutos(loja: ILojaTray, conexao: any): Promise<IEstoqueProduto[]> {
+export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: any, ids: number[]): Promise<IEstoqueProduto[]> {
     try {
         let estoque;
         if (loja.LTR_TIPO_ESTOQUE === 1)
-            estoque = 'EST.EST_ATUAL'
+            estoque = 'ESG.ESG_ATUAL'
         else
-            estoque = 'EST.EST_APOIO'
+            estoque = 'ESG.ESG_APOIO'
 
         const lojasEstoque = loja.LTR_LOJAS_ESTOQUE.split(',').map(codigo => parseInt(codigo.trim()));
         const placeholders = lojasEstoque.map(() => '?').join(', ');
 
         const query = `
         SELECT
-            PRO.pro_id_ecommerce AS "id",
-            PRO.pro_descfiscal AS "name",
+            PRG.prg_id_ecommerce AS "id",
             CAST(SUM(${estoque}) AS INTEGER) AS "stock"
-        FROM PRODUTOS PRO
-        JOIN estoque EST ON EST.pro_codigo = PRO.pro_codigo
+        FROM PROD_GRADES PRG
+        JOIN estoque_grades ESG ON ESG.prg_codigo = PRG.PRG_CODIGO
+        JOIN PRODUTOS PRO ON PRG.PRO_CODIGO = PRO.PRO_CODIGO
         WHERE 
-            EST.loj_codigo IN (${placeholders})
-            and PRO.PRO_ID_ECOMMERCE is not null 
+            ESG.loj_codigo IN (${placeholders})
+            and PRG.PRG_ID_ECOMMERCE is not null
             and PRO.PRO_SITUACAO = 'A'
-        GROUP BY PRO.PRO_ID_ECOMMERCE, pro.pro_descfiscal
+        GROUP BY PRG.PRG_ID_ECOMMERCE
         `;
 
         const params = [

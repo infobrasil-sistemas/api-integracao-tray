@@ -1,3 +1,4 @@
+import { getLojaDatabaseConnection } from "../config/db/lojaDatabase";
 import { atualizarCategorias } from "../functions/categorias/atualizarCategorias";
 import { cadastrarCategorias } from "../functions/categorias/cadastrarCategorias";
 import { getLojaDbConfig } from "../services/lojas/consultas/getLojaDbConfig";
@@ -14,15 +15,23 @@ export async function sincronizarCategorias() {
     try {
         const lojas = await getLojasDadosTray()
         for (const loja of lojas) {
+            let conexao: any;
+
             try {
                 const dadosConexao = await getLojaDbConfig(loja.DAD_CODIGO)
-                await atualizarCategorias(loja, dadosConexao)
-                await cadastrarCategorias(loja, dadosConexao)
+                conexao = await getLojaDatabaseConnection(dadosConexao);
+
+                await atualizarCategorias(loja, conexao)
+                await cadastrarCategorias(loja, conexao)
             } catch (error) {
                 logger.log({
                     level: 'error',
                     message: `Erro ao executar rotina de sincronização de categorias para a loja ${loja.LTR_CNPJ} -> ${error}`
                 });
+            } finally {
+                if (conexao) {
+                    conexao.detach();
+                }
             }
         }
         logger.log({
