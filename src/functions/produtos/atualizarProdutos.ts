@@ -18,26 +18,22 @@ export async function atualizarProdutos(loja: ILojaTray, conexao: any) {
         if (produtosIntegrados.length > 0) {
             const access_token = await tratarTokens(loja)
             for (const produtoIntegrado of produtosIntegrados) {
-                try {
-                    const produtoTray = await getProduto(loja, access_token, produtoIntegrado.id)
-                    if (!isEqual(produtoIntegrado, produtoTray)) {
-                        await atualizarProduto(loja, access_token, produtoIntegrado)
-                    }
-                } catch (error) {
-                    logger.log({
-                        level: 'error',
-                        message: `Erro ao atualizar o produto ${produtoIntegrado.name} da loja ${loja.LTR_CNPJ} -> ${error}`
-                    });
-                }
+                await atualizarProduto(loja, access_token, produtoIntegrado)
+                // const produtoTray = await getProduto(loja, access_token, produtoIntegrado.id)  // LOGICA COM COMPARAÇÃO
+                // if (!isEqual(produtoIntegrado, produtoTray)) {
+                //     await atualizarProduto(loja, access_token, produtoIntegrado)
+                // 
                 try {
                     const variacoes = await getVariacoesProdutoIntegradas(loja, conexao, produtoIntegrado.id)
                     if (variacoes.length > 0) {
                         for (const variacao of variacoes) {
                             const produtoVariacaoIntegrado = transformarEmProdutoVariacaoIntegrado(produtoIntegrado, variacao)
-                            const variacaoTray = await getVariacao(loja, access_token, variacao.id)
-                            if (!isEqual(produtoVariacaoIntegrado, variacaoTray)) {
-                                await atualizarVariacao(loja, access_token, produtoVariacaoIntegrado)
-                            }
+                            await atualizarVariacao(loja, access_token, produtoVariacaoIntegrado)
+                            // const produtoVariacaoIntegrado = transformarEmProdutoVariacaoIntegrado(produtoIntegrado, variacao) // LOGICA COM COMPARAÇÃO
+                            // const variacaoTray = await getVariacao(loja, access_token, variacao.id)
+                            // if (!isEqual(produtoVariacaoIntegrado, variacaoTray)) {
+                            //     await atualizarVariacao(loja, access_token, produtoVariacaoIntegrado)
+                            // }
                         }
                     }
                 } catch (error) {

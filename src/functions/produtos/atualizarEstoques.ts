@@ -16,14 +16,13 @@ export async function atualizarEstoques(loja: ILojaTray, conexao: IConnectionOpt
         const estoquesProdutos = await getEstoqueProdutos(loja, conexao);
         const estoqueProdutosSemVariacao = estoquesProdutos.filter(produto => !idsProdutosComVariacao.has(produto.id));
         const estoqueProdutosComVariacao = await getEstoqueProdutosComVariacao(loja, conexao, Array.from(idsProdutosComVariacao));
+        const access_token = await tratarTokens(loja)
         if (estoqueProdutosSemVariacao.length > 0) {
-            const access_token = await tratarTokens(loja)
             for (const estoqueProdutoSemVariacao of estoqueProdutosSemVariacao) {
                 await atualizarEstoque(loja, access_token, estoqueProdutoSemVariacao)
             }
         }
         if (estoqueProdutosComVariacao.length > 0) {
-            const access_token = await tratarTokens(loja)
             for (const estoqueProdutoComVariacao of estoqueProdutosComVariacao) {
                 await atualizarEstoqueVariacao(loja, access_token, estoqueProdutoComVariacao)
             }

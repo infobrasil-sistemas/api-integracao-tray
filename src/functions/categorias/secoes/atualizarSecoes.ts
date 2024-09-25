@@ -1,7 +1,5 @@
-import { IConnectionOptions } from "../../../config/db/lojaDatabase";
 import { ILojaTray } from "../../../interfaces/ILojaTray";
 import { getSecoesIntegradas } from "../../../services/categorias/consultas/getSecoesIntegradas";
-import { getCategoria } from "../../../services/categorias/tray/consultas/getCategoria";
 import { atualizarCategoria } from "../../../services/categorias/tray/envios/atualizarCategoria";
 import logger from "../../../utils/logger";
 import { tratarTokens } from "../../../utils/tratarTokens";
@@ -13,16 +11,23 @@ export async function atualizarSecoes(loja: ILojaTray, conexao: any) {
         const accessToken = await tratarTokens(loja)
         for (const secaoIntegrada of secoesIntegradas) {
             try {
-                const secaoTray = await getCategoria(loja, accessToken, secaoIntegrada.id)
-                if (secaoIntegrada.name !== secaoTray.name) {
-                    const secaoAtualizada = {
-                        name: secaoIntegrada.name,
-                        slug: secaoIntegrada.name,
-                        title: secaoIntegrada.name,
-                        small_description: secaoIntegrada.name,
-                    }
-                    await atualizarCategoria(loja, accessToken, secaoAtualizada, secaoTray.id)
+                const secaoAtualizada = {
+                    name: secaoIntegrada.name,
+                    slug: secaoIntegrada.name,
+                    title: secaoIntegrada.name,
+                    small_description: secaoIntegrada.name,
                 }
+                await atualizarCategoria(loja, accessToken, secaoAtualizada, secaoIntegrada.id)
+                // const secaoTray = await getCategoria(loja, accessToken, secaoIntegrada.id)     // LOGICA COM COMPARAÇÃO
+                // if (secaoIntegrada.name !== secaoTray.name) {
+                //     const secaoAtualizada = {
+                //         name: secaoIntegrada.name,
+                //         slug: secaoIntegrada.name,
+                //         title: secaoIntegrada.name,
+                //         small_description: secaoIntegrada.name,
+                //     }
+                //     await atualizarCategoria(loja, accessToken, secaoAtualizada, secaoTray.id)
+                // }
             } catch (error) {
                 logger.log({
                     level: 'error',
