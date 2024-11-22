@@ -13,41 +13,28 @@ export async function enviarSecao(loja: ILojaTray, conexao: any, accessToken: st
 
         const response = await axios.post(`${loja.LTR_API_HOST}/categories?access_token=${accessToken}`, requestBody);
 
-        if (response.status === 201 || response.status === 200) {
-
-            const updateQuery = `
+        const updateQuery = `
                 UPDATE SECCAO SEC
                 SET 
                     SEC_ID_ECOMMERCE = ?
                 WHERE SEC.SEC_CODIGO = ?
             `;
 
-            const params = [
-                parseInt(response.data.id),
-                SEC_CODIGO
-            ];
+        const params = [
+            parseInt(response.data.id),
+            SEC_CODIGO
+        ];
 
-            await new Promise((resolve, reject) => {
-                conexao.query(updateQuery, params, (err: any) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve(true);
-                });
+        await new Promise((resolve, reject) => {
+            conexao.query(updateQuery, params, (err: any) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(true);
             });
+        });
 
-            logger.log({
-                level: 'info',
-                message: `Seção ${secao.name} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
-            });
 
-        }
-        else {
-            logger.log({
-                level: 'error',
-                message: `Erro ao cadastrar seção ${secao.name} da loja ${loja.LTR_CNPJ}`
-            });
-        }
     } catch (error) {
         logger.log({
             level: 'error',

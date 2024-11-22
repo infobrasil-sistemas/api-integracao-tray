@@ -1,5 +1,4 @@
 import { ILojaTray } from './../../../interfaces/ILojaTray';
-import logger from "../../../utils/logger";
 import { IProdutoNaoIntegrado } from "../interfaces";
 
 
@@ -124,7 +123,7 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): P
 `;
 
         const params = [
-            loja.LTR_LOJA_PRECO,
+            loja.LOJ_CODIGO,
         ]
 
         return new Promise((resolve, reject) => {
@@ -136,11 +135,7 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): P
             });
         });
     } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro de conexao com o banco da loja ${loja.LTR_CNPJ} -> ${error}`
-        });
-        throw new Error(`Erro de conexao com o banco da loja ${loja.LTR_CNPJ}`)
+        throw new Error(`Erro ao obter produtos nao integrados da loja ${loja.LTR_CNPJ}`)
     }
 
 

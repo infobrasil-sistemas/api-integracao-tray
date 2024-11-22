@@ -1,0 +1,157 @@
+import { Request, Response } from 'express';
+import { z } from 'zod';
+import logger from '../../utils/logger';
+import { getDadCodigoByCnpj } from '../../services/lojas/consultas/getDadCodigoByCnpj';
+import { getApiDatabaseConnection } from '../../config/db/database';
+import { ILojaTray, ILojaTrayInicializada, ILojaTrayInicializar } from '../../interfaces/ILojaTray';
+import axios from 'axios';
+import { cadastrarStatusSincronizado } from '../../services/pedidos/tray/envios/cadastrarStatusSincronizado';
+import { cadastrarLojaTray } from '../../services/lojas/envios/cadastrarLojaTray';
+import { cadastrarCategorias } from '../../functions/categorias/cadastrarCategorias';
+import { getLojaDatabaseConnection } from '../../config/db/lojaDatabase';
+import { getLojaDbConfig } from '../../services/lojas/consultas/getLojaDbConfig';
+import { cadastrarProdutos } from '../../functions/produtos/cadastrarProdutos';
+import { atualizarEstoques } from '../../functions/produtos/atualizarEstoques';
+import { cadastrarFormasPagamentoEcommerce } from '../../functions/integracao/cadastrarFormasPagamentoEcommerce';
+import { ativarLojaTray } from '../../services/lojas/envios/ativarLojaTray';
+
+interface IOperacoes {
+    gerar_tokens: null | 'SUCESSO',
+    status_sincronizado: null | 'SUCESSO',
+    loja: null | 'SUCESSO',
+    categorias: null | 'SUCESSO',
+    produtos: null | 'SUCESSO',
+    estoque: null | 'SUCESSO',
+    fpgs_ecommerce: null | 'SUCESSO',
+    ativar_loja: null | 'SUCESSO'
+}
+
+const inicializarLojaSchema = z.object({
+    LTR_CONSUMER_KEY: z.string().min(1),
+    LTR_CONSUMER_SECRET: z.string().min(1),
+    LTR_CODE: z.string().min(1),
+    LTR_STORE_ID: z.number(),
+    LTR_CNPJ: z.string().length(14),
+    LTR_LOJAS_ESTOQUE: z.string(),
+    LOJ_CODIGO: z.number(),
+    LTR_TABELA_PRECO: z.number(),
+    LTR_TIPO_ESTOQUE: z.number(),
+    LTR_INTERMEDIADOR_PAGAMENTO: z.string().optional(),
+    LTR_ESTOQUE_MINIMO: z.number()
+});
+
+export async function inicializarLoja(req: Request, res: Response) {
+    let conexaoApi;
+    let conexaoLoja;
+
+    const operacoes: IOperacoes = {
+        gerar_tokens: null,
+        status_sincronizado: null,
+        loja: null,
+        categorias: null,
+        produtos: null,
+        estoque: null,
+        fpgs_ecommerce: null,
+        ativar_loja: null
+    };
+
+    try {
+        const result = inicializarLojaSchema.safeParse(req.body);
+
+        if (!result.success) {
+            return res.status(400).json({ errors: result.error.errors });
+        }
+
+        const data = result.data;
+
+        conexaoApi = await getApiDatabaseConnection()
+
+        const DAD_CODIGO = await getDadCodigoByCnpj(data.LTR_CNPJ, conexaoApi)
+
+        if (!DAD_CODIGO) {
+            return res.status(400).json({ message: 'CNPJ não contém cadastro na tabela DADOS_ENDERECO.' });
+        }
+        const loja: ILojaTrayInicializar = {
+            LTR_CONSUMER_KEY: data.LTR_CONSUMER_KEY,
+            LTR_CONSUMER_SECRET: data.LTR_CONSUMER_SECRET,
+            LTR_CODE: data.LTR_CODE,
+            LTR_API_HOST: `https://${data.LTR_STORE_ID}.commercesuite.com.br/web_api`,
+            LTR_STORE_ID: data.LTR_STORE_ID,
+            LTR_CNPJ: data.LTR_CNPJ,
+            LTR_LOJAS_ESTOQUE: data.LTR_LOJAS_ESTOQUE,
+            LTR_TIPO_ESTOQUE: data.LTR_TIPO_ESTOQUE,
+            LTR_ESTOQUE_MINIMO: data.LTR_ESTOQUE_MINIMO,
+            LOJ_CODIGO: data.LOJ_CODIGO,
+            LTR_TABELA_PRECO: data.LTR_TABELA_PRECO,
+            LTR_INTERMEDIADOR_PAGAMENTO: data.LTR_INTERMEDIADOR_PAGAMENTO || undefined,
+            DAD_CODIGO: DAD_CODIGO
+        }
+
+        const requestBody = {
+            consumer_key: loja.LTR_CONSUMER_KEY,
+            consumer_secret: loja.LTR_CONSUMER_SECRET,
+            code: loja.LTR_CODE
+        };
+
+        const tokensResponse = await axios.post(`${loja.LTR_API_HOST}/auth`, requestBody);
+        operacoes.gerar_tokens = 'SUCESSO'
+
+        const dadosTokens = {
+            access_token: tokensResponse.data.access_token,
+            refresh_token: tokensResponse.data.refresh_token,
+            data_expiration_access_token: tokensResponse.data.date_expiration_access_token,
+            data_expiration_refresh_token: tokensResponse.data.date_expiration_refresh_token
+        }
+
+        const statusSincronizadoId = await cadastrarStatusSincronizado(loja, dadosTokens.access_token)
+        operacoes.status_sincronizado = 'SUCESSO'
+
+        const lojaInicializada: ILojaTrayInicializada = {
+            ...loja,
+            LTR_ACCESS_TOKEN: dadosTokens.access_token,
+            LTR_REFRESH_TOKEN: dadosTokens.refresh_token,
+            LTR_EXPIRATION_ACCESS_TOKEN: dadosTokens.data_expiration_access_token,
+            LTR_EXPIRATION_REFRESH_TOKEN: dadosTokens.data_expiration_refresh_token,
+            LTR_ID_STATUS_SINCRONIZADO: statusSincronizadoId,
+        }
+
+        const LTR_CODIGO = await cadastrarLojaTray(lojaInicializada, conexaoApi)
+        operacoes.loja = 'SUCESSO'
+
+
+        const lojaCadastrada: ILojaTray = {
+            ...lojaInicializada,
+            LTR_CODIGO
+        }
+
+        const dadosConexao = await getLojaDbConfig(lojaInicializada.DAD_CODIGO)
+        conexaoLoja = await getLojaDatabaseConnection(dadosConexao);
+
+        await cadastrarCategorias(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
+        operacoes.categorias = 'SUCESSO'
+
+        await cadastrarProdutos(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
+        operacoes.produtos = 'SUCESSO'
+
+        await atualizarEstoques(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
+        operacoes.estoque = 'SUCESSO'
+
+        await cadastrarFormasPagamentoEcommerce(lojaCadastrada, conexaoLoja)
+        operacoes.fpgs_ecommerce = 'SUCESSO'
+
+        await ativarLojaTray(lojaCadastrada, conexaoLoja)
+        operacoes.ativar_loja = 'SUCESSO'
+
+        return res.status(201).json(operacoes);
+
+    } catch (error: any) {
+        logger.log({
+            level: 'error',
+            message: `Erro ao inicializar loja -> ${error}`,
+        });
+        return res.status(500).json({ error: `Erro ao inicializar loja. -> ${error}`, operacoes: operacoes });
+    } finally {
+        if (conexaoApi) conexaoApi.detach();
+        if (conexaoLoja) conexaoLoja.detach();
+    }
+}

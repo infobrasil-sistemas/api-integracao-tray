@@ -23,10 +23,6 @@ export async function getSecoesIntegradas(lojaCnpj: string, conexao: any): Promi
             });
         });
     } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro de conexão com o banco da loja ${lojaCnpj} -> ${error}`
-        });
-        throw new Error(`Erro de conexão com o banco da loja ${lojaCnpj} -> ${error}`)
+        throw new Error(`Erro ao obter seções da loja ${lojaCnpj} -> ${error}`)
     }
 }

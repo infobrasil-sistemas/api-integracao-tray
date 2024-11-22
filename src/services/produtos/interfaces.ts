@@ -61,12 +61,6 @@ export interface IEstoqueProduto {
     stock: number;
 }
 
-export interface IEstoqueProduto {
-    id: number;
-    name: string;
-    stock: number;
-}
-
 export interface IVariacaoProdutoNaoIntegrada {
     product_id: number; 
     ean: string;       

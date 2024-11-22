@@ -1,6 +1,5 @@
 import { IConnectionOptions } from "../../../config/db/lojaDatabase";
 import { getApiDatabaseConnection } from "../../../config/db/database";
-import logger from "../../../utils/logger";
 
 export async function getLojaDbConfig(enderecoCodigo: number): Promise<IConnectionOptions> {
   try {
@@ -31,7 +30,7 @@ export async function getLojaDbConfig(enderecoCodigo: number): Promise<IConnecti
               port: parseInt(config.DAD_PORTA, 10),
               database: config.DAD_CAMINHO,
               user: config.DAD_USER,
-              password: password,
+              id: config.DAD_ID,
               pageSize: 4096
             });
           } else {
@@ -42,10 +41,6 @@ export async function getLojaDbConfig(enderecoCodigo: number): Promise<IConnecti
       );
     });
   } catch (error) {
-    logger.log({
-      level: 'error',
-      message: `Erro de conexao com o banco da API -> ${error}`
-    });
     throw new Error(`Erro de conexao com o banco da API`)
   }
 

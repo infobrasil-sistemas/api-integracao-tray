@@ -11,42 +11,35 @@ export async function cadastrarVariacao(loja: ILojaTray, conexao: any, accessTok
         }
 
         const response = await axios.post(`${loja.LTR_API_HOST}/products/variants/?access_token=${accessToken}`, requestBody);
-        if (response.status === 201 || response.status === 200) {
 
-            const updateQuery = `
+        const updateQuery = `
                 UPDATE PROD_GRADES PRG
                 SET 
                     PRG_ID_ECOMMERCE = ?
                 WHERE PRG.PRG_CODIGO = ?
             `;
 
-            const params = [
-                parseInt(response.data.id),
-                produtoVariacao.ean
-            ];
+        const params = [
+            parseInt(response.data.id),
+            produtoVariacao.ean
+        ];
 
-            await new Promise((resolve, reject) => {
-                conexao.query(updateQuery, params, (err: any) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve(true);
-                });
+        await new Promise((resolve, reject) => {
+            conexao.query(updateQuery, params, (err: any) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(true);
             });
+        });
 
-            logger.log({
-                level: 'info',
-                message: `Variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
-            });
+        logger.log({
+            level: 'info',
+            message: `Variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
+        });
 
-            return response.data.id
-        }
-        else {
-            logger.log({
-                level: 'error',
-                message: `Erro ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ}`
-            });
-        }
+        return response.data.id
+
     } catch (error: any) {
         logger.log({
             level: 'error',

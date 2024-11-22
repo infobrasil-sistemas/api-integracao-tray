@@ -3,13 +3,11 @@ import { ILojaTray } from "../../../interfaces/ILojaTray";
 import { getGruposNaoIntegrados } from "../../../services/categorias/consultas/getGruposNaoIntegrados";
 import { enviarGrupo } from "../../../services/categorias/tray/envios/enviarGrupo";
 import logger from "../../../utils/logger";
-import { tratarTokens } from "../../../utils/tratarTokens";
 
-export async function cadastrarGrupos(loja: ILojaTray, conexao: IConnectionOptions) {
+export async function cadastrarGrupos(loja: ILojaTray, conexao: IConnectionOptions, accessToken: string) {
     try {
         const gruposNaoIntegrados = await getGruposNaoIntegrados(loja.LTR_CNPJ, conexao)
         if (gruposNaoIntegrados.length > 0) {
-            const accessToken = await tratarTokens(loja)
             for (const grupo of gruposNaoIntegrados) {
                 await enviarGrupo(loja, conexao, accessToken, grupo)
             }

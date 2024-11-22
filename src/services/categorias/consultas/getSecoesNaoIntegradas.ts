@@ -32,10 +32,6 @@ export async function getSecoesNaoIntegradas(lojaCnpj: string, conexao: any): Pr
             });
         });
     } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro de conexão com o banco da loja ${lojaCnpj} -> ${error}`
-        });
-        throw new Error(`Erro de conexão com o banco da loja ${lojaCnpj} -> ${error}`)
+        throw new Error(`Erro ao obter seções não integradas da loja ${lojaCnpj} -> ${error}`)
     }
 }

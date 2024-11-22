@@ -1,4 +1,3 @@
-import { IConnectionOptions } from "../../config/db/lojaDatabase";
 import { ILojaTray } from "../../interfaces/ILojaTray";
 import { getProdutosNaoIntegrados } from "../../services/produtos/consultas/getProdutosNaoIntegrados";
 import { getVariacoesProduto } from "../../services/produtos/consultas/getVariacoesProdutoNaoIntegrada";
@@ -6,13 +5,11 @@ import { cadastrarProduto } from "../../services/produtos/tray/envios/cadastrarP
 import { cadastrarVariacao } from "../../services/produtos/tray/envios/cadastrarVariacao";
 import logger from "../../utils/logger";
 import { transformarEmProdutoVariacaoNaoIntegrado } from "../../utils/produtos/transformarEmProdutoVariacaoNaoIntegrado";
-import { tratarTokens } from "../../utils/tratarTokens";
 
-export async function cadastrarProdutos(loja: ILojaTray, conexao: any) {
+export async function cadastrarProdutos(loja: ILojaTray, conexao: any, access_token: string) {
     try {
         const produtosNaoIntegrados = await getProdutosNaoIntegrados(loja, conexao)
         if (produtosNaoIntegrados.length > 0) {
-            const access_token = await tratarTokens(loja)
             for (const produtoNaoIntegrado of produtosNaoIntegrados) {
                 const product_id = await cadastrarProduto(loja, conexao, access_token, produtoNaoIntegrado)
                 if (product_id) {
@@ -27,18 +24,12 @@ export async function cadastrarProdutos(loja: ILojaTray, conexao: any) {
                     } catch (error) {
                         logger.log({
                             level: 'error',
-                            message: `Erro ao buscar variações do produto ${produtoNaoIntegrado.name} da loja ${loja.LTR_CNPJ} -> ${error}`
+                            message: `${error}`
                         });
                     }
 
                 }
             }
-        }
-        else {
-            logger.log({
-                level: 'info',
-                message: `Nenhum produto novo para a loja ${loja.LTR_CNPJ}`
-            });
         }
     } catch (error) {
         logger.log({

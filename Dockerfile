@@ -1,23 +1,27 @@
-# Use a imagem oficial do Node.js como base
-FROM node:18-alpine
-
-# Configuração do diretório de trabalho dentro do contêiner
+# Estágio base para instalar dependências e fazer o build
+FROM node:18-alpine AS base
 WORKDIR /app
 
-# Copie apenas os arquivos de dependências para aproveitar o cache do Docker
+# Copia os arquivos de configuração de dependências
 COPY package*.json ./
 
-# Instale as dependências de produção
-RUN npm install --production
+# Instala as dependências, incluindo as de desenvolvimento
+RUN npm install
 
-# Copie o código compilado para o diretório de trabalho
-COPY dist/ ./dist
+# Copia o restante do código para o contêiner
+COPY . .
 
-# Defina variáveis de ambiente necessárias para produção
+# Executa o build do TypeScript
+RUN npm run build
+
+# Estágio final de produção
+FROM node:18-alpine AS production
+WORKDIR /app
+
+# Copia apenas os arquivos necessários para a execução
+COPY --from=base /app/dist ./dist
+COPY --from=base /app/node_modules ./node_modules
+
 ENV NODE_ENV=production
-
-# Exponha a porta em que a API será executada
 EXPOSE 3000
-
-# Comando padrão para rodar a aplicação
 CMD ["node", "dist/index.js"]

@@ -1,25 +1,32 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import logger from './utils/logger';
-
-import { sincronizarCategorias } from './jobs/sincronizarCategorias';
-import { sincronizarProdutos } from './jobs/sincronizarProdutos';
+import { inicializarLoja } from './controllers/integracao/inicializarLoja';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { atualizarLoja } from './controllers/integracao/atualizarLoja';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const NAME_BASE_URL = 'api-infobrasil-tray'
 
-app.get('/', (req, res) => {
+app.use(express.json());
+
+dayjs.extend(utc);
+
+app.get(`/`, (req, res) => {
   res.send('API RODANDO.');
 });
+
+app.post(`/${NAME_BASE_URL}/lojas/inicializar`, inicializarLoja);
+app.put(`/${NAME_BASE_URL}/lojas/atualizar`, atualizarLoja);
+
 
 app.listen(PORT, async () => {
   logger.log({
     level: 'info',
     message: `API rodando na porta ${PORT}.`
   });
-
-  await sincronizarCategorias()
-  await sincronizarProdutos()
 });

@@ -1,6 +1,18 @@
+# Ignorar dependências e logs locais
 node_modules
 logs
+
+# Ignorar arquivos de configuração de controle de versão e variáveis de ambiente
 .git
 .env
+
+# Ignorar arquivos de configuração Docker para evitar cópia desnecessária
 Dockerfile
 docker-compose.yml
+
+# Ignorar arquivos de cache e configurações locais do editor
+*.swp
+*.swo
+.vscode/
+.idea/
+*.log

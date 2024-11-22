@@ -1,5 +1,4 @@
 import { ILojaTray } from '../../../interfaces/ILojaTray';
-import logger from "../../../utils/logger";
 
 export async function getProdutosComVariacoes(loja: ILojaTray, conexao: any): Promise<number[]> {
     try {
@@ -20,10 +19,6 @@ export async function getProdutosComVariacoes(loja: ILojaTray, conexao: any): Pr
             });
         });
     } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro de conexao com o banco da loja ${loja.LTR_CNPJ} -> ${error}`
-        });
-        throw new Error(`Erro de conexao com o banco da loja ${loja.LTR_CNPJ}`)
+        throw new Error(`Erro ao obter produtos com variação da loja ${loja.LTR_CNPJ}`)
     }
 }

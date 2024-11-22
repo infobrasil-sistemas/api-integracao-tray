@@ -1,5 +1,3 @@
-import { IConnectionOptions, getLojaDatabaseConnection } from "../../../config/db/lojaDatabase";
-import logger from "../../../utils/logger";
 import { IGrupoIntegrado } from "../interfaces";
 
 
@@ -24,10 +22,6 @@ export async function getGruposIntegrados(lojaCnpj: string, conexao: any): Promi
             });
         });
     } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro de conexão com o banco da loja ${lojaCnpj} -> ${error}`
-        });
-        throw new Error(`Erro de conexão com o banco da loja ${lojaCnpj} -> ${error}`)
+        throw new Error(`Erro ao obter grupos da loja ${lojaCnpj} -> ${error}`)
     }
 }

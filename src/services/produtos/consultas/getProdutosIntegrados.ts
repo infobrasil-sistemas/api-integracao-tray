@@ -1,5 +1,4 @@
 import { ILojaTray } from './../../../interfaces/ILojaTray';
-import logger from "../../../utils/logger";
 import { IProdutoIntegrado } from "../interfaces";
 import dayjs from 'dayjs';
 
@@ -117,7 +116,7 @@ export async function getProdutosIntegrados(loja: ILojaTray, conexao: any): Prom
 `;
 
         const params = [
-            loja.LTR_LOJA_PRECO,
+            loja.LOJ_CODIGO,
         ]
 
         return new Promise((resolve, reject) => {
@@ -136,10 +135,6 @@ export async function getProdutosIntegrados(loja: ILojaTray, conexao: any): Prom
             });
         });
     } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro de conexao com o banco da loja ${loja.LTR_CNPJ} -> ${error}`
-        });
-        throw new Error(`Erro de conexao com o banco da loja ${loja.LTR_CNPJ}`)
+        throw new Error(`Erro ao obter produtos integrados da loja ${loja.LTR_CNPJ}`)
     }
 }
