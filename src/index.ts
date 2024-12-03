@@ -5,6 +5,7 @@ import { inicializarLoja } from './controllers/integracao/inicializarLoja';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { atualizarLoja } from './controllers/integracao/atualizarLoja';
+import Queue from './queue/queue'
 
 dotenv.config();
 
