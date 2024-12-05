@@ -37,11 +37,6 @@ export async function enviarGrupo(loja: ILojaTray, conexao: any, accessToken: st
                 });
             });
 
-            logger.log({
-                level: 'info',
-                message: `Grupo ${grupo.name} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
-            });
-
         }
         else {
             logger.log({

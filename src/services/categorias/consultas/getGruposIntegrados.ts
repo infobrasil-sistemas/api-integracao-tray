@@ -10,7 +10,7 @@ export async function getGruposIntegrados(lojaCnpj: string, conexao: any): Promi
                 GRU.GRU_descricao as "name",
                 SEC.sec_id_ecommerce as "parent_id"
                 FROM GRUPOSPRO GRU JOIN SECCAO SEC ON GRU.sec_codigo = SEC.sec_codigo
-                WHERE GRU.GRU_ID_ECOMMERCE is not null  
+                WHERE GRU.GRU_ID_ECOMMERCE is not null
             `;
 
         return new Promise((resolve, reject) => {

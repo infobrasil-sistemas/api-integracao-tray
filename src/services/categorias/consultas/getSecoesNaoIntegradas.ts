@@ -20,7 +20,6 @@ export async function getSecoesNaoIntegradas(lojaCnpj: string, conexao: any): Pr
                 null as "property"
                 FROM SECCAO SEC 
                 WHERE SEC.sec_id_ecommerce is null 
-                --AND SEC.SEC_CODIGO IN (1, 2)
             `;
 
         return new Promise((resolve, reject) => {

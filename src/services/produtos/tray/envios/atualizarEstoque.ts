@@ -5,7 +5,7 @@ import { IEstoqueProduto } from '../../interfaces';
 
 export async function atualizarEstoque(loja: ILojaTray, accessToken: string, estoque: IEstoqueProduto) {
     try {
-
+        
         const requestBody = {
             Product: {
                 stock: loja.LTR_ESTOQUE_MINIMO > estoque.stock ? 0 : estoque.stock
@@ -17,7 +17,7 @@ export async function atualizarEstoque(loja: ILojaTray, accessToken: string, est
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro ao atualizar estoque do produto ${estoque.name} da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao atualizar estoque do produto ${estoque.name} da loja ${loja.LTR_CNPJ} -> ${error.data}`
         });
     }
 

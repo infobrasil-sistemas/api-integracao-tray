@@ -1,2 +1,2 @@
-import Queue from '../src/queue/queue'
-Queue.processCronJobs(); 
+import './queue/jobWorker';
+

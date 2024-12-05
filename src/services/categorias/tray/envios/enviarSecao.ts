@@ -34,7 +34,6 @@ export async function enviarSecao(loja: ILojaTray, conexao: any, accessToken: st
             });
         });
 
-
     } catch (error) {
         logger.log({
             level: 'error',

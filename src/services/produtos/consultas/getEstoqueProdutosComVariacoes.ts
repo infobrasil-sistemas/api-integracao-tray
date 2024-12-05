@@ -23,6 +23,7 @@ export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: an
         WHERE 
             ESG.loj_codigo IN (${placeholders})
             and PRG.PRG_ID_ECOMMERCE is not null
+            and PRO.PRO_ECOMMERCE = 'S'
             and PRO.PRO_SITUACAO = 'A'
         GROUP BY PRG.PRG_ID_ECOMMERCE
         `;

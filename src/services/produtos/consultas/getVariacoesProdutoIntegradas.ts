@@ -15,7 +15,7 @@ export async function getVariacoesProdutoIntegradas(loja: ILojaTray, conexao: an
         JOIN PRODUTOS PRO ON PRG.pro_codigo = PRO.pro_codigo
         JOIN TAMANHOS TAM ON TAM.tam_codigo = PRG.tam_codigo
         JOIN CORES COR ON COR.cor_codigo = PRG.cor_codigo
-        WHERE PRG.prg_id_ecommerce is not null
+        WHERE PRG.prg_id_ecommerce is not null AND PRO.PRO_ECOMMERCE = 'S'
         and PRO.PRO_ID_ECOMMERCE = ?
         `;
 

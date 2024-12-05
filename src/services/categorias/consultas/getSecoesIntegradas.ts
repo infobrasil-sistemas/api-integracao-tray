@@ -11,7 +11,6 @@ export async function getSecoesIntegradas(lojaCnpj: string, conexao: any): Promi
                 SEC.sec_descricao as "name"
                 FROM SECCAO SEC
                 WHERE SEC.sec_id_ecommerce is not null 
-                --AND SEC.SEC_CODIGO IN (1, 2)
             `;
 
         return new Promise((resolve, reject) => {

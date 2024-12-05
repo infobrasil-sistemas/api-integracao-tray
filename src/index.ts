@@ -5,7 +5,7 @@ import { inicializarLoja } from './controllers/integracao/inicializarLoja';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { atualizarLoja } from './controllers/integracao/atualizarLoja';
-import Queue from './queue/queue'
+import { agendadorJobs, limparFila } from './queue/queue';
 
 dotenv.config();
 
@@ -30,4 +30,6 @@ app.listen(PORT, async () => {
     level: 'info',
     message: `API rodando na porta ${PORT}.`
   });
+  await limparFila()
+  await agendadorJobs()
 });

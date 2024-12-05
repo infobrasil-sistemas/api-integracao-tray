@@ -13,6 +13,7 @@ export async function cadastrarSecoes(loja: ILojaTray, conexao: IConnectionOptio
                 await enviarSecao(loja, conexao, accessToken, secao)
             }
         }
+
     } catch (error) {
         logger.log({
             level: 'error',

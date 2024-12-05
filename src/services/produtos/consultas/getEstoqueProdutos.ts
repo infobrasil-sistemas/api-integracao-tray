@@ -23,6 +23,7 @@ export async function getEstoqueProdutos(loja: ILojaTray, conexao: any): Promise
         WHERE 
             EST.loj_codigo IN (${placeholders})
             and PRO.PRO_ID_ECOMMERCE is not null 
+            and PRO.PRO_ECOMMERCE = 'S'
             and PRO.PRO_SITUACAO = 'A'
         GROUP BY PRO.PRO_ID_ECOMMERCE, pro.pro_descfiscal
         `;

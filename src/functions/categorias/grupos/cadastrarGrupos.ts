@@ -11,11 +11,6 @@ export async function cadastrarGrupos(loja: ILojaTray, conexao: IConnectionOptio
             for (const grupo of gruposNaoIntegrados) {
                 await enviarGrupo(loja, conexao, accessToken, grupo)
             }
-        } else {
-            logger.log({
-                level: 'info',
-                message: `Nenhum grupo novo para a loja ${loja.LTR_CNPJ}`
-            });
         }
     } catch (error) {
         logger.log({
