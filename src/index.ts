@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { atualizarLoja } from './controllers/integracao/atualizarLoja';
 import { agendadorJobs, limparFila } from './queue/queue';
+import { atualizarDadosEnderecoController } from './controllers/integracao/atualizarDadosEnderecoController';
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ app.get(`/`, (req, res) => {
 
 app.post(`/${NAME_BASE_URL}/lojas/inicializar`, inicializarLoja);
 app.put(`/${NAME_BASE_URL}/lojas/atualizar`, atualizarLoja);
+app.put(`/${NAME_BASE_URL}/endereco/atualizar`, atualizarDadosEnderecoController);
+
 
 
 app.listen(PORT, async () => {

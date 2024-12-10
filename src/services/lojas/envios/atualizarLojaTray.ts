@@ -6,10 +6,6 @@ export async function atualizarLojaTray(loja: ILojaTrayAtualizar, conexao: any):
         const fields = [];
         const values: any = [];
 
-        if (loja.LTR_CNPJ) {
-            fields.push('LTR_CNPJ = ?');
-            values.push(loja.LTR_CNPJ);
-        }
         if (loja.LTR_LOJAS_ESTOQUE) {
             fields.push('LTR_LOJAS_ESTOQUE = ?');
             values.push(loja.LTR_LOJAS_ESTOQUE);

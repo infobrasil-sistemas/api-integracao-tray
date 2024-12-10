@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 import logger from '../../utils/logger';
-import { getDadCodigoByCnpj } from '../../services/lojas/consultas/getDadCodigoByCnpj';
 import { getApiDatabaseConnection } from '../../config/db/database';
-import { ILojaTray, ILojaTrayInicializada, ILojaTrayInicializar } from '../../interfaces/ILojaTray';
+import { IDadosEndereco, ILojaTray, ILojaTrayInicializada, ILojaTrayInicializar } from '../../interfaces/ILojaTray';
 import axios from 'axios';
 import { cadastrarStatusSincronizado } from '../../services/pedidos/tray/envios/cadastrarStatusSincronizado';
 import { cadastrarLojaTray } from '../../services/lojas/envios/cadastrarLojaTray';
@@ -14,8 +13,10 @@ import { cadastrarProdutos } from '../../functions/produtos/cadastrarProdutos';
 import { atualizarEstoques } from '../../functions/produtos/atualizarEstoques';
 import { cadastrarFormasPagamentoEcommerce } from '../../functions/integracao/cadastrarFormasPagamentoEcommerce';
 import { ativarLojaTray } from '../../services/lojas/envios/ativarLojaTray';
+import { cadastrarDadosEndereco } from '../../services/lojas/envios/cadastrarDadosEndereco';
 
 interface IOperacoes {
+    dados_endereco: null | 'SUCESSO'
     gerar_tokens: null | 'SUCESSO',
     status_sincronizado: null | 'SUCESSO',
     loja: null | 'SUCESSO',
@@ -27,6 +28,12 @@ interface IOperacoes {
 }
 
 const inicializarLojaSchema = z.object({
+    DAD_HOST: z.string().min(1),
+    DAD_PORTA: z.number().min(1).max(65535, "O campo 'DAD_PORTA' deve ser um número válido para portas."),
+    DAD_USER: z.string().min(1),
+    DAD_CAMINHO: z.string().min(1),
+    DAD_CNPJ: z.string().regex(/^\d{14}$/, "O campo 'DAD_CNPJ' deve conter exatamente 14 dígitos."),
+    DAD_ID: z.string().min(1),
     LTR_CONSUMER_KEY: z.string().min(1),
     LTR_CONSUMER_SECRET: z.string().min(1),
     LTR_CODE: z.string().min(1),
@@ -45,6 +52,7 @@ export async function inicializarLoja(req: Request, res: Response) {
     let conexaoLoja;
 
     const operacoes: IOperacoes = {
+        dados_endereco: null,
         gerar_tokens: null,
         status_sincronizado: null,
         loja: null,
@@ -66,11 +74,18 @@ export async function inicializarLoja(req: Request, res: Response) {
 
         conexaoApi = await getApiDatabaseConnection()
 
-        const DAD_CODIGO = await getDadCodigoByCnpj(data.LTR_CNPJ, conexaoApi)
-
-        if (!DAD_CODIGO) {
-            return res.status(400).json({ message: 'CNPJ não contém cadastro na tabela DADOS_ENDERECO.' });
+        const dadosEndereco: IDadosEndereco = {
+            DAD_HOST: data.DAD_HOST,
+            DAD_PORTA: data.DAD_PORTA,
+            DAD_USER: data.DAD_USER,
+            DAD_CAMINHO: data.DAD_CAMINHO,
+            DAD_CNPJ: data.DAD_CNPJ,
+            DAD_ID: data.DAD_ID
         }
+
+        const DAD_CODIGO = await cadastrarDadosEndereco(dadosEndereco, conexaoApi)
+        operacoes.dados_endereco = 'SUCESSO'
+
         const loja: ILojaTrayInicializar = {
             LTR_CONSUMER_KEY: data.LTR_CONSUMER_KEY,
             LTR_CONSUMER_SECRET: data.LTR_CONSUMER_SECRET,

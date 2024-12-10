@@ -24,7 +24,6 @@ export async function getLojaDbConfig(enderecoCodigo: number): Promise<IConnecti
             reject(err);
           } else if (result.length > 0) {
             const config = result[0];
-            const password = 'masterkey'
             resolve({
               host: config.DAD_HOST,
               port: parseInt(config.DAD_PORTA, 10),

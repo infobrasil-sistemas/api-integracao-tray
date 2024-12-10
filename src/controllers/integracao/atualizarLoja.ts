@@ -10,7 +10,7 @@ export const atualizarLojaSchema = z.object({
     LTR_CODE: z.string().optional(),
     LTR_API_HOST: z.string().optional(),
     LTR_STORE_ID: z.number().optional(),
-    LTR_CNPJ: z.string().length(14).optional(),
+    LTR_CNPJ: z.string().length(14),
     LTR_LOJAS_ESTOQUE: z.string().optional(),
     LTR_TIPO_ESTOQUE: z.number().optional(),
     LOJ_CODIGO: z.number().optional(),
@@ -41,7 +41,7 @@ export async function atualizarLoja(req: Request, res: Response) {
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro ao inicializar loja -> ${error}`,
+            message: `Erro ao atualizar loja -> ${error}`,
         });
         return res.status(500).json({ error: `Erro ao atualizar loja. -> ${error}` });
     } finally {
