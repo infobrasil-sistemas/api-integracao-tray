@@ -34,11 +34,21 @@ export async function enviarSecao(loja: ILojaTray, conexao: any, accessToken: st
             });
         });
 
-    } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro ao cadastrar seção ${secao.name} da loja ${loja.LTR_CNPJ} -> ${error}`
-        });
+    } catch (error: any) {
+        if (axios.isAxiosError(error)) {
+            logger.log({
+                level: 'error',
+                message: `Erro ao cadastrar seção ${secao.name} da loja ${loja.LTR_CNPJ} -> 
+                Status: ${error.response?.status || 'Sem status'} 
+                Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
+                Endpoint: ${error.response?.data.url || ''}`
+            });
+        } else {
+            logger.log({
+                level: 'error',
+                message: `Erro inesperado ao cadastrar seção ${secao.name} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+            });
+        }
     }
 
 }

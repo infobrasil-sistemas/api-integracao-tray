@@ -3,26 +3,171 @@ import logger from '../../utils/logger';
 
 export async function cadastrarFormasPagamentoEcommerce(loja: ILojaTray, conexao: any): Promise<void> {
     try {
+        const formasPagamento = [
+            {
+                FPG_CODIGO: 9999,
+                FPG_DESCRICAO: 'CARTAO ECOMMERCE',
+                FPG_GERARRECLIQ: 'N',
+                FPG_CODIGORES: '4',
+                FPG_DESCONTO: 0,
+                FPG_COMISSAO: 0,
+                FPG_DIASVENCIMENTO: 0,
+                FPG_COBRANCA: 'N',
+                FPG_CARNE: 'N',
+                FPG_TAXAADM: 0,
+                FPG_ACRESCFINANCEIRO: 0,
+                FPG_TOTALIZAR_CAIXA: 'N',
+                FPG_TIPO: 'C',
+                FPG_SITUACAO: 'A',
+                FPG_SALDOTESOURARIA: 'N',
+                FPG_BAIXACOMDESCONTO: 'N',
+                FPG_QTDEMAXPARCELA: null,
+                USU_CODIGO: 1,
+                FPG_DATAALTERACAO: '2022-09-12',
+                FPG_HORAALTERACAO: '09:29:18',
+                CRE_CODIGO: null,
+                FPG_DESCRICAO_ECF: 'CARTAO',
+                FPG_TEF: 'S',
+                FPG_BANDEIRA: null,
+                ITG_CODIGO: null,
+                FPG_DESCONTOVENDA: 0,
+                BAC_CODIGO: null,
+                CLI_CODIGO: null,
+                FPG_APROVACAO: 'N',
+                FPG_DESCONTOFINANCEIRO: null,
+                FPG_CARTAOPROPRIO: 'N',
+                EVC_CODIGO: null,
+                PAR_CODIGO: null,
+                FPG_MENSAGEMDEBAIXA: null,
+                BAN_CONTA: null,
+                ADC_CODIGO: null,
+                BCN_CODIGO: null,
+                FPG_QTDEMINPARCELA: null,
+                FPG_CODIGOCONTABIL: null,
+                IPR_CODIGO: null,
+                FPG_MOBILE: 'S',
+                FPG_DESCRICAOFORMAPAGSITE: null,
+                CMP_CODIGO: null,
+                FPG_PIX: 'N',
+                FPG_INTEGRACAOFINANCEIRA: 'S',
+                FPG_TABPRECOVENDA: null
+            },
+            {
+                FPG_CODIGO: 9998,
+                FPG_DESCRICAO: 'PIX ECOMMERCE',
+                FPG_GERARRECLIQ: 'N',
+                FPG_CODIGORES: '0',
+                FPG_DESCONTO: 0,
+                FPG_COMISSAO: 1,
+                FPG_DIASVENCIMENTO: 30,
+                FPG_COBRANCA: 'N',
+                FPG_CARNE: 'N',
+                FPG_TAXAADM: 0,
+                FPG_ACRESCFINANCEIRO: 0,
+                FPG_TOTALIZAR_CAIXA: 'S',
+                FPG_TIPO: 'O',
+                FPG_SITUACAO: 'A',
+                FPG_SALDOTESOURARIA: 'N',
+                FPG_BAIXACOMDESCONTO: 'N',
+                FPG_QTDEMAXPARCELA: null,
+                USU_CODIGO: 1,
+                FPG_DATAALTERACAO: '2024-07-25',
+                FPG_HORAALTERACAO: '11:29:32',
+                CRE_CODIGO: null,
+                FPG_DESCRICAO_ECF: null,
+                FPG_TEF: 'N',
+                FPG_BANDEIRA: null,
+                ITG_CODIGO: null,
+                FPG_DESCONTOVENDA: 0,
+                BAC_CODIGO: null,
+                CLI_CODIGO: null,
+                FPG_APROVACAO: 'N',
+                FPG_DESCONTOFINANCEIRO: 0,
+                FPG_CARTAOPROPRIO: 'N',
+                EVC_CODIGO: null,
+                PAR_CODIGO: null,
+                FPG_MENSAGEMDEBAIXA: '1010',
+                BAN_CONTA: null,
+                ADC_CODIGO: 25,
+                BCN_CODIGO: null,
+                FPG_QTDEMINPARCELA: null,
+                FPG_CODIGOCONTABIL: null,
+                IPR_CODIGO: null,
+                FPG_MOBILE: 'N',
+                FPG_DESCRICAOFORMAPAGSITE: null,
+                CMP_CODIGO: 17,
+                FPG_PIX: 'S',
+                FPG_INTEGRACAOFINANCEIRA: null,
+                FPG_TABPRECOVENDA: null
+            },
+            {
+                FPG_CODIGO: 9997,
+                FPG_DESCRICAO: 'BOLETO ECOMMERCE',
+                FPG_GERARRECLIQ: 'N',
+                FPG_CODIGORES: '6',
+                FPG_DESCONTO: null,
+                FPG_COMISSAO: null,
+                FPG_DIASVENCIMENTO: null,
+                FPG_COBRANCA: null,
+                FPG_CARNE: null,
+                FPG_TAXAADM: null,
+                FPG_ACRESCFINANCEIRO: null,
+                FPG_TOTALIZAR_CAIXA: 'N',
+                FPG_TIPO: 'O',
+                FPG_SITUACAO: null,
+                FPG_SALDOTESOURARIA: 'N',
+                FPG_BAIXACOMDESCONTO: 'N',
+                FPG_QTDEMAXPARCELA: null,
+                USU_CODIGO: 1,
+                FPG_DATAALTERACAO: '2020-09-16',
+                FPG_HORAALTERACAO: '11:49:38',
+                CRE_CODIGO: null,
+                FPG_DESCRICAO_ECF: null,
+                FPG_TEF: 'N',
+                FPG_BANDEIRA: null,
+                ITG_CODIGO: null,
+                FPG_DESCONTOVENDA: null,
+                BAC_CODIGO: null,
+                CLI_CODIGO: null,
+                FPG_APROVACAO: 'N',
+                FPG_DESCONTOFINANCEIRO: null,
+                FPG_CARTAOPROPRIO: 'N',
+                EVC_CODIGO: null,
+                PAR_CODIGO: null,
+                FPG_MENSAGEMDEBAIXA: null,
+                BAN_CONTA: null,
+                ADC_CODIGO: null,
+                BCN_CODIGO: null,
+                FPG_QTDEMINPARCELA: null,
+                FPG_CODIGOCONTABIL: null,
+                IPR_CODIGO: null,
+                FPG_MOBILE: 'S',
+                FPG_DESCRICAOFORMAPAGSITE: null,
+                CMP_CODIGO: null,
+                FPG_PIX: 'N',
+                FPG_INTEGRACAOFINANCEIRA: 'N',
+                FPG_TABPRECOVENDA: null
+            }
+        ];
 
-        const insertQuery = `
+        // Loop para inserir os registros individualmente
+        for (const formaPagamento of formasPagamento) {
+            const insertQuery = `
                 INSERT INTO FORMASPAG 
-                    (FPG_CODIGO, FPG_DESCRICAO, FPG_GERARRECLIQ, FPG_CODIGORES, FPG_DESCONTO, FPG_COMISSAO, FPG_DIASVENCIMENTO, FPG_COBRANCA, FPG_CARNE, FPG_TAXAADM, FPG_ACRESCFINANCEIRO, FPG_TOTALIZAR_CAIXA, FPG_TIPO, FPG_SITUACAO, FPG_SALDOTESOURARIA, FPG_BAIXACOMDESCONTO, FPG_QTDEMAXPARCELA, USU_CODIGO, FPG_DATAALTERACAO, FPG_HORAALTERACAO, CRE_CODIGO, FPG_DESCRICAO_ECF, FPG_TEF, FPG_BANDEIRA, ITG_CODIGO, FPG_DESCONTOVENDA, BAC_CODIGO, CLI_CODIGO, FPG_APROVACAO, FPG_DESCONTOFINANCEIRO, FPG_CARTAOPROPRIO, EVC_CODIGO, PAR_CODIGO, FPG_MENSAGEMDEBAIXA, BAN_CONTA, ADC_CODIGO, BCN_CODIGO, FPG_QTDEMINPARCELA, FPG_CODIGOCONTABIL, IPR_CODIGO, FPG_MOBILE, FPG_DESCRICAOFORMAPAGSITE, CMP_CODIGO, FPG_PIX, FPG_INTEGRACAOFINANCEIRA, FPG_TABPRECOVENDA) 
+                (${Object.keys(formaPagamento).join(', ')})
                 VALUES 
-                    (9999, 'CARTAO ECOMMERCE', 'N', '4', 0, 0, 0, 'N', 'N', 0, 0, 'N', 'C', 'A', 'N', 'N', NULL, 1, '2022-09-12', '09:29:18', NULL, 'CARTAO', 'S', NULL, NULL, 0, NULL, NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'S', NULL, NULL, 'N', 'S', NULL),
-                    (9998, 'PIX ECOMMERCE', 'N', '0', 0, 1, 30, 'N', 'N', 0, 0, 'S', 'O', 'A', 'N', 'N', NULL, 1, '2024-07-25', '11:29:32', 180, NULL, 'N', NULL, NULL, 0, NULL, NULL, 'N', 0, 'N', NULL, NULL, NULL, '1010', 25, NULL, NULL, 17, NULL, 'N', NULL, 17, 'S', NULL, NULL),
-                    (9997, 'BOLETO ECOMMERCE', 'N', '6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'O', NULL, 'N', 'N', NULL, 1, '2020-09-16', '11:49:38', NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'S', NULL, NULL, 'N', NULL, NULL);
-
+                (${Object.keys(formaPagamento).map(() => '?').join(', ')})
             `;
 
-
-        await new Promise((resolve, reject) => {
-            conexao.query(insertQuery, [], (err: any) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(true);
+            await new Promise((resolve, reject) => {
+                conexao.query(insertQuery, Object.values(formaPagamento), (err: any) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(true);
+                });
             });
-        });
+        }
 
         logger.log({
             level: 'info',
@@ -35,5 +180,4 @@ export async function cadastrarFormasPagamentoEcommerce(loja: ILojaTray, conexao
             message: `Erro ao cadastrar formas de pagamento ecommerce na loja ${loja.LTR_CNPJ} -> ${error}`
         });
     }
-
 }

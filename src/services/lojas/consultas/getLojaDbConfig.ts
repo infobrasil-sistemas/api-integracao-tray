@@ -11,7 +11,6 @@ export async function getLojaDbConfig(enderecoCodigo: number): Promise<IConnecti
       SELECT 
         DAD_HOST ,
         DAD_PORTA ,
-        DAD_PASSWORD ,
         DAD_USER , 
         DAD_CAMINHO ,
         DAD_ID ,

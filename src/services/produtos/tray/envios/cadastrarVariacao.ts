@@ -33,18 +33,23 @@ export async function cadastrarVariacao(loja: ILojaTray, conexao: any, accessTok
             });
         });
 
-        logger.log({
-            level: 'info',
-            message: `Variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} cadastrada com sucesso.`
-        });
-
         return response.data.id
 
     } catch (error: any) {
-        logger.log({
-            level: 'error',
-            message: `Erro ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} -> ${error}`
-        });
+        if (axios.isAxiosError(error)) {
+            logger.log({
+                level: 'error',
+                message: `Erro ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} -> 
+                Status: ${error.response?.status || 'Sem status'} 
+                Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
+                Endpoint: ${error.response?.data.url || ''}`
+            });
+        } else {
+            logger.log({
+                level: 'error',
+                message: `Erro inesperado ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+            });
+        }
     }
 
 }

@@ -19,10 +19,20 @@ export async function atualizarVariacao(loja: ILojaTray, accessToken: string, va
 
         await axios.put(`${loja.LTR_API_HOST}/products/variants/${variacao.id}?access_token=${accessToken}`, requestBody);
     } catch (error: any) {
-        logger.log({
-            level: 'error',
-            message: `Erro ao atualizar variação ${variacao.ean} da loja ${loja.LTR_CNPJ} -> ${error}`
-        });
+        if (axios.isAxiosError(error)) {
+            logger.log({
+                level: 'error',
+                message: `Erro ao atualizar variação ${variacao.ean} da loja ${loja.LTR_CNPJ} -> 
+                Status: ${error.response?.status || 'Sem status'} 
+                Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
+                Endpoint: ${error.response?.data.url || ''}`
+            });
+        } else {
+            logger.log({
+                level: 'error',
+                message: `Erro inesperado ao atualizar variação ${variacao.ean} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+            });
+        }
     }
 
 }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ILojaTray } from "../../interfaces/ILojaTray";
 import { atualizarFinanceiroPedido } from "../../services/pedidos/envios/atualizarFinanceiroPedido";
 import { cadastrarPedido } from "../../services/pedidos/envios/cadastrarPedido";
@@ -71,11 +72,21 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                 message: `Pedidos da loja ${loja.LTR_CNPJ} sincronizados com sucesso!`
             });
         }
-    } catch (error) {
-        logger.log({
-            level: 'error',
-            message: `Erro na rotina cadastrar pedidos da loja ${loja.LTR_CNPJ} -> ${error}`
-        });
+    } catch (error: any) {
+        if (axios.isAxiosError(error)) {
+            logger.log({
+                level: 'error',
+                message: `Erro na rotina cadastrar pedidos da loja ${loja.LTR_CNPJ} -> 
+                Status: ${error.response?.status || 'Sem status'} 
+                Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
+                Endpoint: ${error.response?.data.url || ''}`
+            });
+        } else {
+            logger.log({
+                level: 'error',
+                message: `Erro inesperado na rotina cadastrar pedidos da loja ${loja.LTR_CNPJ} -> ${error.message}`
+            });
+        }
     }
 }
 

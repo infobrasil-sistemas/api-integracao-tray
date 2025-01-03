@@ -16,7 +16,6 @@ export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToke
                 end_promotion: endPromotionDate
             }
         };
-
         const response = await axios.post(`${loja.LTR_API_HOST}/products?access_token=${accessToken}`, requestBody);
 
         const updateQuery = `
@@ -40,18 +39,23 @@ export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToke
             });
         });
 
-        logger.log({
-            level: 'info',
-            message: `Produto ${produto.ean} da loja ${loja.LTR_CNPJ} cadastrado com sucesso.`
-        });
-
         return response.data.id
 
     } catch (error: any) {
-        logger.log({
-            level: 'error',
-            message: `Erro ao cadastrar produto ${produto.ean} da loja ${loja.LTR_CNPJ} -> ${error}`
-        });
+        if (axios.isAxiosError(error)) {
+            logger.log({
+                level: 'error',
+                message: `Erro ao cadastrar produto ${produto.ean} da loja ${loja.LTR_CNPJ} -> 
+                Status: ${error.response?.status || 'Sem status'} 
+                Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
+                Endpoint: ${error.response?.data.url || ''}`
+            });
+        } else {
+            logger.log({
+                level: 'error',
+                message: `Erro inesperado ao cadastrar produto ${produto.ean} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+            });
+        }
     }
 
 }

@@ -7,7 +7,7 @@ export async function cadastrarDadosEndereco(dadosEndereco: IDadosEndereco, cone
         const DAD_CODIGO = 'GEN_ID(GEN_CODIGODAD, 1)';
 
         const query = `
-            INSERT INTO LOJAS_TRAY
+            INSERT INTO DADOS_ENDERECO
             (
                 DAD_CODIGO,
                 DAD_HOST,

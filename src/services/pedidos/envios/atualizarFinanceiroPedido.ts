@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { ILojaTray } from '../../../interfaces/ILojaTray';
 import { IOrder } from '../../pedidos/interfaces';
 
@@ -5,6 +6,7 @@ export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: an
     try {
         let FP1_CODIGO;
         let PP1_CODIGO;
+        const data = dayjs(pedido.date).format('YYYY-MM-DD')
 
         if (pedido.payment_method.toLowerCase().includes('boleto')) {
             FP1_CODIGO = 9997;
@@ -28,8 +30,9 @@ export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: an
             VEN_TOTALDESC: pedido.discount || 0.00,
             VEN_TOTALACRESC: pedido.taxes || 0.00,
             VEN_VALORENT: pedido.shipment_value || 0.00,
-            VEN_TAXAPAG: pedido.payment_method_rate || 0.00,
+            // VEN_TAXAPAG: pedido.payment_method_rate || 0.00,
             VEN_TOTALLIQUIDO: (pedido.partial_total + (pedido.taxes || 0) - (pedido.discount || 0)),
+            VEN_DATABASE1: data
         };
 
         const query = `
@@ -43,8 +46,9 @@ export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: an
                 VEN_TOTALDESC = ?,
                 VEN_TOTALACRESC = ?, 
                 VEN_VALORENT = ?,
-                VEN_TAXAPAG = ?,
-                VEN_TOTALLIQUIDO = ?
+                --VEN_TAXAPAG = ?,
+                VEN_TOTALLIQUIDO = ?,
+                VEN_DATABASE1 = ?
             
             WHERE VENDAS.VEN_NUMERO = ?
         `;
@@ -58,8 +62,9 @@ export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: an
             financeiroAtualizar.VEN_TOTALDESC,
             financeiroAtualizar.VEN_TOTALACRESC,
             financeiroAtualizar.VEN_VALORENT,
-            financeiroAtualizar.VEN_TAXAPAG,
+            // financeiroAtualizar.VEN_TAXAPAG,
             financeiroAtualizar.VEN_TOTALLIQUIDO,
+            financeiroAtualizar.VEN_DATABASE1,
             VEN_NUMERO,
         ];
 

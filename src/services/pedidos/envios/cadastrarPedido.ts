@@ -5,6 +5,12 @@ import { IOrder } from '../../pedidos/interfaces';
 export async function cadastrarPedido(loja: ILojaTray, transaction: any, pedido: IOrder, cli_codigo: number): Promise<number> {
     try {
 
+        const data = dayjs(pedido.date).format('YYYY-MM-DD')
+
+        if (!data) {
+            throw new Error('Pedido sem data')
+        }
+
         const pedidoInsert = {
             VEN_ID_ECOMMERCE: pedido.id,
             SIT_CODIGO: 1,
@@ -14,15 +20,7 @@ export async function cadastrarPedido(loja: ILojaTray, transaction: any, pedido:
             CLI_CODIGO: cli_codigo,
             VEN_TIPO: "E",
             VEN_PRECO: loja.LTR_TABELA_PRECO,
-
-            VEN_DATA: pedido.date && dayjs(pedido.date).isValid()
-                ? dayjs(pedido.date).format('YYYY-MM-DD')
-                : null,
-
-            VEN_DATABASE1: pedido.date && dayjs(pedido.date).isValid()
-                ? dayjs(pedido.date).format('YYYY-MM-DD')
-                : null,
-
+            VEN_DATA: data,
             VEN_HORA: pedido.hour,
             VEN_OBS: `Tipo de frete: ${pedido.shipment} | Loja obs: ${pedido.store_note} | Cliente obs: ${pedido.customer_note}`,
         };
@@ -43,11 +41,10 @@ export async function cadastrarPedido(loja: ILojaTray, transaction: any, pedido:
                 VEN_TIPO,
                 VEN_PRECO,
                 VEN_DATA,
-                VEN_DATABASE1,
                 VEN_HORA,
                 VEN_OBS
             )
-            VALUES (${VEN_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (${VEN_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             RETURNING VEN_NUMERO
         `;
 
@@ -61,7 +58,6 @@ export async function cadastrarPedido(loja: ILojaTray, transaction: any, pedido:
             pedidoInsert.VEN_TIPO,
             pedidoInsert.VEN_PRECO,
             pedidoInsert.VEN_DATA,
-            pedidoInsert.VEN_DATABASE1,
             pedidoInsert.VEN_HORA,
             pedidoInsert.VEN_OBS
         ];

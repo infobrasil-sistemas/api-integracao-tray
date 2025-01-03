@@ -7,7 +7,6 @@ export async function getPedidosAEnviar(loja: ILojaTray, accessToken: string): P
             params: {
                 access_token: accessToken,
                 status: loja.LTR_INTERMEDIADOR_PAGAMENTO === "VINDI" ? "A ENVIAR VINDI" : "A ENVIAR",
-                id: 7047
             }
         });
 
@@ -16,6 +15,6 @@ export async function getPedidosAEnviar(loja: ILojaTray, accessToken: string): P
         return idOrders
 
     } catch (error) {
-        throw new Error(`Erro ao buscar pedidos da loja ${loja.LTR_CNPJ}`);
+        throw error
     }
 }

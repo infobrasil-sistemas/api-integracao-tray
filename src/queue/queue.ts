@@ -30,22 +30,18 @@ export const addJob = async (
 
 export const agendadorJobs = async () => {
   try {
-    // Agendador para "estoques" - Rodará no início de cada minuto
     cron.schedule('0 * * * * *', async () => {
       await addJob('estoques', { task: 'Sincronizar estoques' }, 1);
     });
 
-    // Agendador para "pedidos" - Rodará aos 15 segundos de cada minuto
     cron.schedule('0 * * * * *', async () => {
       await addJob('pedidos', { task: 'Sincronizar pedidos' }, 2);
     });
 
-    // Agendador para "produtos" - Rodará aos 30 segundos de cada minuto
     cron.schedule('0 * * * * *', async () => {
       await addJob('produtos', { task: 'Sincronizar produtos' }, 3);
     });
 
-    // Agendador para "categorias" - Rodará aos 45 segundos de cada minuto
     cron.schedule('0 * * * * *', async () => {
       await addJob('categorias', { task: 'Sincronizar categorias' }, 4);
     });
