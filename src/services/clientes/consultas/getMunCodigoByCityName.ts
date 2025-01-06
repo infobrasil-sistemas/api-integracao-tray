@@ -12,7 +12,7 @@ export async function getMunCodigoByCityName(loja: ILojaTray, transaction: any, 
                 if (err) {
                     return reject(err);
                 }
-                resolve(result[0].MUN_CODIGO || null);
+                resolve(result[0]?.MUN_CODIGO || null);
             });
         });
     } catch (error) {
