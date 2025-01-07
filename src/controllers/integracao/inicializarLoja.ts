@@ -118,8 +118,7 @@ export async function inicializarLoja(req: Request, res: Response) {
             data_expiration_refresh_token: tokensResponse.data.date_expiration_refresh_token
         }
 
-        // const statusSincronizadoId = await cadastrarStatusSincronizado(loja, dadosTokens.access_token)
-        const statusSincronizadoId = 357
+        const statusSincronizadoId = await cadastrarStatusSincronizado(loja, dadosTokens.access_token)
         operacoes.status_sincronizado = 'SUCESSO'
 
         const lojaInicializada: ILojaTrayInicializada = {
@@ -155,7 +154,7 @@ export async function inicializarLoja(req: Request, res: Response) {
         await cadastrarFormasPagamentoEcommerce(lojaCadastrada, conexaoLoja)
         operacoes.fpgs_ecommerce = 'SUCESSO'
 
-        
+
 
         await ativarLojaTray(lojaCadastrada, conexaoApi)
         operacoes.ativar_loja = 'SUCESSO'
