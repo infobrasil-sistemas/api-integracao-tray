@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  firebird:
+    image: jacobalberty/firebird:3.0  # Escolha a versão adequada
+    container_name: firebird
+    ports:
+      - "3050:3050"  # Porta padrão do Firebird
+    environment:
+      - ISC_PASSWORD=${ISC_PASSWORD}
+    volumes:
+      - ./database/firebird:/firebird/data  # Monta o diretório local no contêiner
   api:
     build:
       context: .
