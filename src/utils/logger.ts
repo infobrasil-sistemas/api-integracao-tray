@@ -18,7 +18,7 @@ const logger = winston.createLogger({
       filename: 'error-%DATE%.log',           
       datePattern: 'YYYY-MM-DD',              
       level: 'error',                        
-      maxFiles: '7d',                        
+      maxFiles: '30d',                        
       dirname: `${caminhoBase}/errors`,       
       zippedArchive: false,                 
     }),
@@ -26,7 +26,7 @@ const logger = winston.createLogger({
     new winston.transports.DailyRotateFile({
       filename: 'combined-%DATE%.log',       
       datePattern: 'YYYY-MM-DD',
-      maxFiles: '7d',
+      maxFiles: '30d',
       dirname: `${caminhoBase}/combined`,     
       zippedArchive: false,
     }),

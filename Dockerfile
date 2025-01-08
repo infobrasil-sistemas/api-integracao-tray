@@ -1,27 +1,26 @@
-# Estágio base para instalar dependências e fazer o build
-FROM node:18-alpine AS base
+FROM node:18 AS production
+
+# Define o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Copia os arquivos de configuração de dependências
-COPY package*.json ./
-
-# Instala as dependências, incluindo as de desenvolvimento
-RUN npm install
-
-# Copia o restante do código para o contêiner
-COPY . .
-
-# Executa o build do TypeScript
-RUN npm run build
-
-# Estágio final de produção
-FROM node:18-alpine AS production
-WORKDIR /app
-
-# Copia apenas os arquivos necessários para a execução
-COPY --from=base /app/dist ./dist
-COPY --from=base /app/node_modules ./node_modules
-
+# Define a variável de ambiente para produção
 ENV NODE_ENV=production
-EXPOSE 3000
-CMD ["node", "dist/index.js"]
+
+# Instala o pnpm
+RUN npm install -g pnpm
+
+# Copia apenas os arquivos necessários para instalar dependências
+COPY package.json pnpm-lock.yaml ./
+
+# Instala apenas as dependências necessárias para produção
+RUN pnpm install --prod --frozen-lockfile
+
+# Copia o restante dos arquivos do projeto para o contêiner
+COPY build ./build
+COPY src/public /app/public
+
+# Expõe a porta onde o serviço estará disponível
+EXPOSE 3333
+
+# Comando para iniciar o servidor
+CMD ["node", "build/shared/http/server.js"]

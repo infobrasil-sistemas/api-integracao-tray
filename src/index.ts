@@ -7,7 +7,6 @@ import utc from 'dayjs/plugin/utc';
 import { atualizarLoja } from './controllers/integracao/atualizarLoja';
 import { agendadorJobs, limparFila } from './queue/queue';
 import { atualizarDadosEnderecoController } from './controllers/integracao/atualizarDadosEnderecoController';
-import { encrypt } from './utils/crypto';
 
 dotenv.config();
 

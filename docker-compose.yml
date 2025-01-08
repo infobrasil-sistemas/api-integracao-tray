@@ -4,52 +4,38 @@ services:
   api:
     build:
       context: .
+      dockerfile: Dockerfile
     env_file:
       - .env
     ports:
-      - "3000:3000"
-    command: node dist/index.js  
+      - "3333:3333"
     depends_on:
-      - redis_server
+      - redis
     volumes:
-      - logs:/var/log/myapp  # Monta o diretório de logs no host
+      - ./logs/api:/var/log/integracao-tray  # Mapeia os logs da API para o host
 
   worker:
     build:
       context: .
+      dockerfile: Dockerfile
     env_file:
       - .env
-    command: node dist/worker.js 
+    command: node build/shared/http/queue.js
     depends_on:
-      - redis_server
+      - redis
+    restart: always
     volumes:
-      - logs:/var/log/myapp  # Monta o diretório de logs no host
+      - ./logs/worker:/var/log/integracao-tray  # Mapeia os logs do Worker para o host
 
-  scheduler:
-    build:
-      context: .
-    env_file:
-      - .env
-    command: node dist/scheduler.js
-    depends_on:
-      - redis_server
-    volumes:
-      - logs:/var/log/myapp  # Monta o diretório de logs no host
-
-  redis_server:
+  redis:
     image: redis:latest
-    container_name: redis_server
+    container_name: redis
     ports:
-      - '6379:6379'
+      - "6379:6379"
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    restart: always
 
 volumes:
   redis_data:
-  logs:  # Volume para armazenar logs fora dos contêineres
