@@ -9,7 +9,7 @@ services:
     environment:
       - ISC_PASSWORD=${ISC_PASSWORD}
     volumes:
-      - ./database/firebird:/firebird/data  # Monta o diretório local no contêiner
+      - /home/infobrasilroot/api-tray/database/firebird:/firebird/data  # Monta o diretório local no contêiner
   api:
     build:
       context: .
