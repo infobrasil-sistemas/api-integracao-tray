@@ -17,7 +17,6 @@ RUN npm install --only=production
 
 # Copia o restante dos arquivos do projeto para o contêiner
 COPY build ./build
-COPY src/public /app/public
 
 # Expõe a porta onde o serviço estará disponível
 EXPOSE 3333
