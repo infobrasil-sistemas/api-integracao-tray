@@ -6,14 +6,14 @@ WORKDIR /app
 # Define a variável de ambiente para produção
 ENV NODE_ENV=production
 
-# Instala o pnpm
-RUN npm install -g pnpm
+# Atualiza o npm para a versão mais recente
+RUN npm install -g npm
 
 # Copia apenas os arquivos necessários para instalar dependências
-COPY package.json pnpm-lock.yaml ./
+COPY package.json package-lock.json ./ 
 
 # Instala apenas as dependências necessárias para produção
-RUN pnpm install --prod --frozen-lockfile
+RUN npm install --only=production
 
 # Copia o restante dos arquivos do projeto para o contêiner
 COPY build ./build
@@ -23,4 +23,4 @@ COPY src/public /app/public
 EXPOSE 3333
 
 # Comando para iniciar o servidor
-CMD ["node", "build/shared/http/server.js"]
+CMD ["node", "build/index.js"]
