@@ -13,6 +13,7 @@ export async function cadastrarPedido(loja: ILojaTray, transaction: any, pedido:
 
         const pedidoInsert = {
             VEN_ID_ECOMMERCE: pedido.id,
+            VEN_NUM_SITE: pedido.id.toString(),
             SIT_CODIGO: 1,
             LOJ_CODIGO: loja.LOJ_CODIGO,
             USU_CODIGO: 9999,
@@ -33,6 +34,7 @@ export async function cadastrarPedido(loja: ILojaTray, transaction: any, pedido:
             (
                 VEN_NUMERO,
                 VEN_ID_ECOMMERCE,
+                VEN_NUM_SITE,
                 SIT_CODIGO,               
                 LOJ_CODIGO,
                 USU_CODIGO,
@@ -44,12 +46,13 @@ export async function cadastrarPedido(loja: ILojaTray, transaction: any, pedido:
                 VEN_HORA,
                 VEN_OBS
             )
-            VALUES (${VEN_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (${VEN_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             RETURNING VEN_NUMERO
         `;
 
         const values = [
             pedidoInsert.VEN_ID_ECOMMERCE,
+            pedidoInsert.VEN_NUM_SITE,
             pedidoInsert.SIT_CODIGO,
             pedidoInsert.LOJ_CODIGO,
             pedidoInsert.USU_CODIGO,
