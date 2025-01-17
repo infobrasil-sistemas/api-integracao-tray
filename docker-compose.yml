@@ -1,15 +1,5 @@
 
 services:
-  firebird:
-    image: jacobalberty/firebird:3.0
-    container_name: firebird
-    ports:
-      - "3050:3050"
-    environment:
-      - ISC_PASSWORD=${ISC_PASSWORD}
-    volumes:
-      - /home/infobrasilroot/api-tray/database/firebird:/firebird/data
-
   api:
     build:
       context: .
@@ -20,7 +10,6 @@ services:
       - "3333:3333"
     depends_on:
       - redis
-      - firebird
     volumes:
       - /home/infobrasilroot/api-tray/logs/api:/var/log/integracao-tray  # Logs da API vão para /api-tray/logs/api
 
@@ -33,7 +22,6 @@ services:
     command: node build/worker.js
     depends_on:
       - redis
-      - firebird
     restart: always
     volumes:
       - /home/infobrasilroot/api-tray/logs/worker:/var/log/integracao-tray  # Logs do Worker vão para /api-tray/logs/worker
