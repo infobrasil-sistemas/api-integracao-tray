@@ -6,7 +6,7 @@
   "scripts": {
     "dev:server": "tsx watch src/index.ts",
     "dev:worker": "tsx watch src/worker.ts",
-    "build": "tsc",
+    "build": "tsup src --out-dir build",
     "start": "node build/index.js",
     "scheduler": "node build/scheduler.js",
     "worker": "node build/worker.js",
