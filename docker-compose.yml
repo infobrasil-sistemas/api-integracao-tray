@@ -30,7 +30,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-    command: node build/shared/http/queue.js
+    command: node build/worker.js
     depends_on:
       - redis
       - firebird
