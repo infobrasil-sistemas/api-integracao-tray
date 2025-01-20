@@ -8,10 +8,9 @@ services:
       - .env
     ports:
       - "3333:3333"
-    depends_on:
-      - redis
     volumes:
       - /home/infobrasilroot/api-tray/logs/api:/var/log/integracao-tray  # Logs da API vão para /api-tray/logs/api
+      - /home/infobrasilroot/api-tray/database/firebird:/firebird/data
 
   worker:
     build:
