@@ -19,7 +19,7 @@ RUN npm install --only=production
 COPY build ./build
 
 # Expõe a porta onde o serviço estará disponível
-EXPOSE 80
+EXPOSE 3333
 
 # Comando para iniciar o servidor
 CMD ["node", "build/index.js"]
