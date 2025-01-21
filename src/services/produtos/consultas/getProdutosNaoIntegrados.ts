@@ -102,7 +102,7 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): P
         0 AS "stock",
 
         GRU.gru_id_ecommerce AS "category_id",
-        1 AS "available",
+        0 AS "available",
         null AS "availability",
         null AS "availability_days",
         PRO.pro_ref AS "reference",
