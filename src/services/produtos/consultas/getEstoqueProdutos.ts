@@ -7,7 +7,7 @@ export async function getEstoqueProdutos(loja: ILojaTray, conexao: any): Promise
         let estoque;
         if (loja.LTR_TIPO_ESTOQUE === 1)
             estoque = 'EST.EST_ATUAL'
-        else
+        else if(loja.LTR_TIPO_ESTOQUE === 2)
             estoque = 'EST.EST_APOIO'
 
         const lojasEstoque = loja.LTR_LOJAS_ESTOQUE.split(',').map(codigo => parseInt(codigo.trim()));
