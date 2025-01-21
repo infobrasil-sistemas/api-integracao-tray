@@ -22,10 +22,9 @@ app.get(`/`, (req, res) => {
   res.send('API RODANDO.');
 });
 
-app.post(`/${NAME_BASE_URL}/lojas/inicializar`, inicializarLoja);
-app.put(`/${NAME_BASE_URL}/lojas/atualizar`, atualizarLoja);
-app.put(`/${NAME_BASE_URL}/endereco/atualizar`, atualizarDadosEnderecoController);
-
+app.post(`/lojas/inicializar`, inicializarLoja);
+app.put(`/lojas/atualizar`, atualizarLoja);
+app.put(`/endereco/atualizar`, atualizarDadosEnderecoController);
 
 
 app.listen(PORT, async () => {
