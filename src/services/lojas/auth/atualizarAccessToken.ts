@@ -6,8 +6,11 @@ export async function atualizarAccessToken(loja: ILojaTray, conexao: any) {
     try {
         const { LTR_API_HOST, LTR_REFRESH_TOKEN } = loja;
 
-        const response = await axios.get(`${LTR_API_HOST}/auth?refresh_token=${LTR_REFRESH_TOKEN}`);
-
+        const response = await axios.get(`${LTR_API_HOST}/auth`, {
+            params: {
+                refresh_token: LTR_REFRESH_TOKEN,
+            },
+        });
         const updateQuery = `
                 UPDATE LOJAS_TRAY
                 SET 
