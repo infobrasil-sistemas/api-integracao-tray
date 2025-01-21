@@ -11,7 +11,7 @@ import { atualizarDadosEnderecoController } from './controllers/integracao/atual
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3333;
 const NAME_BASE_URL = 'api-infobrasil-tray'
 
 app.use(express.json());
