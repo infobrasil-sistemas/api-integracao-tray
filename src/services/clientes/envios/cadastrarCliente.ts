@@ -4,7 +4,7 @@ import { ICustomerComMunCodigo } from '../../pedidos/interfaces';
 
 export async function cadastrarCliente(loja: ILojaTray, transaction: any, cliente: ICustomerComMunCodigo): Promise<number> {
     try {
-        const clienteInsert = {
+        const clienteInsert: any = {
             loj_codigo: loja.LOJ_CODIGO,
             cli_id_ecommerce: cliente.id,
 
@@ -32,69 +32,45 @@ export async function cadastrarCliente(loja: ILojaTray, transaction: any, client
             cli_fantasia: cliente.nickname ? cliente.nickname.slice(0, 40) : null,
             cli_obs: cliente.observation || null,
             cli_tipo: cliente.type == 0 ? 'F' : 'J',
-            cli_endereco: cliente.address.slice(0, 120) || null,
-            cli_cep: cliente.zip_code.replace(/\D/g, '').slice(0, 9) || null,
-            cli_numero: cliente.number.slice(0, 6) || null,
-            cli_compl_endereco: cliente.complement ? cliente.complement.slice(0, 40) : null,
-            cli_bairro: cliente.neighborhood.slice(0, 40) || null,
-            cli_uf: cliente.state.slice(0, 2) || 'CE',
+
+            // Endereço principal - vindo de cliente.endereco
+            cli_endereco: cliente.endereco?.address?.slice(0, 120) || null,
+            cli_cep: cliente.endereco?.zip_code?.replace(/\D/g, '').slice(0, 9) || null,
+            cli_numero: cliente.endereco?.number?.slice(0, 6) || null,
+            cli_compl_endereco: cliente.endereco?.complement ? cliente.endereco.complement.slice(0, 40) : null,
+            cli_bairro: cliente.endereco?.neighborhood?.slice(0, 40) || null,
+            cli_uf: cliente.endereco?.state?.slice(0, 2) || 'CE',
             mun_codigo: cliente.munCodigo,
+
+            cli_end_mesmo_ent: cliente.enderecoEnt ? 'N' : 'S'
+
         };
+
+        // Se o endereço de entrega existir, adiciona ao objeto
+        if (cliente.enderecoEnt) {
+            clienteInsert.cli_endereco_ent = cliente.enderecoEnt?.address?.slice(0, 120) || null;
+            clienteInsert.cli_cep_ent = cliente.enderecoEnt?.zip_code?.replace(/\D/g, '').slice(0, 9) || null;
+            clienteInsert.cli_numero_ent = cliente.enderecoEnt?.number?.slice(0, 6) || null;
+            clienteInsert.cli_compl_endereco_ent = cliente.enderecoEnt?.complement ? cliente.enderecoEnt.complement.slice(0, 40) : null;
+            clienteInsert.cli_bairro_ent = cliente.enderecoEnt?.neighborhood?.slice(0, 40) || null;
+            clienteInsert.cli_uf_ent = cliente.enderecoEnt?.state?.slice(0, 2) || 'CE';
+            clienteInsert.mun_codigo_ent = cliente.munCodigoEnt;
+        }
 
         const cli_codigo = 'GEN_ID(GEN_CODIGOCLI, 1)';
 
+        // Monta a query dinamicamente
+        const campos = Object.keys(clienteInsert);
+        const placeholders = campos.map(() => '?').join(', ');
 
         const query = `
             INSERT INTO CLIENTES
-            (
-                cli_codigo,
-                loj_codigo,
-                cli_id_ecommerce,
-                cli_cpf_cnpj,
-                cli_identidade,
-                cli_nome,
-                cli_fone,
-                cli_celular,
-                cli_datanasc,
-                cli_sexo,
-                cli_email,
-                cli_fantasia,
-                cli_obs,
-                cli_tipo,
-                cli_endereco,
-                cli_cep,
-                cli_numero,
-                cli_compl_endereco,
-                cli_bairro,
-                cli_uf,
-                mun_codigo
-            )
-            VALUES (${cli_codigo}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (cli_codigo, ${campos.join(', ')})
+            VALUES (${cli_codigo}, ${placeholders})
             RETURNING CLI_CODIGO
         `;
 
-        const values = [
-            clienteInsert.loj_codigo,
-            clienteInsert.cli_id_ecommerce,
-            clienteInsert.cli_cpf_cnpj,
-            clienteInsert.cli_identidade,
-            clienteInsert.cli_nome,
-            clienteInsert.cli_fone,
-            clienteInsert.cli_celular,
-            clienteInsert.cli_datanasc,
-            clienteInsert.cli_sexo,
-            clienteInsert.cli_email,
-            clienteInsert.cli_fantasia,
-            clienteInsert.cli_obs,
-            clienteInsert.cli_tipo,
-            clienteInsert.cli_endereco,
-            clienteInsert.cli_cep,
-            clienteInsert.cli_numero,
-            clienteInsert.cli_compl_endereco,
-            clienteInsert.cli_bairro,
-            clienteInsert.cli_uf,
-            clienteInsert.mun_codigo,
-        ];
+        const values = Object.values(clienteInsert);
 
         return new Promise((resolve, reject) => {
             transaction.query(query, values, (err: any, result: any) => {

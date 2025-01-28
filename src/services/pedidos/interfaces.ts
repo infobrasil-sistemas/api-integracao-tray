@@ -25,8 +25,11 @@ export interface ICustomer {
     country: string; // País
 }
 
-export interface ICustomerComMunCodigo extends ICustomer {
+export interface ICustomerComMunCodigo extends ICustomerWithDeliveryAddress {
     munCodigo: number
+    endereco: ICustomerAddress
+    munCodigoEnt?: number | null
+    enderecoEnt?: ICustomerAddress | null
 }
 
 export interface ICustomerWithDeliveryAddress {
@@ -54,7 +57,7 @@ export interface ICustomerWithDeliveryAddress {
     city: string; // Cidade
     state: string; // Estado
     country: string; // País
-    DeliveryAddress: ICustomerAddress[]; // Lista de endereços do cliente
+    CustomerAddress: ICustomerAddress[]; // Lista de endereços do cliente
 }
 
 export interface ICustomerAddress {
