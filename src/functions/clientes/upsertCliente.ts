@@ -31,6 +31,13 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
             }
         }
 
+        if (munCodigoEnt && !munCodigo) {
+            munCodigo = munCodigoEnt
+            endereco = enderecoEnt
+            munCodigoEnt = null
+            enderecoEnt = null
+        }
+
         if (!munCodigo || !endereco) {
             throw new Error(`Erro ao obter dados de endereço do Cliente ${cliente.id}`);
         }
