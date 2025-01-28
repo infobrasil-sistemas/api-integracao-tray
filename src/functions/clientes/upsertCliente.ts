@@ -15,27 +15,47 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
         let munCodigoEnt: number | null = null
         let enderecoEnt: ICustomerAddress | null = null
 
-        for (const address of cliente.CustomerAddresses) {
-            const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, address.city);
+        if (cliente.CustomerAddresses) {
+            for (const address of cliente.CustomerAddresses) {
+                const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, address.city);
 
-            if (!codigoMunicipio) {
-                throw new Error(`Município não encontrado para a cidade "${address.city}" ao processar o endereço ${address.id} do cliente ${cliente.id}`);
+                if (!codigoMunicipio) {
+                    throw new Error(`Município não encontrado para a cidade "${address.city}" ao processar o endereço ${address.id} do cliente ${cliente.id}`);
+                }
+
+                if (address.type === "0") {
+                    munCodigo = codigoMunicipio;
+                    endereco = address
+                } else if (address.type === "1") {
+                    munCodigoEnt = codigoMunicipio;
+                    enderecoEnt = address
+                }
             }
 
-            if (address.type === "0") {
-                munCodigo = codigoMunicipio;
-                endereco = address
-            } else if (address.type === "1") {
-                munCodigoEnt = codigoMunicipio;
-                enderecoEnt = address
+            if (munCodigoEnt && !munCodigo) {
+                munCodigo = munCodigoEnt
+                endereco = enderecoEnt
+                munCodigoEnt = null
+                enderecoEnt = null
             }
         }
+        else {
+            const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, cliente.city);
 
-        if (munCodigoEnt && !munCodigo) {
-            munCodigo = munCodigoEnt
-            endereco = enderecoEnt
-            munCodigoEnt = null
-            enderecoEnt = null
+            if (!codigoMunicipio) {
+                throw new Error(`Município não encontrado para a cidade "${cliente.city}" ao processar o endereço do cliente ${cliente.id}`);
+            }
+            munCodigo = codigoMunicipio
+            endereco = {
+                address: cliente.address,
+                number: cliente.number,
+                complement: cliente.complement,
+                neighborhood: cliente.neighborhood,
+                city: cliente.city,
+                state: cliente.state,
+                zip_code: cliente.zip_code,
+                country: cliente.country
+            }
         }
 
         if (!munCodigo || !endereco) {

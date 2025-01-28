@@ -34,10 +34,10 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                     });
 
                     try {
-                        logger.log({
-                            level: 'error',
-                            message: JSON.stringify(pedido.Customer)
-                        });
+                        // logger.log({
+                        //     level: 'error',
+                        //     message: JSON.stringify(pedido.Customer)
+                        // });
                         const cli_codigo = await upsertCliente(loja, transaction, pedido.Customer)
                         const ven_numero = await cadastrarPedido(loja, transaction, pedido, cli_codigo)
                         for (const produtoVendido of pedido.ProductsSold) {

@@ -61,8 +61,8 @@ export interface ICustomerWithDeliveryAddress {
 }
 
 export interface ICustomerAddress {
-    id: number; // Código do endereço
-    customer_id: number; // Código do cliente
+    id?: number; // Código do endereço
+    customer_id?: number; // Código do cliente
     address: string; // Logradouro
     number: string; // Número do endereço
     complement?: string; // Complemento
@@ -71,7 +71,7 @@ export interface ICustomerAddress {
     state: string; // Estado
     zip_code: string; // CEP
     country: string; // País
-    type: string
+    type?: string
 }
 
 export interface IProductDadosCusto {
