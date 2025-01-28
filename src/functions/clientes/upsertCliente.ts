@@ -15,7 +15,7 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
         let munCodigoEnt: number | null = null
         let enderecoEnt: ICustomerAddress | null = null
 
-        for (const address of cliente.CustomerAddress) {
+        for (const address of cliente.CustomerAddresses) {
             const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, address.city);
 
             if (!codigoMunicipio) {

@@ -57,7 +57,7 @@ export interface ICustomerWithDeliveryAddress {
     city: string; // Cidade
     state: string; // Estado
     country: string; // País
-    CustomerAddress: ICustomerAddress[]; // Lista de endereços do cliente
+    CustomerAddresses: ICustomerAddress[]; // Lista de endereços do cliente
 }
 
 export interface ICustomerAddress {
