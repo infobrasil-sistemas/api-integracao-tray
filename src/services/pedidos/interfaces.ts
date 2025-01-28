@@ -120,7 +120,7 @@ export interface IOrder {
     estimated_delivery_date?: Date; // Data estimada de entrega
     has_payment: boolean; // Indica se existe pagamento confirmado
     has_invoice: boolean; // Indica se existe nota fiscal
-    Customer: ICustomer; // Dados do cliente
+    Customer: ICustomerWithDeliveryAddress; // Dados do cliente
     // DeliveryAddress: ICustomerAddress
     ProductsSold: IProductSold[]; // Produtos vendidos
     // Payment: IPayment[]; // Informações de pagamento
