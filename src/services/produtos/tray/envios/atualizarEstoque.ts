@@ -8,7 +8,7 @@ export async function atualizarEstoque(loja: ILojaTray, accessToken: string, est
 
         const requestBody = {
             Product: {
-                stock: loja.LTR_ESTOQUE_MINIMO > estoque.stock ? 0 : estoque.stock
+                stock: loja.LTR_ESTOQUE_MINIMO > estoque.stock ? 0 : (estoque.stock - loja.LTR_ESTOQUE_MINIMO)
             }
         };
 
