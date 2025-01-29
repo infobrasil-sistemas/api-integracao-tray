@@ -54,7 +54,7 @@ export async function cadastrarCliente(loja: ILojaTray, transaction: any, client
             clienteInsert.cli_compl_endereco_ent = cliente.enderecoEnt?.complement ? cliente.enderecoEnt.complement.slice(0, 40) : null;
             clienteInsert.cli_bairro_ent = cliente.enderecoEnt?.neighborhood?.slice(0, 40) || null;
             clienteInsert.cli_uf_ent = cliente.enderecoEnt?.state?.slice(0, 2) || 'CE';
-            clienteInsert.mun_codigo_ent = cliente.munCodigoEnt;
+            clienteInsert.mun_codent = cliente.munCodigoEnt;
         }
 
         const cli_codigo = 'GEN_ID(GEN_CODIGOCLI, 1)';

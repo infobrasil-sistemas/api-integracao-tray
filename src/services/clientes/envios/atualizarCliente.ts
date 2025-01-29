@@ -51,7 +51,7 @@ export async function atualizarCliente(loja: ILojaTray, transaction: any, client
             clienteUpdate.cli_compl_endereco_ent = cliente.enderecoEnt?.complement ? cliente.enderecoEnt.complement.slice(0, 40) : null;
             clienteUpdate.cli_bairro_ent = cliente.enderecoEnt?.neighborhood?.slice(0, 40) || null;
             clienteUpdate.cli_uf_ent = cliente.enderecoEnt?.state?.slice(0, 2) || 'CE';
-            clienteUpdate.mun_codigo_ent = cliente.munCodigoEnt;
+            clienteUpdate.mun_codent = cliente.munCodigoEnt;
         }
 
         // Monta a query dinamicamente
