@@ -100,6 +100,7 @@ export async function getPedido(loja: ILojaTray, accessToken: string, id_pedido:
                 city: Customer.city,
                 state: Customer.state,
                 country: Customer.country,
+                CustomerAddresses: Customer.CustomerAddresses
             },
             ProductsSold: ProductsSold.map((product: any) => ({
                 product_id: parseInt(product.ProductsSold.product_id),
