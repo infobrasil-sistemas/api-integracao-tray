@@ -101,17 +101,17 @@ export async function getPedido(loja: ILojaTray, accessToken: string, id_pedido:
                 state: Customer.state,
                 country: Customer.country,
                 CustomerAddresses: Customer.CustomerAddresses.map((address: any) => ({
-                    id: address.id,
-                    customer_id: address.customer_id,
-                    address: address.address,
-                    number: address.number,
-                    complement: address.complement,
-                    neightborhood: address.neightborhood,
-                    city: address.city,
-                    state: address.state,
-                    zip_code: address.zip_code,
-                    country: address.country,
-                    type: address.type
+                    id: address.CustomerAddress.id,
+                    customer_id: address.CustomerAddresscustomer_id,
+                    address: address.CustomerAddress.address,
+                    number: address.CustomerAddress.number,
+                    complement: address.CustomerAddress.complement,
+                    neightborhood: address.CustomerAddress.neightborhood,
+                    city: address.CustomerAddress.city,
+                    state: address.CustomerAddress.state,
+                    zip_code: address.CustomerAddress.zip_code,
+                    country: address.CustomerAddress.country,
+                    type: address.CustomerAddress.type
                 }))
             },
             ProductsSold: ProductsSold.map((product: any) => ({
