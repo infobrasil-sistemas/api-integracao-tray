@@ -106,7 +106,7 @@ export async function getPedido(loja: ILojaTray, accessToken: string, id_pedido:
                     address: address.CustomerAddress.address,
                     number: address.CustomerAddress.number,
                     complement: address.CustomerAddress.complement,
-                    neightborhood: address.CustomerAddress.neightborhood,
+                    neighborhood: address.CustomerAddress.neighborhood,
                     city: address.CustomerAddress.city,
                     state: address.CustomerAddress.state,
                     zip_code: address.CustomerAddress.zip_code,
