@@ -9,6 +9,7 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
             IVD_ID_ECOMMERCE: produtoVendido.id,
             LOJ_CODIGO: loja.LOJ_CODIGO,
             PRO_CODIGO: nossoProduto.PRO_CODIGO,
+            PRK_CODIGO: produtoVendido.variant_id ? nossoProduto.PRO_CODIGO : null,
             PRG_CODIGO: nossoProduto.PRG_CODIGO || null,
             IVD_QTDE: produtoVendido.quantity,
             IVD_PRECO: produtoVendido.price,
@@ -33,6 +34,7 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
                 IVD_ID_ECOMMERCE,
                 LOJ_CODIGO,
                 PRO_CODIGO,
+                PRK_CODIGO,
                 PRG_CODIGO,
                 IVD_QTDE,
                 IVD_PRECO,
@@ -46,7 +48,7 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
                 IVD_ENTREGUE,
                 IVD_PRCAVISTA
             )
-            VALUES (${IVD_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (${IVD_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         const values = [
@@ -54,6 +56,7 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
             produtoVendidoInsert.IVD_ID_ECOMMERCE,
             produtoVendidoInsert.LOJ_CODIGO,
             produtoVendidoInsert.PRO_CODIGO,
+            produtoVendidoInsert.PRK_CODIGO,
             produtoVendidoInsert.PRG_CODIGO,
             produtoVendidoInsert.IVD_QTDE,
             produtoVendidoInsert.IVD_PRECO,
