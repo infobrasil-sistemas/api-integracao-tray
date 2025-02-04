@@ -40,7 +40,9 @@ export async function atualizarCliente(loja: ILojaTray, transaction: any, client
             cli_compl_endereco: cliente.endereco?.complement ? cliente.endereco.complement.slice(0, 40) : null,
             cli_bairro: cliente.endereco?.neighborhood?.slice(0, 40) || null,
             cli_uf: cliente.endereco?.state?.slice(0, 2) || 'CE',
-            mun_codigo: cliente.munCodigo
+            mun_codigo: cliente.munCodigo,
+            cli_end_mesmo_ent: 'S'
+
         };
 
         // Se o endereço de entrega existir, adiciona ao objeto
@@ -52,6 +54,7 @@ export async function atualizarCliente(loja: ILojaTray, transaction: any, client
             clienteUpdate.cli_bairro_ent = cliente.enderecoEnt?.neighborhood?.slice(0, 40) || null;
             clienteUpdate.cli_uf_ent = cliente.enderecoEnt?.state?.slice(0, 2) || 'CE';
             clienteUpdate.mun_codent = cliente.munCodigoEnt;
+            clienteUpdate.cli_end_mesmo_ent = 'N'
         }
 
         // Monta a query dinamicamente

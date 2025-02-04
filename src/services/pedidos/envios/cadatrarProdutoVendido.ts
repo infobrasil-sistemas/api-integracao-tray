@@ -18,7 +18,9 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
             IVD_PRCCOMPRA: nossoProduto.PRO_PRCCOMPRA || null,
             IVD_PRCCUSTO: nossoProduto.PRO_PRCCUSTO || null,
             IVD_PRCFISCAL: nossoProduto.PRO_PRCCOMPRAFISCAL || null,
-            IVD_PRCCUSTOFISCAL: nossoProduto.PRO_CUSTOFISCAL || null
+            IVD_PRCCUSTOFISCAL: nossoProduto.PRO_CUSTOFISCAL || null,
+            IVD_ENTREGUE: 'N',
+            IVD_PRCAVISTA: produtoVendido.price
         };
 
         const IVD_NUMERO = 'GEN_ID(GEN_NUMEROIVD, 1)';
@@ -40,9 +42,11 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
                 IVD_PRCCOMPRA,
                 IVD_PRCCUSTO, 
                 IVD_PRCFISCAL,
-                IVD_PRCCUSTOFISCAL
+                IVD_PRCCUSTOFISCAL,
+                IVD_ENTREGUE,
+                IVD_PRCAVISTA
             )
-            VALUES (${IVD_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (${IVD_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         const values = [
@@ -59,7 +63,9 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
             produtoVendidoInsert.IVD_PRCCOMPRA,
             produtoVendidoInsert.IVD_PRCCUSTO,
             produtoVendidoInsert.IVD_PRCFISCAL,
-            produtoVendidoInsert.IVD_PRCCUSTOFISCAL
+            produtoVendidoInsert.IVD_PRCCUSTOFISCAL,
+            produtoVendidoInsert.IVD_ENTREGUE,
+            produtoVendidoInsert.IVD_PRCAVISTA
         ];
 
         return new Promise((resolve, reject) => {

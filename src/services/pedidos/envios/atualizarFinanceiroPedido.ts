@@ -26,12 +26,12 @@ export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: an
             FP1_CODIGO: FP1_CODIGO,
             VEN_TOTALPP1: pedido.total || 0.00,
             VEN_TOTALPPA1: pedido.total || 0.00,
-            VEN_TOTALBRUTO: pedido.partial_total || 0.00,
+            VEN_TOTALBRUTO: pedido.total || 0.00,
             VEN_TOTALDESC: pedido.discount || 0.00,
             VEN_TOTALACRESC: pedido.taxes || 0.00,
             VEN_VALORENT: pedido.shipment_value || 0.00,
             // VEN_TAXAPAG: pedido.payment_method_rate || 0.00,
-            VEN_TOTALLIQUIDO: (pedido.partial_total + (pedido.taxes || 0) - (pedido.discount || 0)),
+            VEN_TOTALLIQUIDO: (pedido.total + (pedido.taxes || 0) - (pedido.discount || 0)),
             VEN_DATABASE1: data
         };
 
