@@ -11,7 +11,9 @@ export async function getProdutoGradeCodigosByIdTray(loja: ILojaTray, transactio
             PRO.PRO_PRCCUSTO,
             PRO.PRO_PRCCOMPRA,
             PRO.PRO_CUSTOFISCAL,
-            PRO.PRO_PRCCOMPRAFISCAL
+            PRO.PRO_PRCCOMPRAFISCAL,
+            PRG.TAM_CODIGO,
+            PRG.COR_CODIGO
         FROM PROD_GRADES PRG
         JOIN PRODUTOS PRO ON PRG.PRO_CODIGO = PRO.PRO_CODIGO
         WHERE PRG.PRG_ID_ECOMMERCE = ? 

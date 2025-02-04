@@ -80,7 +80,9 @@ export interface IProductDadosCusto {
     PRO_PRCCOMPRA: number,
     PRO_PRCCUSTO: number,
     PRO_PRCCOMPRAFISCAL: number,
-    PRO_CUSTOFISCAL: number
+    PRO_CUSTOFISCAL: number,
+    TAM_CODIGO?: number,
+    COR_CODIGO?: number
 }
 
 export interface IProductSold {
