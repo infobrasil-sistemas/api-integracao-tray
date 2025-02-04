@@ -52,7 +52,7 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
                 IVD_ENTREGUE,
                 IVD_PRCAVISTA
             )
-            VALUES (${IVD_NUMERO}, ?, ?, ? ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (${IVD_NUMERO}, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         const values = [
