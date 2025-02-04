@@ -5,16 +5,19 @@ import { IEstoqueProduto } from '../../interfaces';
 
 export async function atualizarEstoqueVariacao(loja: ILojaTray, accessToken: string, estoque: IEstoqueProduto) {
     try {
-        logger.log({
-            level: 'info',
-            message: `${JSON.stringify(estoque)}`
-        });
         const requestBody = {
             Variant: {
                 stock: loja.LTR_ESTOQUE_MINIMO > estoque.stock ? 0 : (estoque.stock - loja.LTR_ESTOQUE_MINIMO)
             }
         };
-
+        logger.log({
+            level: 'info',
+            message: `${JSON.stringify(requestBody)}`
+        });
+        logger.log({
+            level: 'info',
+            message: `${loja.LTR_API_HOST}/products/variants/${estoque.id}?access_token=${accessToken}`
+        });
         await axios.put(`${loja.LTR_API_HOST}/products/variants/${estoque.id}?access_token=${accessToken}`, requestBody);
 
     } catch (error: any) {
