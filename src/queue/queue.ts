@@ -30,20 +30,20 @@ export const addJob = async (
 
 export const agendadorJobs = async () => {
   try {
-    cron.schedule('0 * * * * *', async () => {
+    cron.schedule('*/30 * * * * *', async () => {
       await addJob('estoques', { task: 'Sincronizar estoques' }, 1);
     });
 
-    cron.schedule('0 * * * * *', async () => {
-      await addJob('pedidos', { task: 'Sincronizar pedidos' }, 2);
+    cron.schedule('0 */5 * * * *', async () => {
+      await addJob('pedidos', { task: 'Sincronizar pedidos' }, 1);
     });
 
-    cron.schedule('0 * * * * *', async () => {
-      await addJob('produtos', { task: 'Sincronizar produtos' }, 3);
+    cron.schedule('0 */2 * * * *', async () => {
+      await addJob('produtos', { task: 'Sincronizar produtos' }, 1);
     });
 
-    cron.schedule('0 * * * * *', async () => {
-      await addJob('categorias', { task: 'Sincronizar categorias' }, 4);
+    cron.schedule('0 */10 * * * *', async () => {
+      await addJob('categorias', { task: 'Sincronizar categorias' }, 1);
     });
 
     logger.log({
