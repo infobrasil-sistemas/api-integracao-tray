@@ -8,9 +8,10 @@ import { tratarTokens } from '../utils/tratarTokens';
 
 
 export async function SincronizarEstoques() {
+  let apiConexao: any;
 
   try {
-    const apiConexao = await getApiDatabaseConnection();
+    let apiConexao = await getApiDatabaseConnection();
     const lojas = await getLojasDadosTray(apiConexao);
 
     for (const loja of lojas) {
@@ -39,5 +40,9 @@ export async function SincronizarEstoques() {
       level: 'error',
       message: `Erro na sincronização de estoques -> ${error}`,
     });
+  } finally {
+    if(apiConexao){
+      apiConexao.detach();
+    }
   }
 }

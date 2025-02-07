@@ -7,9 +7,9 @@ import { getApiDatabaseConnection } from '../config/db/database';
 import { tratarTokens } from '../utils/tratarTokens';
 
 export async function SincronizarPedidos() {
-
+  let apiConexao;
   try {
-    const apiConexao = await getApiDatabaseConnection();
+    apiConexao = await getApiDatabaseConnection();
     const lojas = await getLojasDadosTray(apiConexao);
 
     for (const loja of lojas) {
@@ -38,5 +38,9 @@ export async function SincronizarPedidos() {
       level: 'error',
       message: `Erro na sincronização de pedidos -> ${error}`,
     });
+  } finally {
+    if (apiConexao) {
+      apiConexao.detach();
+    }
   }
 }

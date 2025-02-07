@@ -8,9 +8,9 @@ import logger from '../utils/logger';
 import { tratarTokens } from '../utils/tratarTokens';
 
 export async function SincronizarCategorias() {
-
+    let apiConexao;
     try {
-        const apiConexao = await getApiDatabaseConnection();
+        apiConexao = await getApiDatabaseConnection();
         const lojas = await getLojasDadosTray(apiConexao);
 
         for (const loja of lojas) {
@@ -40,5 +40,10 @@ export async function SincronizarCategorias() {
             level: 'error',
             message: `Erro na sincronização de categorias -> ${error}`,
         });
+    } finally {
+        if (apiConexao) {
+            apiConexao.detach();
+        }
     }
+
 }
