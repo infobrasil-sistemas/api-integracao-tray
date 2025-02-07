@@ -24,7 +24,7 @@ export const addJob = async (
   await jobQueue.add(
     jobType,
     { jobType, payload, priority },
-    { priority }
+    { priority, attempts: 1 }
   );
 };
 

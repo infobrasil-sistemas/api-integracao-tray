@@ -31,7 +31,11 @@ export const jobWorker = new Worker<JobData>(
     },
     {
         connection: redisConfig,
-        concurrency: 1,
+        concurrency: 1, // Apenas um job por vez
+        removeOnComplete: { age: 60, count: 1000 }, // Remove jobs após 60s ou manter no máximo 1000 registros
+        removeOnFail: { age: 60, count: 100 }, // Remove falhas após 60s ou manter no máximo 100 registros
+        lockDuration: 60000, // Evita que jobs longos sejam considerados travados
+        stalledInterval: 0, // Nunca reprocessa jobs travados
     }
 );
 
