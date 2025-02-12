@@ -2,7 +2,7 @@ import { ILojaTray } from './../../../interfaces/ILojaTray';
 import { IEstoqueProduto } from "../interfaces";
 
 
-export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: any, ids: number[]): Promise<IEstoqueProduto[]> {
+export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: any): Promise<IEstoqueProduto[]> {
     try {
         let estoque;
         if (loja.LTR_TIPO_ESTOQUE === 1)
@@ -16,6 +16,7 @@ export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: an
         const query = `
         SELECT
             PRG.prg_id_ecommerce AS "id",
+            PRO.pro_codigo AS "pro_codigo",
             CAST(SUM(${estoque}) AS INTEGER) AS "stock"
         FROM PROD_GRADES PRG
         JOIN estoque_grades ESG ON ESG.prg_codigo = PRG.PRG_CODIGO

@@ -1,19 +1,18 @@
 import { ILojaTray } from "../../interfaces/ILojaTray";
-import { getEstoqueProdutos } from "../../services/produtos/consultas/getEstoqueProdutos";
+import { getEstoqueProdutosSemVariacao } from "../../services/produtos/consultas/getEstoqueProdutosSemVariacao";
 import { getEstoqueProdutosComVariacao } from "../../services/produtos/consultas/getEstoqueProdutosComVariacoes";
 import { getProdutosComVariacoes } from "../../services/produtos/consultas/getProdutosComVariacoes";
 import { atualizarEstoque } from "../../services/produtos/tray/envios/atualizarEstoque";
 import { atualizarEstoqueVariacao } from "../../services/produtos/tray/envios/atualizarEstoqueVariacao";
 import logger from "../../utils/logger";
+import { IEstoqueProduto } from "../../services/produtos/interfaces";
 
 
 export async function atualizarEstoques(loja: ILojaTray, conexao: any, access_token: string) {
     try {
-        const objProdutosComVariacao = await getProdutosComVariacoes(loja, conexao);
-        const idsProdutosComVariacao = new Set(objProdutosComVariacao.map((produto: any) => produto.id));
-        const estoquesProdutos = await getEstoqueProdutos(loja, conexao);
-        const estoqueProdutosSemVariacao = estoquesProdutos.filter(produto => !idsProdutosComVariacao.has(produto.id));
-        const estoqueProdutosComVariacao = await getEstoqueProdutosComVariacao(loja, conexao, Array.from(idsProdutosComVariacao));
+        const estoqueProdutosComVariacao = await getEstoqueProdutosComVariacao(loja, conexao);
+        const idsProdutosComVariacao = new Set(estoqueProdutosComVariacao.map((produto: IEstoqueProduto) => produto.pro_codigo));
+        const estoqueProdutosSemVariacao = await getEstoqueProdutosSemVariacao(loja, conexao, Array.from(idsProdutosComVariacao));
         if (estoqueProdutosSemVariacao.length > 0) {
             for (const estoqueProdutoSemVariacao of estoqueProdutosSemVariacao) {
                 await atualizarEstoque(loja, access_token, estoqueProdutoSemVariacao)

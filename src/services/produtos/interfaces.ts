@@ -57,6 +57,7 @@ export interface IProdutoIntegrado {
 
 export interface IEstoqueProduto {
     id: number;
+    pro_codigo: string
     name: string;
     stock: number;
 }
