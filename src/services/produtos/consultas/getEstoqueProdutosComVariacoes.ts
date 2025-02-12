@@ -26,7 +26,7 @@ export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: an
             and PRG.PRG_ID_ECOMMERCE is not null
             and PRO.PRO_ECOMMERCE = 'S'
             and PRO.PRO_SITUACAO = 'A'
-        GROUP BY PRG.PRG_ID_ECOMMERCE
+        GROUP BY PRG.PRG_ID_ECOMMERCE, PRO.PRO_CODIGO
         `;
 
         const params = [
