@@ -22,7 +22,6 @@ export async function SincronizarEstoques() {
         conexao = await getLojaDatabaseConnection(dadosConexao);
         const accessToken = await tratarTokens(loja, apiConexao);
 
-        await 
         await atualizarEstoques(loja, conexao, accessToken);
       } catch (error) {
         logger.log({
