@@ -22,18 +22,15 @@ export async function SincronizarEstoques() {
         conexao = await getLojaDatabaseConnection(dadosConexao);
         const accessToken = await tratarTokens(loja, apiConexao);
 
+        await 
         await atualizarEstoques(loja, conexao, accessToken);
       } catch (error) {
         logger.log({
           level: 'error',
-          message: `Erro na sincronização de estoques da loja ${loja.LTR_CNPJ} -> ${error}`,
+          message: `Erro na sincronização de estoques e pedidos da loja ${loja.LTR_CNPJ} -> ${error}`,
         });
       } finally {
         if (conexao) {
-          logger.log({
-            level: 'info',
-            message: `DETACH LOJA`
-          });
           conexao.detach();
         }
       }
@@ -46,10 +43,6 @@ export async function SincronizarEstoques() {
     });
   } finally {
     if (apiConexao) {
-      logger.log({
-        level: 'info',
-        message: `DETACH API`
-      })
       apiConexao.detach();
     }
   }

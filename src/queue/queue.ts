@@ -34,11 +34,11 @@ export const agendadorJobs = async () => {
       await addJob('estoques', { task: 'Sincronizar estoques' }, 1);
     });
 
-    cron.schedule('0 */5 * * * *', async () => {
-      await addJob('pedidos', { task: 'Sincronizar pedidos' }, 1);
-    });
+    // cron.schedule('0 */5 * * * *', async () => {
+    //   await addJob('pedidos', { task: 'Sincronizar pedidos' }, 1);
+    // });
 
-    cron.schedule('0 */7 * * * *', async () => {
+    cron.schedule('0 */5 * * * *', async () => {
       await addJob('produtos', { task: 'Sincronizar produtos' }, 1);
     });
 
