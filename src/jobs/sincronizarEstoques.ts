@@ -11,7 +11,7 @@ export async function SincronizarEstoques() {
   let apiConexao: any;
 
   try {
-    let apiConexao = await getApiDatabaseConnection();
+    apiConexao = await getApiDatabaseConnection();
     const lojas = await getLojasDadosTray(apiConexao);
 
     for (const loja of lojas) {
