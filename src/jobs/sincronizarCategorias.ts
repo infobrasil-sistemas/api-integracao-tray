@@ -22,7 +22,7 @@ export async function SincronizarCategorias() {
                 const accessToken = await tratarTokens(loja, apiConexao);
 
                 await atualizarCategorias(loja, conexao, accessToken);
-                await cadastrarCategorias(loja, conexao, accessToken);
+                await cadastrarCategorias(loja, conexao, accessToken); 
             } catch (error) {
                 logger.log({
                     level: 'error',

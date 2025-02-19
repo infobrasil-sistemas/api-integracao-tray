@@ -30,6 +30,10 @@ export async function SincronizarEstoques() {
         });
       } finally {
         if (conexao) {
+          logger.log({
+            level: 'info',
+            message: `DETACH LOJA`
+          });
           conexao.detach();
         }
       }
@@ -41,7 +45,11 @@ export async function SincronizarEstoques() {
       message: `Erro na sincronização de estoques -> ${error}`,
     });
   } finally {
-    if(apiConexao){
+    if (apiConexao) {
+      logger.log({
+        level: 'info',
+        message: `DETACH API`
+      })
       apiConexao.detach();
     }
   }
