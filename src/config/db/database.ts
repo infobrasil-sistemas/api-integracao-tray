@@ -19,6 +19,7 @@ export const getApiDatabaseConnection = (): Promise<firebird.Database> => {
     ...options,
     password: ids(options.id)
   }
+  console.log(optionsFinal)
   return new Promise<firebird.Database>((resolve, reject) => {
     firebird.attach(optionsFinal, (err, db) => {
       if (err) {
