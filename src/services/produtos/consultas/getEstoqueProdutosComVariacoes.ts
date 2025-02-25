@@ -44,6 +44,7 @@ export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: an
         GROUP BY 
             PRG.PRG_ID_ECOMMERCE, 
             PRO.PRO_CODIGO, 
+            ${estoque},
             ${camposPreco.campo_preco}, 
             ${camposPreco.campo_preco_promocional}, 
             est.est_dtinipromocao,

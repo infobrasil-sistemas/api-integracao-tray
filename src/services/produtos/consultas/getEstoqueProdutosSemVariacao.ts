@@ -9,7 +9,7 @@ export async function getEstoqueProdutosSemVariacao(
     ultimaSincronizacao: string
 ): Promise<IEstoqueProduto[]> {
     try {
-        let estoque = loja.LTR_TIPO_ESTOQUE === 1 ? 'ESG.ESG_ATUAL' : 'ESG.ESG_APOIO';
+        let estoque = loja.LTR_TIPO_ESTOQUE === 1 ? 'EST.EST_ATUAL' : 'EST.EST_APOIO';
 
         const camposPreco = getCamposPreco(loja.LTR_TABELA_PRECO);
         const lojasEstoque = loja.LTR_LOJAS_ESTOQUE.split(',')
@@ -50,6 +50,7 @@ export async function getEstoqueProdutosSemVariacao(
         GROUP BY 
             PRO.PRO_ID_ECOMMERCE, 
             PRO.pro_codigo,
+            ${estoque}
             ${camposPreco.campo_preco}, 
             ${camposPreco.campo_preco_promocional},
             est.est_dtinipromocao,
