@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { ILojaTray } from '../../../interfaces/ILojaTray';
 import { getCamposPreco } from '../../../utils/getCamposPreco';
 import { IEstoqueProduto } from "../interfaces";
@@ -26,18 +27,20 @@ export async function getEstoqueProdutosSemVariacao(
             : '';
 
         const query = `
-            SELECT
+                    SELECT
             PRO.pro_id_ecommerce AS "id",
             PRO.pro_codigo AS "pro_codigo",
-            CAST(SUM(${estoque}) AS INTEGER) AS "stock",
-            CAST(${camposPreco.campo_preco} AS NUMERIC(9,2)) AS "price",
-            CASE
-                WHEN EST.pro_precop1 <= 0 THEN NULL
-                ELSE CAST(${camposPreco.campo_preco_promocional} AS NUMERIC(9,2))
-            END AS "promotional_price",
-            est.est_dtinipromocao AS "start_promotion",
-            est.est_dtfinpromocao AS "end_promotion",
-            CAST(est.ipi_cod_sai AS NUMERIC(9,2)) AS "ipi_value"
+            CAST(SUM(${estoque}) AS INTEGER) AS "stock", -- Soma o estoque
+            MAX(CAST(${camposPreco.campo_preco} AS NUMERIC(9,2))) AS "price", -- Mantém um único preço por grupo
+            MAX(
+                CASE
+                    WHEN ${camposPreco.campo_preco_promocional} <= 0 THEN NULL
+                    ELSE CAST(${camposPreco.campo_preco_promocional} AS NUMERIC(9,2))
+                END
+            ) AS "promotional_price", -- Mantém um único preço promocional por grupo
+            MAX(est.est_dtinipromocao) AS "start_promotion", -- Mantém uma única data de promoção por grupo
+            MAX(est.est_dtfinpromocao) AS "end_promotion", -- Mantém uma única data de fim de promoção por grupo
+            MAX(CAST(est.ipi_cod_sai AS NUMERIC(9,2))) AS "ipi_value" -- Mantém um único IPI por grupo
         FROM PRODUTOS PRO
         JOIN estoque EST ON EST.pro_codigo = PRO.pro_codigo
         WHERE 
@@ -49,12 +52,7 @@ export async function getEstoqueProdutosSemVariacao(
             AND (EST.EST_DTALTERACAOQTD >= ? OR EST.EST_DTALTERACAO = CURRENT_DATE)
         GROUP BY 
             PRO.PRO_ID_ECOMMERCE, 
-            PRO.pro_codigo,
-            ${camposPreco.campo_preco}, 
-            ${camposPreco.campo_preco_promocional},
-            est.est_dtinipromocao,
-            est.est_dtfinpromocao,
-            est.ipi_cod_sai
+            PRO.pro_codigo
         `;
 
         // Definir os parâmetros corretamente
@@ -69,7 +67,13 @@ export async function getEstoqueProdutosSemVariacao(
                 if (err) {
                     return reject(err);
                 }
-                resolve(result);
+                const estoqueProdutosFormatado = result.map(estoque => ({
+                    ...estoque,
+                    start_promotion: estoque.start_promotion ? dayjs(estoque.start_promotion).format('YYYY-MM-DD') : null,
+                    end_promotion: estoque.end_promotion ? dayjs(estoque.end_promotion).format('YYYY-MM-DD') : null,
+                }));
+
+                resolve(estoqueProdutosFormatado);
             });
         });
     } catch (error) {
