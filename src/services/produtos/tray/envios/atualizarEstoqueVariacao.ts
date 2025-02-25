@@ -7,6 +7,7 @@ export async function atualizarEstoqueVariacao(loja: ILojaTray, accessToken: str
     try {
         const requestBody = {
             Variant: {
+                ...estoque,
                 stock: loja.LTR_ESTOQUE_MINIMO > estoque.stock ? 0 : (estoque.stock - loja.LTR_ESTOQUE_MINIMO)
             }
         };
