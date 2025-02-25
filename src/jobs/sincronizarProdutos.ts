@@ -13,7 +13,6 @@ export async function SincronizarProdutos() {
     try {
         apiConexao = await getApiDatabaseConnection();
         const lojas = await getLojasDadosTray(apiConexao);
-
         for (const loja of lojas) {
             let conexao: any;
 

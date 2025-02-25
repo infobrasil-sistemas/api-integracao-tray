@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { ILojaTray } from './../../../interfaces/ILojaTray';
-import { getApiDatabaseConnection } from '../../../config/db/database';
 import logger from '../../../utils/logger';
-import dayjs from 'dayjs';
 
 export async function atualizarTokens(loja: ILojaTray, conexao: any) {
     try {

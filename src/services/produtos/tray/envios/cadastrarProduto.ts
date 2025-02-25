@@ -6,14 +6,9 @@ import { IProdutoNaoIntegrado } from '../../interfaces';
 export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToken: string, produto: IProdutoNaoIntegrado): Promise<number | undefined> {
     try {
 
-        const startPromotionDate = produto.start_promotion || null;
-        const endPromotionDate = produto.end_promotion || null;
-
         const requestBody = {
             Product: {
                 ...produto,
-                start_promotion: startPromotionDate,
-                end_promotion: endPromotionDate
             }
         };
         const response = await axios.post(`${loja.LTR_API_HOST}/products?access_token=${accessToken}`, requestBody);
@@ -25,17 +20,31 @@ export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToke
                 WHERE PRO.PRO_CODIGO = ?
             `;
 
+        const updateEstoqueQuery = `
+            UPDATE ESTOQUES EST
+            SET 
+                EST.EST_DTALTERACAOQTD = CURRENT_TIMESTAMP
+            WHERE EST.PRO_CODIGO = ?
+        `;
+
         const params = [
             parseInt(response.data.id),
             produto.ean
         ];
 
+        const paramsUpdateEstoque = [
+            produto.ean
+        ];
+
         await new Promise((resolve, reject) => {
             conexao.query(updateQuery, params, (err: any) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(true);
+                if (err) return reject(err);
+
+                // Após o primeiro update, executa o segundo
+                conexao.query(updateEstoqueQuery, paramsUpdateEstoque, (err: any) => {
+                    if (err) return reject(err);
+                    resolve(true);
+                });
             });
         });
 

@@ -4,12 +4,8 @@ export function transformarEmProdutoVariacaoNaoIntegrado(produtoNaoIntegrado: IP
     return {
         product_id: variacaoProduto.product_id,
         ean: variacaoProduto.ean,
-        price: produtoNaoIntegrado.price,
         cost_price: produtoNaoIntegrado.cost_price,
         stock: 0,
-        promotional_price: produtoNaoIntegrado.promotional_price,
-        start_promotion: produtoNaoIntegrado.start_promotion,
-        end_promotion: produtoNaoIntegrado.end_promotion,
         weight: produtoNaoIntegrado.weight,
         length: produtoNaoIntegrado.length,
         width: produtoNaoIntegrado.width,

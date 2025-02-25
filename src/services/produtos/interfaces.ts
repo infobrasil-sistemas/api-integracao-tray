@@ -4,12 +4,7 @@ export interface IProdutoNaoIntegrado {
     ncm: string;
     description: string;
     description_small: string;
-    price: number;
     cost_price: number;
-    promotional_price: number | null;
-    start_promotion: string | null;
-    end_promotion: string | null;
-    ipi_value: number;
     brand: string;
     model: string | null;
     weight: number;
@@ -60,58 +55,55 @@ export interface IEstoqueProduto {
     pro_codigo: string
     name: string;
     stock: number;
+    price: number
+    promotional_price: number | null
+    start_promotion: string | null;
+    end_promotion: string | null;
+    ipi_value: number;
 }
 
 export interface IVariacaoProdutoNaoIntegrada {
-    product_id: number; 
-    ean: string;       
-    type_1: string;     
-    value_1: string;      
-    type_2: string;     
-    value_2: string; 
+    product_id: number;
+    ean: string;
+    type_1: string;
+    value_1: string;
+    type_2: string;
+    value_2: string;
 }
 
 export interface IVariacaoProdutoIntegrada {
-    id: number;       
-    ean: string;      
-    value_1: string;   
-    value_2: string;    
+    id: number;
+    ean: string;
+    value_1: string;
+    value_2: string;
 }
 
 
 export interface IProdutoVariacaoNaoIntegrado {
-    product_id: number; 
+    product_id: number;
     ean: string;
-    price: number;
     cost_price: number;
-    stock: number;
-    promotional_price: number | null;
-    start_promotion: string | null;
-    end_promotion: string | null;
     weight: number;
     length: number;
     width: number;
     height: number;
-    reference: string; 
-    type_1: string;     
-    value_1: string;      
-    type_2: string;     
-    value_2: string; 
+    stock: number
+    reference: string;
+    type_1: string;
+    value_1: string;
+    type_2: string;
+    value_2: string;
 }
 
 export interface IProdutoVariacaoIntegrado {
     id: number;
     ean: string;
-    price: number;
     cost_price: number;
     reference: string;
     weight: number;
     length: number;
     width: number;
     height: number;
-    start_promotion: string | null;
-    end_promotion: string | null;
-    promotional_price: number | null;
     value_1: string;
     value_2: string;
 }

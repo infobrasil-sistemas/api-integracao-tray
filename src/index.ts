@@ -7,6 +7,7 @@ import utc from 'dayjs/plugin/utc';
 import { atualizarLoja } from './controllers/integracao/atualizarLoja';
 import { agendadorJobs, limparFila } from './queue/queue';
 import { atualizarDadosEnderecoController } from './controllers/integracao/atualizarDadosEnderecoController';
+import { reiniciarUltimasSincronizacoes } from './utils/horariosSincronizacoes';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.listen(PORT, async () => {
     level: 'info',
     message: `API rodando na porta ${PORT}.`
   });
+  reiniciarUltimasSincronizacoes()
   await limparFila()
   await agendadorJobs()
 });

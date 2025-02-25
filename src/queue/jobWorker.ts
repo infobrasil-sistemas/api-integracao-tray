@@ -16,16 +16,11 @@ export const jobWorker = new Worker<JobData>(
                 await SincronizarCategorias()
                 break;
             case 'estoques':
-                await SincronizarPedidos()
                 await SincronizarEstoques()
                 break;
             case 'produtos':
                 await SincronizarProdutos()
                 break;
-            // case 'pedidos':
-            //     await SincronizarPedidos()
-            //     break;
-
             default:
                 throw new Error(`Job não encontrado: ${jobType}`);
         }
