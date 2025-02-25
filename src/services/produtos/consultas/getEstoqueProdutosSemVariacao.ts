@@ -50,7 +50,6 @@ export async function getEstoqueProdutosSemVariacao(
         GROUP BY 
             PRO.PRO_ID_ECOMMERCE, 
             PRO.pro_codigo,
-            ${estoque}
             ${camposPreco.campo_preco}, 
             ${camposPreco.campo_preco_promocional},
             est.est_dtinipromocao,
