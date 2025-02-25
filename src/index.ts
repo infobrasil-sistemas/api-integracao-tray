@@ -33,7 +33,6 @@ app.listen(PORT, async () => {
     level: 'info',
     message: `API rodando na porta ${PORT}.`
   });
-  reiniciarUltimasSincronizacoes()
   await limparFila()
   await agendadorJobs()
 });
