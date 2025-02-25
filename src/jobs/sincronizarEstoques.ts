@@ -16,6 +16,7 @@ export async function SincronizarEstoques() {
     apiConexao = await getApiDatabaseConnection();
     const lojas = await getLojasDadosTray(apiConexao);
     const ultimaSincronizacao = obterUltimaSincronizacaoEstoques()
+    console.log(ultimaSincronizacao)
     atualizarUltimaSincronizacaoEstoques()
     for (const loja of lojas) {
       let conexao: any;

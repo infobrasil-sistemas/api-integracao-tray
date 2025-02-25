@@ -11,6 +11,7 @@ export async function getEstoqueProdutosSemVariacao(
 ): Promise<IEstoqueProduto[]> {
     try {
         let estoque = loja.LTR_TIPO_ESTOQUE === 1 ? 'EST.EST_ATUAL' : 'EST.EST_APOIO';
+        const LOJ_CODIGO = loja.LOJ_CODIGO
 
         const camposPreco = getCamposPreco(loja.LTR_TABELA_PRECO);
         const lojasEstoque = loja.LTR_LOJAS_ESTOQUE.split(',')
@@ -30,32 +31,24 @@ export async function getEstoqueProdutosSemVariacao(
                 SELECT
                     PRO.pro_id_ecommerce AS "id",
                     PRO.pro_codigo AS "pro_codigo",
-                    CAST(SUM(${estoque}) AS INTEGER) AS "stock", -- Soma o estoque
-                    CAST(${camposPreco.campo_preco} AS NUMERIC(9,2)) AS "price", -- Preço direto
-                    CASE
-                        WHEN ${camposPreco.campo_preco_promocional} <= 0 THEN NULL
-                        ELSE CAST(${camposPreco.campo_preco_promocional} AS NUMERIC(9,2))
-                    END AS "promotional_price", -- Preço promocional direto
-                    est.est_dtinipromocao AS "start_promotion", -- Data de início da promoção
-                    est.est_dtfinpromocao AS "end_promotion", -- Data de fim da promoção
-                    CAST(est.ipi_cod_sai AS NUMERIC(9,2)) AS "ipi_value" -- IPI direto
-            FROM PRODUTOS PRO
-            JOIN estoque EST ON EST.pro_codigo = PRO.pro_codigo
-            WHERE 
-                EST.loj_codigo IN (${placeholdersLojas})
-                ${placeholdersProdutos}
-                AND PRO.PRO_ID_ECOMMERCE IS NOT NULL 
-                AND PRO.PRO_ECOMMERCE = 'S'
-                AND PRO.PRO_SITUACAO = 'A'
-                AND (EST.EST_DTALTERACAOQTD >= ? OR EST.EST_DTALTERACAO = CURRENT_DATE)
-            GROUP BY 
-                PRO.PRO_ID_ECOMMERCE, 
-                PRO.pro_codigo, 
-                ${camposPreco.campo_preco}, 
-                ${camposPreco.campo_preco_promocional},
-                est.est_dtinipromocao,
-                est.est_dtfinpromocao,
-                est.ipi_cod_sai
+                    CAST(SUM(${estoque}) AS INTEGER) AS "stock", -- Soma o estoque de todas as lojas
+                    CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco} END) AS NUMERIC(9,2)) AS "price", -- Preço da loja 1
+                    CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco_promocional} END) AS NUMERIC(9,2)) AS "promotional_price", -- Preço promocional da loja 1
+                    MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtinipromocao END) AS "start_promotion",
+                    MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtfinpromocao END) AS "end_promotion",
+                    CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END) AS NUMERIC(9,2)) AS "ipi_value"
+                FROM PRODUTOS PRO
+                JOIN ESTOQUE EST ON EST.pro_codigo = PRO.pro_codigo
+                WHERE 
+                    EST.loj_codigo IN (${placeholdersLojas})
+                    ${placeholdersProdutos}
+                    AND PRO.PRO_ID_ECOMMERCE IS NOT NULL 
+                    AND PRO.PRO_ECOMMERCE = 'S'
+                    AND PRO.PRO_SITUACAO = 'A'
+                    AND (EST.EST_DTALTERACAOQTD >= ? OR EST.EST_DTALTERACAO = CURRENT_DATE)
+                GROUP BY 
+                    PRO.PRO_ID_ECOMMERCE, 
+                    PRO.pro_codigo
 
         `;
 

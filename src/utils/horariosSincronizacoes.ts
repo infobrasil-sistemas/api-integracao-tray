@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import logger from "./logger";
 
 let ultimaSincronizacaoEstoques: string | null = null;
 export function atualizarUltimaSincronizacaoEstoques() {
@@ -19,5 +20,10 @@ export function obterUltimaSincronizacaoEstoques() {
 
 
 export function reiniciarUltimasSincronizacoes() {
-    ultimaSincronizacaoEstoques = dayjs().subtract(7, 'minute').format("YYYY-MM-DD HH:mm:ss");
+    ultimaSincronizacaoEstoques = dayjs().subtract(3, 'minute').format("YYYY-MM-DD HH:mm:ss");
+    logger.log({
+        level: 'info',
+        message: `Ultima sincronização reiniciada: ${ultimaSincronizacaoEstoques}`,
+    });
+
 }
