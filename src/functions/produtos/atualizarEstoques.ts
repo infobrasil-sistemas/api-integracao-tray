@@ -19,7 +19,6 @@ export async function atualizarEstoques(loja: ILojaTray, conexao: any, access_to
         }
         if (estoqueProdutosComVariacao.length > 0) {
             for (const estoqueProdutoComVariacao of estoqueProdutosComVariacao) {
-                console.log(JSON.stringify(estoqueProdutoComVariacao))
                 await atualizarEstoqueVariacao(loja, access_token, estoqueProdutoComVariacao)
             }
         }

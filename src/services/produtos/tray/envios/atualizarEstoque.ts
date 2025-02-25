@@ -12,8 +12,6 @@ export async function atualizarEstoque(loja: ILojaTray, accessToken: string, est
             }
         };
 
-        console.log(JSON.stringify(requestBody))
-
         await axios.put(`${loja.LTR_API_HOST}/products/${estoque.id}?access_token=${accessToken}`, requestBody);
 
     } catch (error: any) {
