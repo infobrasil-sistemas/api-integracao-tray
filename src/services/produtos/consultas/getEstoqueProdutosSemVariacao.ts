@@ -26,10 +26,9 @@ export async function getEstoqueProdutosSemVariacao(
             : '';
 
         const query = `
-        SELECT
+            SELECT
             PRO.pro_id_ecommerce AS "id",
             PRO.pro_codigo AS "pro_codigo",
-            PRO.pro_descfiscal AS "name",
             CAST(SUM(${estoque}) AS INTEGER) AS "stock",
             CAST(${camposPreco.campo_preco} AS NUMERIC(9,2)) AS "price",
             CASE
@@ -48,7 +47,14 @@ export async function getEstoqueProdutosSemVariacao(
             AND PRO.PRO_ECOMMERCE = 'S'
             AND PRO.PRO_SITUACAO = 'A'
             AND (EST.EST_DTALTERACAOQTD >= ? OR EST.EST_DTALTERACAO = CURRENT_DATE)
-        GROUP BY PRO.PRO_ID_ECOMMERCE, PRO.pro_descfiscal, PRO.pro_codigo
+        GROUP BY 
+            PRO.PRO_ID_ECOMMERCE, 
+            PRO.pro_codigo,
+            ${camposPreco.campo_preco}, 
+            ${camposPreco.campo_preco_promocional},
+            est.est_dtinipromocao,
+            est.est_dtfinpromocao,
+            est.ipi_cod_sai
         `;
 
         // Definir os parâmetros corretamente

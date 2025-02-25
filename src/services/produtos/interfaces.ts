@@ -53,7 +53,7 @@ export interface IProdutoIntegrado {
 export interface IEstoqueProduto {
     id: number;
     pro_codigo: string
-    name: string;
+    name: string | null;
     stock: number;
     price: number
     promotional_price: number | null

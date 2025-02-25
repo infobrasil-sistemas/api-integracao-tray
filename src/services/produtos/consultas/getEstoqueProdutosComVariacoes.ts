@@ -19,7 +19,7 @@ export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: an
         const placeholders = lojasEstoque.map(() => '?').join(', ');
 
         const query = `
-        SELECT
+                SELECT
             PRG.prg_id_ecommerce AS "id",
             PRO.pro_codigo AS "pro_codigo",
             CAST(SUM(${estoque}) AS INTEGER) AS "stock",
@@ -41,7 +41,15 @@ export async function getEstoqueProdutosComVariacao(loja: ILojaTray, conexao: an
             AND PRO.PRO_ECOMMERCE = 'S'
             AND PRO.PRO_SITUACAO = 'A'
             AND (EST.EST_DTALTERACAOQTD >= ? OR EST.EST_DTALTERACAO = CURRENT_DATE)
-        GROUP BY PRG.PRG_ID_ECOMMERCE, PRO.PRO_CODIGO, ${camposPreco.campo_preco}, ${camposPreco.campo_preco_promocional}
+        GROUP BY 
+            PRG.PRG_ID_ECOMMERCE, 
+            PRO.PRO_CODIGO, 
+            ${camposPreco.campo_preco}, 
+            ${camposPreco.campo_preco_promocional}, 
+            est.est_dtinipromocao,
+            est.est_dtfinpromocao,
+            est.ipi_cod_sai
+
         `;
 
         const params = [
