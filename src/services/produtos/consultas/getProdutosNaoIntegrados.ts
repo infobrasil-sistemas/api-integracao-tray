@@ -8,7 +8,7 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): P
         const query = `
        SELECT
         pro.pro_codigo AS "ean",
-        PRO.pro_descfiscal AS "name",
+        PRO.pro_descricao AS "name",
         SUBSTRING(PRO.pro_ncm FROM 1 FOR 8) AS "ncm",
         PRO.pro_especificacao AS "description",
         SUBSTRING(PRO.pro_descricao FROM 1 FOR 200) AS "description_small",

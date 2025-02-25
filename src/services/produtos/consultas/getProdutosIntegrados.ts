@@ -9,7 +9,7 @@ export async function getProdutosIntegrados(loja: ILojaTray, conexao: any): Prom
        SELECT
         pro.pro_id_ecommerce as "id",
         pro.pro_codigo AS "ean",
-        PRO.pro_descfiscal AS "name",
+        PRO.pro_descricao AS "name",
         SUBSTRING(PRO.pro_ncm FROM 1 FOR 8) AS "ncm",
         PRO.pro_especificacao AS "description",
         SUBSTRING(PRO.pro_descricao FROM 1 FOR 200) AS "description_small",
