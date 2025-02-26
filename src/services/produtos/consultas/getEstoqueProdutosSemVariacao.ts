@@ -16,15 +16,12 @@ export async function getEstoqueProdutosSemVariacao(
         const camposPreco = getCamposPreco(loja.LTR_TABELA_PRECO);
         const lojasEstoque = loja.LTR_LOJAS_ESTOQUE.split(',')
             .map(codigo => parseInt(codigo.trim()))
-            .filter(codigo => !isNaN(codigo)); // Garante que apenas números válidos sejam usados
 
-        if (lojasEstoque.length === 0) {
-            throw new Error("Nenhuma loja de estoque válida encontrada.");
-        }
+        console.log(lojasEstoque)
 
-        const placeholdersLojas = lojasEstoque.map(() => '?').join(', ');
+        const placeholdersLojas = lojasEstoque.map(() => '?').join(',');
         const placeholdersProdutos = idsProdutosComVariacao.length > 0
-            ? `AND PRO.PRO_CODIGO NOT IN (${idsProdutosComVariacao.map(() => '?').join(', ')})`
+            ? `AND PRO.PRO_CODIGO NOT IN (${idsProdutosComVariacao.map(() => '?').join(',')})`
             : '';
 
         const query = `
@@ -58,6 +55,7 @@ export async function getEstoqueProdutosSemVariacao(
             ...(idsProdutosComVariacao.length > 0 ? idsProdutosComVariacao : []),
             ultimaSincronizacao
         ];
+        console.log(params)
 
         return new Promise((resolve, reject) => {
             conexao.query(query, params, (err: any, result: IEstoqueProduto[]) => {
