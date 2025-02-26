@@ -83,6 +83,7 @@ export async function getEstoqueProdutosSemVariacao(
         const params = [
             ...lojasEstoque,
             ...(idsProdutosComVariacao.length > 0 ? idsProdutosComVariacao : []),
+            ...lojasEstoque,
             ultimaSincronizacao
         ];
 

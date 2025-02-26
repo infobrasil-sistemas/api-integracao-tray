@@ -82,7 +82,7 @@ export async function getEstoqueProdutosComVariacao(
             PRO.PRO_CODIGO
         `;
 
-        const params = [...lojasEstoque, ultimaSincronizacao];
+        const params = [...lojasEstoque, ...lojasEstoque, ultimaSincronizacao];
 
         return new Promise((resolve, reject) => {
             conexao.query(query, params, (err: any, result: IEstoqueProduto[]) => {
