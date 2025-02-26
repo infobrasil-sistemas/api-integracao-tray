@@ -17,35 +17,65 @@ export async function getEstoqueProdutosSemVariacao(
         const lojasEstoque = loja.LTR_LOJAS_ESTOQUE.split(',')
             .map(codigo => parseInt(codigo.trim()))
 
-        console.log(lojasEstoque)
-
         const placeholdersLojas = lojasEstoque.map(() => '?').join(',');
         const placeholdersProdutos = idsProdutosComVariacao.length > 0
             ? `AND PRO.PRO_CODIGO NOT IN (${idsProdutosComVariacao.map(() => '?').join(',')})`
             : '';
 
         const query = `
-                SELECT
-                    PRO.pro_id_ecommerce AS "id",
-                    PRO.pro_codigo AS "pro_codigo",
-                    CAST(SUM(${estoque}) AS INTEGER) AS "stock", -- Soma o estoque de todas as lojas
-                    CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco} END) AS NUMERIC(9,2)) AS "price", -- Preço da loja 1
-                    CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco_promocional} END) AS NUMERIC(9,2)) AS "promotional_price", -- Preço promocional da loja 1
-                    MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtinipromocao END) AS "start_promotion",
-                    MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtfinpromocao END) AS "end_promotion",
-                    CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END) AS NUMERIC(9,2)) AS "ipi_value"
-                FROM PRODUTOS PRO
-                JOIN ESTOQUE EST ON EST.pro_codigo = PRO.pro_codigo
-                WHERE 
-                    EST.loj_codigo IN (${placeholdersLojas})
-                    ${placeholdersProdutos}
-                    AND PRO.PRO_ID_ECOMMERCE IS NOT NULL 
-                    AND PRO.PRO_ECOMMERCE = 'S'
-                    AND PRO.PRO_SITUACAO = 'A'
-                    AND (EST.EST_DTALTERACAOQTD >= ? OR EST.EST_DTALTERACAO = CURRENT_DATE)
-                GROUP BY 
-                    PRO.PRO_ID_ECOMMERCE, 
-                    PRO.pro_codigo
+                        SELECT
+                PRO.pro_id_ecommerce AS "id",
+                PRO.pro_codigo       AS "pro_codigo",
+                
+                -- Soma estoque de TODAS as lojas do IN
+                CAST(SUM(${estoque}) AS INTEGER) AS "stock",
+                
+                -- Demais campos “pivotados” para a loja principal (LOJ_CODIGO)
+                CAST(
+                MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco} END)
+                AS NUMERIC(9,2)
+                ) AS "price",
+                CAST(
+                MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco_promocional} END)
+                AS NUMERIC(9,2)
+                ) AS "promotional_price",
+                MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtinipromocao END) AS "start_promotion",
+                MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtfinpromocao END) AS "end_promotion",
+                CAST(
+                MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END)
+                AS NUMERIC(9,2)
+                ) AS "ipi_value"
+
+            FROM PRODUTOS PRO
+            JOIN ESTOQUE EST
+            ON EST.pro_codigo = PRO.pro_codigo
+
+            WHERE
+            -- Somente linhas das lojas desejadas
+            EST.loj_codigo IN (${placeholdersLojas})
+            
+            ${placeholdersProdutos}  -- (se houver filtro para excluir certos produtos)
+            
+            -- Produto ativo no e-commerce
+            AND PRO.PRO_ID_ECOMMERCE IS NOT NULL
+            AND PRO.PRO_ECOMMERCE = 'S'
+            AND PRO.PRO_SITUACAO = 'A'
+
+            -- Verifica se pelo menos uma das lojas do produto foi alterada
+            AND EXISTS (
+                SELECT 1
+                FROM ESTOQUE E2
+                WHERE E2.pro_codigo = PRO.pro_codigo
+                AND E2.loj_codigo IN (${placeholdersLojas})
+                AND (
+                    E2.EST_DTALTERACAOQTD >= ?
+                    OR E2.EST_DTALTERACAO = CURRENT_DATE
+                )
+            )
+
+            GROUP BY 
+            PRO.pro_id_ecommerce,
+            PRO.pro_codigo
 
         `;
 
@@ -55,7 +85,6 @@ export async function getEstoqueProdutosSemVariacao(
             ...(idsProdutosComVariacao.length > 0 ? idsProdutosComVariacao : []),
             ultimaSincronizacao
         ];
-        console.log(params)
 
         return new Promise((resolve, reject) => {
             conexao.query(query, params, (err: any, result: IEstoqueProduto[]) => {

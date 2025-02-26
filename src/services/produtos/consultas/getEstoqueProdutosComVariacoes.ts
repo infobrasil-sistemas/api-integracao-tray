@@ -24,27 +24,61 @@ export async function getEstoqueProdutosComVariacao(
         const placeholders = lojasEstoque.map(() => "?").join(", ");
 
         const query = `
-        SELECT
+                SELECT
             PRG.prg_id_ecommerce AS "id",
-            PRO.pro_codigo AS "pro_codigo",
-            CAST(SUM(${estoque}) AS INTEGER) AS "stock", -- Soma o estoque de todas as lojas
-            CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco} END) AS NUMERIC(9,2)) AS "price", -- Preço apenas da loja 1
-            CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco_promocional} END) AS NUMERIC(9,2)) AS "promotional_price", -- Preço promocional da loja 1
-            MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtinipromocao END) AS "start_promotion",
-            MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtfinpromocao END) AS "end_promotion",
-            CAST(MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END) AS NUMERIC(9,2)) AS "ipi_value"
+            PRO.pro_codigo       AS "pro_codigo",
+            
+            -- Soma dos estoques de todas as lojas do IN (estoque_grades)
+            CAST(SUM(${estoque}) AS INTEGER) AS "stock",
+
+            -- "Pivot" dos preços/promo/datas/ipi apenas da loja principal (LOJ_CODIGO)
+            CAST(
+                MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco} END)
+                AS NUMERIC(9,2)
+            ) AS "price",
+            CAST(
+                MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco_promocional} END)
+                AS NUMERIC(9,2)
+            ) AS "promotional_price",
+            MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtinipromocao END) AS "start_promotion",
+            MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtfinpromocao END) AS "end_promotion",
+            CAST(
+                MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END)
+                AS NUMERIC(9,2)
+            ) AS "ipi_value"
+
         FROM PROD_GRADES PRG
-        JOIN estoque_grades ESG ON ESG.prg_codigo = PRG.PRG_CODIGO
-        JOIN PRODUTOS PRO ON PRG.PRO_CODIGO = PRO.PRO_CODIGO
-        JOIN ESTOQUE EST ON EST.pro_codigo = PRO.PRO_CODIGO AND EST.loj_codigo = ESG.loj_codigo
+        JOIN estoque_grades ESG 
+            ON ESG.prg_codigo = PRG.PRG_CODIGO
+        JOIN PRODUTOS PRO 
+            ON PRG.PRO_CODIGO = PRO.PRO_CODIGO
+        JOIN ESTOQUE EST 
+            ON EST.pro_codigo = PRO.pro_codigo
+            AND EST.loj_codigo = ESG.loj_codigo
+
         WHERE 
             ESG.loj_codigo IN (${placeholders})
             AND PRG.PRG_ID_ECOMMERCE IS NOT NULL
             AND PRO.PRO_ECOMMERCE = 'S'
             AND PRO.PRO_SITUACAO = 'A'
-            AND (EST.EST_DTALTERACAOQTD >= ? OR EST.EST_DTALTERACAO = CURRENT_DATE)
+
+            -- Se ao menos uma loja foi alterada (subselect):
+            AND EXISTS (
+            SELECT 1
+                FROM ESTOQUE E2
+                    JOIN estoque_grades ESG2 
+                        ON ESG2.prg_codigo = PRG.prg_codigo
+                        AND ESG2.loj_codigo = E2.loj_codigo
+            WHERE E2.pro_codigo = PRO.pro_codigo
+                AND ESG2.loj_codigo IN (${placeholders})
+                AND (
+                E2.EST_DTALTERACAOQTD >= ?
+                OR E2.EST_DTALTERACAO = CURRENT_DATE
+                )
+            )
+
         GROUP BY 
-            PRG.PRG_ID_ECOMMERCE, 
+            PRG.PRG_ID_ECOMMERCE,
             PRO.PRO_CODIGO
         `;
 
