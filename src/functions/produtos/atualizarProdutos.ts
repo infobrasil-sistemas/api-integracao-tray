@@ -30,12 +30,6 @@ export async function atualizarProdutos(loja: ILojaTray, conexao: any, access_to
                 }
             }
         }
-        else {
-            logger.log({
-                level: 'info',
-                message: `Nenhum produto integrado na loja ${loja.LTR_CNPJ}`
-            });
-        }
     } catch (error: any) {
         logger.log({
             level: 'error',

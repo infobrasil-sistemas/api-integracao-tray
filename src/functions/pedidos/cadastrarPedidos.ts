@@ -67,10 +67,6 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                     }
                 }
             }
-            logger.log({
-                level: 'info',
-                message: `Pedidos da loja ${loja.LTR_CNPJ} sincronizados com sucesso!`
-            });
         }
     } catch (error: any) {
         if (axios.isAxiosError(error)) {
