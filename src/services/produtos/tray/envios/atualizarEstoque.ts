@@ -5,6 +5,10 @@ import { IEstoqueProduto } from '../../interfaces';
 
 export async function atualizarEstoque(loja: ILojaTray, accessToken: string, estoque: IEstoqueProduto) {
     try {
+        logger.log({
+            level: 'info',
+            message: `${estoque.stock} - ${loja.LTR_ESTOQUE_MINIMO}`
+        });
         const requestBody = {
             Product: {
                 ...estoque,
