@@ -24,9 +24,9 @@ export async function getVariacao(loja: ILojaTray, accessToken: string, id: numb
                 length,
                 width,
                 height,
-                start_promotion,
-                end_promotion,
-                promotional_price,
+                //start_promotion,
+                //end_promotion,
+                //promotional_price,
                 Sku
             } = variacao;
 
@@ -34,16 +34,16 @@ export async function getVariacao(loja: ILojaTray, accessToken: string, id: numb
             return {
                 id: parseInt(id),
                 ean,
-                price: parseFloat(price),
+                //price: parseFloat(price),
                 cost_price: parseFloat(cost_price),
                 reference,
                 weight: parseFloat(weight),
                 length: parseFloat(length),
                 width: parseFloat(width),
                 height: parseFloat(height),
-                start_promotion,
-                end_promotion,
-                promotional_price: promotional_price ? parseFloat(promotional_price) : null,
+                //start_promotion,
+                //end_promotion,
+                //promotional_price: promotional_price ? parseFloat(promotional_price) : null,
                 value_1: Sku[0].value,
                 value_2: Sku[1].value
             };

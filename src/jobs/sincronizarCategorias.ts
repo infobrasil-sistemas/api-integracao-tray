@@ -21,8 +21,10 @@ export async function SincronizarCategorias() {
                 conexao = await getLojaDatabaseConnection(dadosConexao);
                 const accessToken = await tratarTokens(loja, apiConexao);
 
-                await atualizarCategorias(loja, conexao, accessToken);
-                await cadastrarCategorias(loja, conexao, accessToken); 
+                if (loja.LTR_SINCRONIZA_ALTERACOES === 'S') {
+                    await atualizarCategorias(loja, conexao, accessToken);
+                }
+                await cadastrarCategorias(loja, conexao, accessToken);
             } catch (error) {
                 logger.log({
                     level: 'error',

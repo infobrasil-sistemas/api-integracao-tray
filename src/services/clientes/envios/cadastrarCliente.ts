@@ -42,7 +42,8 @@ export async function cadastrarCliente(loja: ILojaTray, transaction: any, client
             cli_uf: cliente.endereco?.state?.slice(0, 2) || 'CE',
             mun_codigo: cliente.munCodigo,
 
-            cli_end_mesmo_ent: 'S'
+            cli_end_mesmo_ent: 'S',
+            cli_veioloja: 'I' // SITE LOJA
 
         };
 

@@ -37,12 +37,6 @@ export async function getEstoqueProdutosComVariacao(
                 AS NUMERIC(9,2)
             ) AS "price",
             CAST(
-                MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco_promocional} END)
-                AS NUMERIC(9,2)
-            ) AS "promotional_price",
-            MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtinipromocao END) AS "start_promotion",
-            MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.est_dtfinpromocao END) AS "end_promotion",
-            CAST(
                 MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END)
                 AS NUMERIC(9,2)
             ) AS "ipi_value"
@@ -89,18 +83,8 @@ export async function getEstoqueProdutosComVariacao(
                 if (err) {
                     return reject(err);
                 }
-
-                const estoqueProdutosFormatado = result.map((estoque) => ({
-                    ...estoque,
-                    start_promotion: estoque.start_promotion
-                        ? dayjs(estoque.start_promotion).format("YYYY-MM-DD")
-                        : null,
-                    end_promotion: estoque.end_promotion
-                        ? dayjs(estoque.end_promotion).format("YYYY-MM-DD")
-                        : null,
-                }));
-
-                resolve(estoqueProdutosFormatado);
+                
+                resolve(result);
             });
         });
     } catch (error) {

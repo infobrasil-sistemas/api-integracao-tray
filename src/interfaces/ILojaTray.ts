@@ -21,6 +21,7 @@ export interface ILojaTrayInicializada {
   LTR_INTERMEDIADOR_PAGAMENTO?: string | null,
   LTR_ID_STATUS_SINCRONIZADO: number,
   DAD_CODIGO: number;
+  LTR_SINCRONIZA_ALTERACOES: string
 }
 
 export interface ILojaTrayInicializar {

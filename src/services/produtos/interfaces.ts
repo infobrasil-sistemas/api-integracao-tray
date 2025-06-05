@@ -37,9 +37,9 @@ export interface IProdutoIntegrado {
     description_small: string;
     price: number;
     cost_price: number;
-    promotional_price: number | null;
-    start_promotion: string | null;
-    end_promotion: string | null;
+    //promotional_price: number | null;
+    //start_promotion: string | null;
+    //end_promotion: string | null;
     brand: string;
     weight: number;
     length: number;
@@ -56,9 +56,9 @@ export interface IEstoqueProduto {
     name: string | null;
     stock: number;
     price: number
-    promotional_price: number | null
-    start_promotion: string | null;
-    end_promotion: string | null;
+    //promotional_price: number | null
+    //start_promotion: string | null;
+    //end_promotion: string | null;
     ipi_value: number;
 }
 

@@ -16,7 +16,6 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): P
         0 AS "price",
 
         CAST(PRO.pro_prccusto AS NUMERIC(9,2)) AS "cost_price",
-        0 AS "promotional_price",
 
         0 AS "ipi_value",
         MAR.mar_descricao AS "brand",
