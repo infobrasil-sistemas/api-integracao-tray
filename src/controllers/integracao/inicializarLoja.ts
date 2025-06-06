@@ -10,7 +10,6 @@ import { cadastrarCategorias } from '../../functions/categorias/cadastrarCategor
 import { getLojaDatabaseConnection } from '../../config/db/lojaDatabase';
 import { getLojaDbConfig } from '../../services/lojas/consultas/getLojaDbConfig';
 import { cadastrarProdutos } from '../../functions/produtos/cadastrarProdutos';
-import { atualizarEstoques } from '../../functions/produtos/atualizarEstoques';
 import { cadastrarFormasPagamentoEcommerce } from '../../functions/integracao/cadastrarFormasPagamentoEcommerce';
 import { ativarLojaTray } from '../../services/lojas/envios/ativarLojaTray';
 import { cadastrarDadosEndereco } from '../../services/lojas/envios/cadastrarDadosEndereco';
@@ -22,7 +21,6 @@ interface IOperacoes {
     loja: null | 'SUCESSO',
     categorias: null | 'SUCESSO',
     produtos: null | 'SUCESSO',
-    estoque: null | 'SUCESSO',
     fpgs_ecommerce: null | 'SUCESSO',
     ativar_loja: null | 'SUCESSO'
 }
@@ -63,7 +61,6 @@ export async function inicializarLoja(req: Request, res: Response) {
         loja: null,
         categorias: null,
         produtos: null,
-        estoque: null,
         fpgs_ecommerce: null,
         ativar_loja: null
     };
@@ -104,7 +101,8 @@ export async function inicializarLoja(req: Request, res: Response) {
             LOJ_CODIGO: data.LOJ_CODIGO,
             LTR_TABELA_PRECO: data.LTR_TABELA_PRECO,
             LTR_INTERMEDIADOR_PAGAMENTO: data.LTR_INTERMEDIADOR_PAGAMENTO || undefined,
-            DAD_CODIGO: DAD_CODIGO
+            DAD_CODIGO: DAD_CODIGO,
+            LTR_SINCRONIZA_ALTERACOES: 'N'
         }
 
         const requestBody = {
@@ -152,9 +150,6 @@ export async function inicializarLoja(req: Request, res: Response) {
 
         await cadastrarProdutos(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
         operacoes.produtos = 'SUCESSO'
-
-        await atualizarEstoques(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
-        operacoes.estoque = 'SUCESSO'
 
         await cadastrarFormasPagamentoEcommerce(lojaCadastrada, conexaoLoja)
         operacoes.fpgs_ecommerce = 'SUCESSO'

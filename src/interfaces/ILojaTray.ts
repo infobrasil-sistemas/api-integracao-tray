@@ -38,6 +38,7 @@ export interface ILojaTrayInicializar {
   LTR_TABELA_PRECO: number,
   LTR_INTERMEDIADOR_PAGAMENTO?: string
   DAD_CODIGO: number
+  LTR_SINCRONIZA_ALTERACOES: string
 }
 
 export interface ILojaTrayAtualizar {
