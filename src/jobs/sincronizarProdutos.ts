@@ -20,7 +20,10 @@ export async function SincronizarProdutos() {
                 const dadosConexao = await getLojaDbConfig(loja.DAD_CODIGO);
                 conexao = await getLojaDatabaseConnection(dadosConexao);
                 const accessToken = await tratarTokens(loja, apiConexao);
-
+                logger.log({
+                    level: 'info',
+                    message: `${loja.LTR_SINCRONIZA_ALTERACOES}`,
+                });
                 if(loja.LTR_SINCRONIZA_ALTERACOES === 'S'){
                     await atualizarProdutos(loja, conexao, accessToken);
                 }
