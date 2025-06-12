@@ -41,10 +41,7 @@ const inicializarLojaSchema = z.object({
     LOJ_CODIGO: z.number(),
     LTR_TABELA_PRECO: z
         .number()
-        .int() // Garante que é um número inteiro
-        .refine(value => value === 1 || value === 2, {
-            message: "LTR_TABELA_PRECO precisa ser 1 ou 2",
-        }),
+        .int(), // Garante que é um número inteiro
     LTR_TIPO_ESTOQUE: z.number(),
     LTR_INTERMEDIADOR_PAGAMENTO: z.string().optional(),
     LTR_ESTOQUE_MINIMO: z.number()
