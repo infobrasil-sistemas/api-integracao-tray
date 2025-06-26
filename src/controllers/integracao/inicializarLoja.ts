@@ -152,7 +152,6 @@ export async function inicializarLoja(req: Request, res: Response) {
         operacoes.fpgs_ecommerce = 'SUCESSO'
 
 
-
         await ativarLojaTray(lojaCadastrada, conexaoApi)
         operacoes.ativar_loja = 'SUCESSO'
 

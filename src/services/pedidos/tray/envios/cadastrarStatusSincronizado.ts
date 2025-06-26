@@ -7,7 +7,7 @@ export async function cadastrarStatusSincronizado(loja: ILojaTrayInicializar, ac
 
         const requestBody = {
             OrderStatus: {
-                status: "SINCRONIZADO - A ENVIAR",
+                status: "A ENVIAR - SINCRONIZADO",
                 description: "PEDIDO SINCRONIZADO COM O SISTEMA RETAGUARDA.",
                 background: "#f0a818",
                 default: 1,
