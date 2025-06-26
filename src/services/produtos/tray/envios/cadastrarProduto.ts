@@ -21,7 +21,7 @@ export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToke
             `;
 
         const updateEstoqueQuery = `
-            UPDATE ESTOQUES EST
+            UPDATE ESTOQUE EST
             SET 
                 EST.EST_DTALTERACAOQTD = CURRENT_TIMESTAMP
             WHERE EST.PRO_CODIGO = ?
