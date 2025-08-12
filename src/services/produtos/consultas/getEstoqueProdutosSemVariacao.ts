@@ -63,7 +63,7 @@ export async function getEstoqueProdutosSemVariacao(
                 AND E2.loj_codigo IN (${placeholdersLojas})
                 AND (
                     E2.EST_DTALTERACAOQTD >= ?
-                    OR E2.EST_DTALTERACAO = CURRENT_DATE
+                    OR E2.EST_DTALTERACAOQTD = CURRENT_DATE
                 )
             )
 

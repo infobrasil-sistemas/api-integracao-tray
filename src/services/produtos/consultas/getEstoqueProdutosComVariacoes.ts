@@ -67,7 +67,7 @@ export async function getEstoqueProdutosComVariacao(
                 AND ESG2.loj_codigo IN (${placeholders})
                 AND (
                 E2.EST_DTALTERACAOQTD >= ?
-                OR E2.EST_DTALTERACAO = CURRENT_DATE
+                OR E2.EST_DTALTERACAOQTD = CURRENT_DATE
                 )
             )
 
