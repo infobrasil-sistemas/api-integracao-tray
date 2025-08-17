@@ -7,7 +7,6 @@ export async function getEstoqueProdutosSemVariacao(
     loja: ILojaTray,
     conexao: any,
     idsProdutosComVariacao: string[],
-    ultimaSincronizacao: string
 ): Promise<IEstoqueProduto[]> {
     try {
         let estoque = loja.LTR_TIPO_ESTOQUE === 1 ? 'EST.EST_ATUAL' : 'EST.EST_APOIO';
@@ -61,10 +60,7 @@ export async function getEstoqueProdutosSemVariacao(
                 FROM ESTOQUE E2
                 WHERE E2.pro_codigo = PRO.pro_codigo
                 AND E2.loj_codigo IN (${placeholdersLojas})
-                AND (
-                    E2.EST_DTALTERACAOQTD >= ?
-                    OR E2.EST_DTALTERACAOQTD = CURRENT_DATE
-                )
+                AND E2.EST_DTALTERACAOQTD = CURRENT_DATE
             )
 
             GROUP BY 
@@ -78,7 +74,6 @@ export async function getEstoqueProdutosSemVariacao(
             ...lojasEstoque,
             ...(idsProdutosComVariacao.length > 0 ? idsProdutosComVariacao : []),
             ...lojasEstoque,
-            ultimaSincronizacao
         ];
 
         return new Promise((resolve, reject) => {

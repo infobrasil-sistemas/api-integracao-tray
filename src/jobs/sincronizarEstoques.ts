@@ -15,8 +15,8 @@ export async function SincronizarEstoques() {
   try {
     apiConexao = await getApiDatabaseConnection();
     const lojas = await getLojasDadosTray(apiConexao);
-    const ultimaSincronizacao = obterUltimaSincronizacaoEstoques()
-    atualizarUltimaSincronizacaoEstoques()
+    //const ultimaSincronizacao = obterUltimaSincronizacaoEstoques()
+    //atualizarUltimaSincronizacaoEstoques()
     for (const loja of lojas) {
       let conexao: any;
 
@@ -26,7 +26,7 @@ export async function SincronizarEstoques() {
         const accessToken = await tratarTokens(loja, apiConexao);
 
         await cadastrarPedidos(loja, conexao, accessToken)
-        await atualizarEstoques(loja, conexao, accessToken, ultimaSincronizacao!);
+        await atualizarEstoques(loja, conexao, accessToken);
       } catch (error) {
         logger.log({
           level: 'error',

@@ -14,13 +14,13 @@ const SCHED_IDS = {
 export async function upsertSchedulers() {
   // (idempotente) remove antes caso já existam — evita duplicar se você mudar o pattern
   for (const id of Object.values(SCHED_IDS)) {
-    await jobQueue.removeJobScheduler(id).catch(() => {});
+    await jobQueue.removeJobScheduler(id).catch(() => { });
   }
 
   // Estoques: a cada 1 minuto, no segundo 0
   await jobQueue.upsertJobScheduler(
     SCHED_IDS.estoques,
-    { pattern: '0 0 */1 * * *', tz: TZ }, // cron de 6 campos (segundo no início)
+    { pattern: '0 */1 * * * *', tz: TZ }, // cron de 6 campos (segundo no início)
     {
       name: 'estoques',
       data: { jobType: 'estoques', payload: { task: 'Sincronizar estoques' }, priority: 1 },

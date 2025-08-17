@@ -1,6 +1,6 @@
 // src/tools/list-schedulers.ts
 import { Queue } from 'bullmq';
-import { redisConfig } from '../config/redis';
+import { redisConfig } from '../../config/redis';
 
 (async () => {
   const q = new Queue('jobQueue', { connection: redisConfig });
