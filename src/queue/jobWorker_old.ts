@@ -7,7 +7,7 @@ import { SincronizarCategorias } from '../jobs/sincronizarCategorias';
 import { SincronizarEstoques } from '../jobs/sincronizarEstoques';
 import { SincronizarProdutos } from '../jobs/sincronizarProdutos';
 
-export const jobWorker = new Worker<JobData>(
+const jobWorker = new Worker<JobData>(
     'jobQueue',
     async (job) => {
         const { jobType, payload } = job.data;
