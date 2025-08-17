@@ -20,7 +20,7 @@ export async function upsertSchedulers() {
   // Estoques: a cada 1 minuto, no segundo 0
   await jobQueue.upsertJobScheduler(
     SCHED_IDS.estoques,
-    { pattern: '0 */1 * * * *', tz: TZ }, // cron de 6 campos (segundo no início)
+    { pattern: '0 0 */1 * * *', tz: TZ }, // cron de 6 campos (segundo no início)
     {
       name: 'estoques',
       data: { jobType: 'estoques', payload: { task: 'Sincronizar estoques' }, priority: 1 },
