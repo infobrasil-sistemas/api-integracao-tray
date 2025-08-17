@@ -1,25 +1,20 @@
+# Dockerfile
 FROM node:18 AS production
 
-# Define o diretório de trabalho no contêiner
 WORKDIR /app
-
-# Define a variável de ambiente para produção
 ENV NODE_ENV=production
 
-# Atualiza o npm para a versão mais recente
+# Atualiza npm
 RUN npm install -g npm
 
-# Copia apenas os arquivos necessários para instalar dependências
-COPY package.json package-lock.json ./ 
-
-# Instala apenas as dependências necessárias para produção
+# Dependências
+COPY package.json package-lock.json ./
 RUN npm install --only=production
 
-# Copia o restante dos arquivos do projeto para o contêiner
+# Código compilado (JS) e assets
 COPY build ./build
 
-# Expõe a porta onde o serviço estará disponível
 EXPOSE 3333
 
-# Comando para iniciar o servidor
+# API por padrão (o worker/scheduler sobrescrevem via docker-compose 'command')
 CMD ["node", "build/index.js"]

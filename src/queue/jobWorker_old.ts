@@ -1,6 +1,6 @@
 import { Worker } from 'bullmq';
 import { redisConfig } from '../config/redis';
-import { JobData } from './queue';
+import { JobData } from './queue_old';
 import logger from '../utils/logger';
 import { SincronizarPedidos } from '../jobs/sincronizarPedidos';
 import { SincronizarCategorias } from '../jobs/sincronizarCategorias';
