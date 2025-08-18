@@ -8,6 +8,7 @@ import { SincronizarPedidos } from '../jobs/sincronizarPedidos';
 import { SincronizarCategorias } from '../jobs/sincronizarCategorias';
 import { SincronizarEstoques } from '../jobs/sincronizarEstoques';
 import { SincronizarProdutos } from '../jobs/sincronizarProdutos';
+import { withTimeout } from '../utils/withTimemout';
 
 export const jobWorker = new Worker<JobData>(
   'jobQueue',
@@ -16,17 +17,14 @@ export const jobWorker = new Worker<JobData>(
     logger.info(`[${job.id}] Iniciando: ${jobType}`);
 
     switch (jobType) {
-      case 'categorias':
-        await SincronizarCategorias();
-        break;
       case 'estoques':
-        await SincronizarEstoques();
+        await withTimeout(SincronizarEstoques(), 5 * 60 * 1000, 'SincronizarEstoques');
         break;
       case 'produtos':
-        await SincronizarProdutos();
+        await withTimeout(SincronizarProdutos(), 5 * 60 * 1000, 'SincronizarProdutos');
         break;
-      case 'pedidos':
-        await SincronizarPedidos();
+      case 'categorias':
+        await withTimeout(SincronizarCategorias(), 5 * 60 * 1000, 'SincronizarCategorias');
         break;
       default:
         throw new Error(`Job não implementado: ${String(jobType)}`);
