@@ -5,10 +5,12 @@ import { IEstoqueProduto } from '../../interfaces';
 
 export async function atualizarEstoque(loja: ILojaTray, accessToken: string, estoque: IEstoqueProduto) {
     try {
+        const estoqueMinimoLoja = Math.trunc(loja.LTR_ESTOQUE_MINIMO)
+        const estoqueProduto = Math.trunc(estoque.stock)
         const requestBody = {
             Product: {
                 ...estoque,
-                stock: loja.LTR_ESTOQUE_MINIMO > estoque.stock ? 0 : (estoque.stock - loja.LTR_ESTOQUE_MINIMO)
+                stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja)
             }
         };
 

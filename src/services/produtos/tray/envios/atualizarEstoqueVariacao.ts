@@ -5,10 +5,12 @@ import { IEstoqueProduto } from '../../interfaces';
 
 export async function atualizarEstoqueVariacao(loja: ILojaTray, accessToken: string, estoque: IEstoqueProduto) {
     try {
+        const estoqueMinimoLoja = Math.trunc(loja.LTR_ESTOQUE_MINIMO)
+        const estoqueProduto = Math.trunc(estoque.stock)
         const requestBody = {
             Variant: {
                 ...estoque,
-                stock: loja.LTR_ESTOQUE_MINIMO > estoque.stock ? 0 : (estoque.stock - loja.LTR_ESTOQUE_MINIMO)
+                stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja)
             }
         };
         await axios.put(`${loja.LTR_API_HOST}/products/variants/${estoque.id}?access_token=${accessToken}`, requestBody);
