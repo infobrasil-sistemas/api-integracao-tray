@@ -34,10 +34,11 @@ export async function getEstoqueProdutosSemVariacao(
                 MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco} END)
                 AS NUMERIC(9,2)
                 ) AS "price",
-                CAST(
-                MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END)
-                AS NUMERIC(9,2)
-                ) AS "ipi_value"
+                --CAST(
+            --    MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END)
+            --    AS NUMERIC(9,2)
+            --) AS "ipi_value"
+            0 as ipi_value
 
             FROM PRODUTOS PRO
             JOIN ESTOQUE EST
