@@ -22,6 +22,7 @@ export interface ILojaTrayInicializada {
   LTR_ID_STATUS_SINCRONIZADO: number,
   DAD_CODIGO: number;
   LTR_SINCRONIZA_ALTERACOES: string
+  USU_CODIGO: number
 }
 
 export interface ILojaTrayInicializar {
