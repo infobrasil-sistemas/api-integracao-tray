@@ -39,7 +39,7 @@ export async function getEstoqueProdutosComVariacao(
             --    MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END)
             --    AS NUMERIC(9,2)
             --) AS "ipi_value"
-            0 as ipi_value
+            0 as "ipi_value"
 
         FROM PROD_GRADES PRG
         JOIN estoque_grades ESG 

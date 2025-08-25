@@ -10,7 +10,8 @@ export async function atualizarEstoque(loja: ILojaTray, accessToken: string, est
         const requestBody = {
             Product: {
                 ...estoque,
-                stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja)
+                stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja),
+                ipi_value: 0
             }
         };
 
