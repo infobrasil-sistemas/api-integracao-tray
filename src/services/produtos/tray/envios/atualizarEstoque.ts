@@ -11,7 +11,7 @@ export async function atualizarEstoque(loja: ILojaTray, accessToken: string, est
             Product: {
                 ...estoque,
                 stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja),
-                ipi_value: 0
+                ipi_value: null
             }
         };
 

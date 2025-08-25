@@ -11,7 +11,7 @@ export async function atualizarEstoqueVariacao(loja: ILojaTray, accessToken: str
             Variant: {
                 ...estoque,
                 stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja),
-                ipi_value: 0
+                ipi_value: null
             }
         };
         await axios.put(`${loja.LTR_API_HOST}/products/variants/${estoque.id}?access_token=${accessToken}`, requestBody);
