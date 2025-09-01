@@ -119,6 +119,7 @@ export async function getPedido(loja: ILojaTray, accessToken: string, id_pedido:
                 quantity: parseInt(product.ProductsSold.quantity),
                 id: parseInt(product.ProductsSold.id),
                 price: parseFloat(product.ProductsSold.price),
+                original_price: parseFloat(product.ProductsSold.original_price),
                 variant_id: parseInt(product.ProductsSold.variant_id) || undefined,
             })),
             // Payment: Payment.map((payment: any) => ({

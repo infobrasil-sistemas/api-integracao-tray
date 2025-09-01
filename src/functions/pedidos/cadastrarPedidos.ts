@@ -36,16 +36,20 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                     try {
                         const cli_codigo = await upsertCliente(loja, transaction, pedido.Customer)
                         const ven_numero = await cadastrarPedido(loja, transaction, pedido, cli_codigo)
+
+                        let descontoTotalItens = 0
                         for (const produtoVendido of pedido.ProductsSold) {
+                            const desconto = produtoVendido.quantity * (produtoVendido.original_price - produtoVendido.price)
+                            descontoTotalItens += desconto
                             if (produtoVendido.variant_id) {
                                 const nossoProduto = await getProdutoGradeCodigosByIdTray(loja, transaction, produtoVendido.variant_id)
-                                await cadastrarProdutoVendido(loja, transaction, produtoVendido, nossoProduto, ven_numero)
+                                await cadastrarProdutoVendido(loja, transaction, produtoVendido, nossoProduto, ven_numero, desconto)
                             } else {
                                 const nossoProduto = await getProdutoCodigoByIdTray(loja, transaction, produtoVendido.product_id)
-                                await cadastrarProdutoVendido(loja, transaction, produtoVendido, nossoProduto, ven_numero)
+                                await cadastrarProdutoVendido(loja, transaction, produtoVendido, nossoProduto, ven_numero, desconto)
                             }
                         }
-                        await atualizarFinanceiroPedido(loja, transaction, pedido, ven_numero)
+                        await atualizarFinanceiroPedido(loja, transaction, pedido, ven_numero, descontoTotalItens)
                         await atualizarStatusPedidoSincronizado(loja, access_token, pedido.id)
 
                         await new Promise((resolve, reject) => {

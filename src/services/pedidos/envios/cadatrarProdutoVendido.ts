@@ -1,9 +1,8 @@
 import { ILojaTray } from '../../../interfaces/ILojaTray';
 import { IProductDadosCusto, IProductSold } from '../../pedidos/interfaces';
 
-export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any, produtoVendido: IProductSold, nossoProduto: IProductDadosCusto, ven_numero: number): Promise<void> {
+export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any, produtoVendido: IProductSold, nossoProduto: IProductDadosCusto, ven_numero: number, desconto: number): Promise<void> {
     try {
-
         const produtoVendidoInsert = {
             VEN_NUMERO: ven_numero,
             IVD_ID_ECOMMERCE: produtoVendido.id,
@@ -14,16 +13,16 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
             COR_CODIGO: produtoVendido.variant_id ? nossoProduto.COR_CODIGO : null,
             PRG_CODIGO: nossoProduto.PRG_CODIGO || null,
             IVD_QTDE: produtoVendido.quantity,
-            IVD_PRECO: produtoVendido.price,
-            IVD_DESCONTO: 0,
-            IVD_TOTAL: produtoVendido.price * produtoVendido.quantity,
-            IVD_LIQUIDO: produtoVendido.price * produtoVendido.quantity,
+            IVD_PRECO: produtoVendido.original_price,
+            IVD_TOTAL: produtoVendido.original_price * produtoVendido.quantity,
+            IVD_DESCONTO: desconto,
+            IVD_LIQUIDO: (produtoVendido.original_price * produtoVendido.quantity) - desconto,
             IVD_PRCCOMPRA: nossoProduto.PRO_PRCCOMPRA || null,
             IVD_PRCCUSTO: nossoProduto.PRO_PRCCUSTO || null,
             IVD_PRCFISCAL: nossoProduto.PRO_PRCCOMPRAFISCAL || null,
             IVD_PRCCUSTOFISCAL: nossoProduto.PRO_CUSTOFISCAL || null,
             IVD_ENTREGUE: 'N',
-            IVD_PRCAVISTA: produtoVendido.price
+            IVD_PRCAVISTA: produtoVendido.original_price
         };
 
         const IVD_NUMERO = 'GEN_ID(GEN_NUMEROIVD, 1)';

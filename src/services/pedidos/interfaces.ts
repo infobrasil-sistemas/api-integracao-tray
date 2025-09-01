@@ -90,6 +90,7 @@ export interface IProductSold {
     quantity: number; // Quantidade vendida
     id: number; // Código do item vendido
     price: number; // Preço do produto
+    original_price: number
     variant_id?: number; // Código da variação
 }
 

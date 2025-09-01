@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { ILojaTray } from '../../../interfaces/ILojaTray';
 import { IOrder } from '../../pedidos/interfaces';
 
-export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: any, pedido: IOrder, VEN_NUMERO: number): Promise<void> {
+export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: any, pedido: IOrder, VEN_NUMERO: number, descontoTotalItens: number): Promise<void> {
     try {
         let FP1_CODIGO;
         let PP1_CODIGO;
@@ -21,17 +21,19 @@ export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: an
             throw new Error('A forma de pagamento do pedido é inexistente ou inválida')
         }
 
+        const descontoTotalVenda = descontoTotalItens + (pedido.discount || 0)
+        const totalBruto = pedido.partial_total + descontoTotalItens
         const financeiroAtualizar = {
             PP1_CODIGO: PP1_CODIGO,
             FP1_CODIGO: FP1_CODIGO,
             VEN_TOTALPP1: pedido.total || 0.00,
             VEN_TOTALPPA1: pedido.total || 0.00,
-            VEN_TOTALBRUTO: pedido.partial_total || 0.00,
-            VEN_TOTALDESC: pedido.discount || 0.00,
+            VEN_TOTALBRUTO: totalBruto,
+            VEN_TOTALDESC: descontoTotalVenda,
             VEN_TOTALACRESC: pedido.taxes || 0.00,
             VEN_VALORENT: pedido.shipment_value || 0.00,
             // VEN_TAXAPAG: pedido.payment_method_rate || 0.00,
-            VEN_TOTALLIQUIDO: (pedido.partial_total + (pedido.taxes || 0) - (pedido.discount || 0)),
+            VEN_TOTALLIQUIDO: (totalBruto + (pedido.taxes || 0) - descontoTotalVenda),
             VEN_DATABASE1: data
         };
 
