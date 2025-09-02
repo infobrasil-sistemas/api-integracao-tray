@@ -23,6 +23,7 @@ export interface ILojaTrayInicializada {
   DAD_CODIGO: number;
   LTR_SINCRONIZA_ALTERACOES: string
   USU_CODIGO: number
+  LTR_SINCRONIZA_PROMOCOES: string
 }
 
 export interface ILojaTrayInicializar {

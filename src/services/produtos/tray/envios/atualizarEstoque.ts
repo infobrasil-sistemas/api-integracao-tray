@@ -2,16 +2,29 @@ import { ILojaTray } from '../../../../interfaces/ILojaTray';
 import logger from '../../../../utils/logger';
 import axios from 'axios';
 import { IEstoqueProduto } from '../../interfaces';
+import { isToday } from '../../../../utils/isToday';
 
 export async function atualizarEstoque(loja: ILojaTray, accessToken: string, estoque: IEstoqueProduto) {
     try {
+        let promotional_price = undefined
+        let start_promotion = undefined
+        let end_promotion = undefined
+        if(estoque.start_promotion && estoque.end_promotion && isToday(estoque.start_promotion) && loja.LTR_SINCRONIZA_PROMOCOES === 'S'){
+            promotional_price = estoque.price - estoque.desconto
+            start_promotion = estoque.start_promotion
+            end_promotion = estoque.end_promotion
+        }
         const estoqueMinimoLoja = Math.trunc(loja.LTR_ESTOQUE_MINIMO)
         const estoqueProduto = Math.trunc(estoque.stock)
         const requestBody = {
             Product: {
                 ...estoque,
+                desconto: undefined,
+                ipi_value: null,
                 stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja),
-                ipi_value: null
+                promotional_price: promotional_price,
+                start_promotion: start_promotion,
+                end_promotion: end_promotion
             }
         };
 

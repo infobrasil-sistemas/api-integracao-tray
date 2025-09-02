@@ -35,6 +35,15 @@ export async function getEstoqueProdutosComVariacao(
                 MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_preco} END)
                 AS NUMERIC(9,2)
             ) AS "price",
+            CAST(
+                MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN ${camposPreco.campo_desconto} END)
+                AS NUMERIC(9,2)
+            ) AS "desconto",
+
+            MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.EST_DTINIPROMOCAO END) AS "start_promotion",
+            MAX(CASE WHEN EST.loj_codigo = ${LOJ_CODIGO} THEN EST.EST_DTFINPROMOCAO END) AS "end_promotion",
+
+
             --CAST(
             --    MAX(CASE WHEN ESG.loj_codigo = ${LOJ_CODIGO} THEN EST.ipi_cod_sai END)
             --    AS NUMERIC(9,2)

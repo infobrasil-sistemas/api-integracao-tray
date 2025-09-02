@@ -57,8 +57,9 @@ export interface IEstoqueProduto {
     stock: number;
     price: number
     //promotional_price: number | null
-    //start_promotion: string | null;
-    //end_promotion: string | null;
+    desconto: number // TEMPORARIO
+    start_promotion: string | null;
+    end_promotion: string | null;
     ipi_value: number;
 }
 
