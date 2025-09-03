@@ -22,7 +22,7 @@ export interface ILojaTrayInicializada {
   LTR_ID_STATUS_SINCRONIZADO: number,
   DAD_CODIGO: number;
   LTR_SINCRONIZA_ALTERACOES: string
-  USU_CODIGO: number
+  USU_CODIGO?: number | null
   LTR_SINCRONIZA_PROMOCOES: string
 }
 
@@ -41,6 +41,8 @@ export interface ILojaTrayInicializar {
   LTR_INTERMEDIADOR_PAGAMENTO?: string
   DAD_CODIGO: number
   LTR_SINCRONIZA_ALTERACOES: string
+  USU_CODIGO?: number | null,
+  LTR_SINCRONIZA_PROMOCOES: string
 }
 
 export interface ILojaTrayAtualizar {

@@ -44,7 +44,10 @@ const inicializarLojaSchema = z.object({
         .int(), // Garante que é um número inteiro
     LTR_TIPO_ESTOQUE: z.number(),
     LTR_INTERMEDIADOR_PAGAMENTO: z.string().optional(),
-    LTR_ESTOQUE_MINIMO: z.number()
+    LTR_ESTOQUE_MINIMO: z.number(),
+    LTR_SINCRONIZA_ALTERACOES: z.string(),
+    USU_CODIGO: z.number().nullish(),
+    LTR_SINCRONIZA_PROMOCOES: z.string()
 });
 
 export async function inicializarLoja(req: Request, res: Response) {
@@ -99,7 +102,9 @@ export async function inicializarLoja(req: Request, res: Response) {
             LTR_TABELA_PRECO: data.LTR_TABELA_PRECO,
             LTR_INTERMEDIADOR_PAGAMENTO: data.LTR_INTERMEDIADOR_PAGAMENTO || undefined,
             DAD_CODIGO: DAD_CODIGO,
-            LTR_SINCRONIZA_ALTERACOES: 'N'
+            LTR_SINCRONIZA_ALTERACOES: data.LTR_SINCRONIZA_ALTERACOES,
+            USU_CODIGO: data.USU_CODIGO || undefined,
+            LTR_SINCRONIZA_PROMOCOES: data.LTR_SINCRONIZA_PROMOCOES
         }
 
         const requestBody = {
