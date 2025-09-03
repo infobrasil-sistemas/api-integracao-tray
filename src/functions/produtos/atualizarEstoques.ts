@@ -1,6 +1,6 @@
 import { ILojaTray } from "../../interfaces/ILojaTray";
-import { getEstoqueProdutosSemVariacao } from "../../services/produtos/consultas/getEstoqueProdutosSemVariacao";
-import { getEstoqueProdutosComVariacao } from "../../services/produtos/consultas/getEstoqueProdutosComVariacoes";
+import { getEstoqueProdutosSemVariacao } from "../../services/produtos/banco/getEstoqueProdutosSemVariacao";
+import { getEstoqueProdutosComVariacao } from "../../services/produtos/banco/getEstoqueProdutosComVariacoes";
 import { atualizarEstoque } from "../../services/produtos/tray/envios/atualizarEstoque";
 import { atualizarEstoqueVariacao } from "../../services/produtos/tray/envios/atualizarEstoqueVariacao";
 import logger from "../../utils/logger";
@@ -14,7 +14,7 @@ export async function atualizarEstoques(loja: ILojaTray, conexao: any, access_to
         const estoqueProdutosSemVariacao = await getEstoqueProdutosSemVariacao(loja, conexao, Array.from(idsProdutosComVariacao));
         if (estoqueProdutosSemVariacao.length > 0) {
             for (const estoqueProdutoSemVariacao of estoqueProdutosSemVariacao) {
-                await atualizarEstoque(loja, access_token, estoqueProdutoSemVariacao)
+                await atualizarEstoque(loja, conexao, access_token, estoqueProdutoSemVariacao)
             }
         }
         if (estoqueProdutosComVariacao.length > 0) {

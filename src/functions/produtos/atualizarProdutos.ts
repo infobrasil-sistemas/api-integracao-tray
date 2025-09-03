@@ -1,7 +1,7 @@
 
 import { ILojaTray } from "../../interfaces/ILojaTray";
-import { getProdutosIntegrados } from "../../services/produtos/consultas/getProdutosIntegrados";
-import { getVariacoesProdutoIntegradas } from "../../services/produtos/consultas/getVariacoesProdutoIntegradas";
+import { getProdutosIntegrados } from "../../services/produtos/banco/getProdutosIntegrados";
+import { getVariacoesProdutoIntegradas } from "../../services/produtos/banco/getVariacoesProdutoIntegradas";
 import { atualizarProduto } from "../../services/produtos/tray/envios/atualizarProduto";
 import { atualizarVariacao } from "../../services/produtos/tray/envios/atualizarVariacao";
 import logger from "../../utils/logger";

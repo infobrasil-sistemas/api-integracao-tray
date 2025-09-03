@@ -3,13 +3,14 @@ import logger from '../../../../utils/logger';
 import axios from 'axios';
 import { IEstoqueProduto } from '../../interfaces';
 import { isToday } from '../../../../utils/isToday';
+import { dessincronizarProdutoExcluido } from '../../banco/dessincronizarProdutoExcluido';
 
-export async function atualizarEstoque(loja: ILojaTray, accessToken: string, estoque: IEstoqueProduto) {
+export async function atualizarEstoque(loja: ILojaTray, conexao: any, accessToken: string, estoque: IEstoqueProduto) {
     try {
         let promotional_price = undefined
         let start_promotion = undefined
         let end_promotion = undefined
-        if(estoque.start_promotion && estoque.end_promotion && isToday(estoque.start_promotion) && loja.LTR_SINCRONIZA_PROMOCOES === 'S'){
+        if (estoque.start_promotion && estoque.end_promotion && isToday(estoque.start_promotion) && loja.LTR_SINCRONIZA_PROMOCOES === 'S') {
             promotional_price = estoque.price - estoque.desconto
             start_promotion = estoque.start_promotion
             end_promotion = estoque.end_promotion
@@ -39,6 +40,13 @@ export async function atualizarEstoque(loja: ILojaTray, accessToken: string, est
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
             });
+            if (estoque.name === undefined) {
+                await dessincronizarProdutoExcluido(loja, conexao, estoque.pro_codigo)
+                logger.log({
+                    level: 'info',
+                    message: `Produto excluido ${estoque.pro_codigo} da loja ${loja.LTR_CNPJ} dessincronizado com sucesso.`
+                });
+            }
         } else {
             logger.log({
                 level: 'error',

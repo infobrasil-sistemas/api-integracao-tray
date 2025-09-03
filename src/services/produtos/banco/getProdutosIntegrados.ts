@@ -1,4 +1,4 @@
-import { ILojaTray } from './../../../interfaces/ILojaTray';
+import { ILojaTray } from '../../../interfaces/ILojaTray';
 import { IProdutoIntegrado } from "../interfaces";
 
 
