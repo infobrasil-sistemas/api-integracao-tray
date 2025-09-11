@@ -74,7 +74,7 @@ export async function getEstoqueProdutosComVariacao(
                         AND ESG2.loj_codigo = E2.loj_codigo
             WHERE E2.pro_codigo = PRO.pro_codigo
                 AND ESG2.loj_codigo IN (${placeholders})
-                AND (E2.EST_DTALTERACAOQTD = CURRENT_DATE or E2.est_dtalteracao = CURRENT_DATE)
+                AND (CAST(E2.EST_DTALTERACAOQTD AS DATE) = CURRENT_DATE or E2.est_dtalteracao = CURRENT_DATE)
             )
 
         GROUP BY 
