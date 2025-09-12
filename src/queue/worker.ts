@@ -4,7 +4,6 @@ import { redisConfig } from '../config/redis';
 import logger from '../utils/logger';
 import { JobData } from './queue';
 
-import { SincronizarPedidos } from '../jobs/sincronizarPedidos';
 import { SincronizarCategorias } from '../jobs/sincronizarCategorias';
 import { SincronizarEstoques } from '../jobs/sincronizarEstoques';
 import { SincronizarProdutos } from '../jobs/sincronizarProdutos';
@@ -18,7 +17,7 @@ export const jobWorker = new Worker<JobData>(
 
     switch (jobType) {
       case 'estoques':
-        await withTimeout(SincronizarEstoques(), 5 * 60 * 1000, 'SincronizarEstoques');
+        await withTimeout(SincronizarEstoques(), 30 * 60 * 1000, 'SincronizarEstoques');
         break;
       case 'produtos':
         await withTimeout(SincronizarProdutos(), 5 * 60 * 1000, 'SincronizarProdutos');
@@ -35,7 +34,7 @@ export const jobWorker = new Worker<JobData>(
   {
     connection: redisConfig,
     concurrency: 1,                   // nunca roda dois ao mesmo tempo
-    lockDuration: 5 * 60 * 1000,      // ajuste ao pior caso (5 min aqui)
+    lockDuration: 30 * 60 * 1000,      // ajuste ao pior caso (5 min aqui)
     stalledInterval: 60 * 1000,       // verifica travados a cada 60s
     removeOnComplete: { age: 3600, count: 100 },
     removeOnFail: { age: 24 * 3600, count: 200 },
