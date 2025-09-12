@@ -85,6 +85,6 @@ export async function cadastrarProdutoVendido(loja: ILojaTray, transaction: any,
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao inserir produto vendido ${produtoVendido.id} na loja ${loja.LTR_CNPJ} -> ${error}`);
+        throw new Error(`Erro ao inserir produto vendido ${produtoVendido.product_id} na loja ${loja.LTR_CNPJ} -> ${error}`);
     }
 }
