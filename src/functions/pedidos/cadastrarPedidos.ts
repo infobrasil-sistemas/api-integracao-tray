@@ -46,6 +46,7 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                                 await cadastrarProdutoVendido(loja, transaction, produtoVendido, nossoProduto, ven_numero, desconto)
                             } else {
                                 const nossoProduto = await getProdutoCodigoByIdTray(loja, transaction, produtoVendido.product_id)
+                                console.log(nossoProduto)
                                 await cadastrarProdutoVendido(loja, transaction, produtoVendido, nossoProduto, ven_numero, desconto)
                             }
                         }
