@@ -1,10 +1,13 @@
 import { ILojaTray } from '../../../interfaces/ILojaTray';
+import { sanitizeCity } from '../../../utils/sanitizeCity';
 
 export async function getMunCodigoByCityName(loja: ILojaTray, transaction: any, city: string): Promise<number | null> {
     try {
+        const sanitizedCity = sanitizeCity(city)
+
         const query = `
         SELECT MUN.MUN_CODIGO FROM MUNICIPIOS MUN
-        WHERE MUN.MUN_NOME = '${city.toUpperCase()}'
+        WHERE MUN.MUN_NOME = '${sanitizedCity}'
         `;
 
         return new Promise((resolve, reject) => {
