@@ -80,7 +80,8 @@ export async function getEstoqueProdutosComVariacao(
 
         GROUP BY 
             PRG.PRG_ID_ECOMMERCE,
-            PRO.PRO_CODIGO
+            PRO.PRO_CODIGO,
+            PRO.pro_ref
         `;
 
         const params = [...lojasEstoque, ...lojasEstoque];
