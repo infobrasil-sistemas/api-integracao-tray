@@ -22,6 +22,8 @@ export async function atualizarEstoque(loja: ILojaTray, conexao: any, accessToke
                 ...estoque,
                 desconto: undefined,
                 ipi_value: null,
+                ean: null,
+                reference: estoque.pro_codigo,
                 stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja),
                 promotional_price: promotional_price,
                 start_promotion: start_promotion,

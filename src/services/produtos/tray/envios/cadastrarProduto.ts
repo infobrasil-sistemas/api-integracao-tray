@@ -29,11 +29,11 @@ export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToke
 
         const params = [
             parseInt(response.data.id),
-            produto.ean
+            produto.reference
         ];
 
         const paramsUpdateEstoque = [
-            produto.ean
+            produto.reference
         ];
 
         await new Promise((resolve, reject) => {
@@ -54,7 +54,7 @@ export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToke
         if (axios.isAxiosError(error)) {
             logger.log({
                 level: 'error',
-                message: `Erro ao cadastrar produto ${produto.ean} da loja ${loja.LTR_CNPJ} -> 
+                message: `Erro ao cadastrar produto ${produto.reference} da loja ${loja.LTR_CNPJ} -> 
                 Status: ${error.response?.status || 'Sem status'} 
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
@@ -62,7 +62,7 @@ export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToke
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro inesperado ao cadastrar produto ${produto.ean} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                message: `Erro inesperado ao cadastrar produto ${produto.reference} da loja ${loja.LTR_CNPJ} -> ${error.message}`
             });
         }
     }
