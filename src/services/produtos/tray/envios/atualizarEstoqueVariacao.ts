@@ -9,7 +9,7 @@ export async function atualizarEstoqueVariacao(loja: ILojaTray, accessToken: str
         let promotional_price = undefined
         let start_promotion = undefined
         let end_promotion = undefined
-        if (estoque.start_promotion && estoque.end_promotion && isToday(estoque.start_promotion) && loja.LTR_SINCRONIZA_PROMOCOES === 'S') {
+        if (estoque.start_promotion && estoque.end_promotion && loja.LTR_SINCRONIZA_PROMOCOES === 'S') {
             promotional_price = estoque.price - estoque.desconto
             start_promotion = estoque.start_promotion
             end_promotion = estoque.end_promotion
