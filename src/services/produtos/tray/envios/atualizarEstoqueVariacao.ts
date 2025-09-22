@@ -20,7 +20,7 @@ export async function atualizarEstoqueVariacao(loja: ILojaTray, accessToken: str
             Variant: {
                 ...estoque,
                 desconto: undefined,
-                ipi_value: null,
+                pro_codigo: undefined,
                 stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja),
                 promotional_price: promotional_price,
                 start_promotion: start_promotion,
