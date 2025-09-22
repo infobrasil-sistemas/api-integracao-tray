@@ -40,13 +40,13 @@ export async function atualizarEstoque(loja: ILojaTray, conexao: any, accessToke
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
             });
-            if (estoque.name === undefined) {
-                await dessincronizarProdutoExcluido(loja, conexao, estoque.pro_codigo)
-                logger.log({
-                    level: 'info',
-                    message: `Produto excluido ${estoque.pro_codigo} da loja ${loja.LTR_CNPJ} dessincronizado com sucesso.`
-                });
-            }
+            // if (estoque.name === undefined) {
+            //     await dessincronizarProdutoExcluido(loja, conexao, estoque.pro_codigo)
+            //     logger.log({
+            //         level: 'info',
+            //         message: `Produto excluido ${estoque.pro_codigo} da loja ${loja.LTR_CNPJ} dessincronizado com sucesso.`
+            //     });
+            // }
         } else {
             logger.log({
                 level: 'error',
