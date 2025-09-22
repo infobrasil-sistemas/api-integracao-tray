@@ -74,7 +74,7 @@ export async function getEstoqueProdutosSemVariacao(
 
             GROUP BY 
             PRO.pro_id_ecommerce,
-            PRO.pro_codigo,
+            PRO.pro_codigo
         `;
 
         // Definir os parâmetros corretamente
