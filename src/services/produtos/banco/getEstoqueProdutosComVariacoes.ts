@@ -25,9 +25,7 @@ export async function getEstoqueProdutosComVariacao(
         const query = `
                 SELECT
             PRG.prg_id_ecommerce AS "id",
-            PRO.pro_codigo       AS "pro_codigo",
-            PRO.pro_ref AS "reference",
-            
+            PRO.pro_codigo       AS "reference",
             -- Soma dos estoques de todas as lojas do IN (estoque_grades)
             CAST(SUM(${estoque}) AS INTEGER) AS "stock",
 
@@ -81,7 +79,6 @@ export async function getEstoqueProdutosComVariacao(
         GROUP BY 
             PRG.PRG_ID_ECOMMERCE,
             PRO.PRO_CODIGO,
-            PRO.pro_ref
         `;
 
         const params = [...lojasEstoque, ...lojasEstoque];

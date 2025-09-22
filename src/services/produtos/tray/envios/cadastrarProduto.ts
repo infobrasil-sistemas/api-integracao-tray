@@ -9,7 +9,7 @@ export async function cadastrarProduto(loja: ILojaTray, conexao: any, accessToke
         const requestBody = {
             Product: {
                 ...produto,
-                reference: `${produto.ean} - ${produto.reference}`
+                reference: produto.ean
             }
         };
         const response = await axios.post(`${loja.LTR_API_HOST}/products?access_token=${accessToken}`, requestBody);
