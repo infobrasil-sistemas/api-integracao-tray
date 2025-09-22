@@ -25,7 +25,7 @@ export async function getEstoqueProdutosSemVariacao(
                         SELECT
                 PRO.pro_id_ecommerce AS "id",
                 PRO.pro_codigo       AS "pro_codigo",
-                
+                PRO.pro_ref          AS "reference"
                 -- Soma estoque de TODAS as lojas do IN
                 CAST(SUM(${estoque}) AS INTEGER) AS "stock",
                 

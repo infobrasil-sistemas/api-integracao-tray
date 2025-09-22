@@ -11,7 +11,6 @@ export async function atualizarEstoque(loja: ILojaTray, conexao: any, accessToke
         let start_promotion = undefined
         let end_promotion = undefined
         if (estoque.start_promotion && estoque.end_promotion && loja.LTR_SINCRONIZA_PROMOCOES == "S") {
-            console.log(estoque.pro_codigo)
             promotional_price = estoque.price - estoque.desconto
             start_promotion = estoque.start_promotion
             end_promotion = estoque.end_promotion
@@ -23,7 +22,7 @@ export async function atualizarEstoque(loja: ILojaTray, conexao: any, accessToke
                 ...estoque,
                 pro_codigo: undefined,
                 desconto: undefined,
-                reference: estoque.pro_codigo,
+                reference: `${estoque.pro_codigo} - ${estoque.reference}`,
                 stock: estoqueMinimoLoja > estoqueProduto ? 0 : (estoqueProduto - estoqueMinimoLoja),
                 promotional_price: promotional_price,
                 start_promotion: start_promotion,

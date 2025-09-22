@@ -54,6 +54,7 @@ export interface IEstoqueProduto {
     id: number;
     pro_codigo: string
     name: string | null;
+    reference: string;
     stock: number;
     price: number
     //promotional_price: number | null

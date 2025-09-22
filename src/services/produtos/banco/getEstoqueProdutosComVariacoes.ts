@@ -26,6 +26,7 @@ export async function getEstoqueProdutosComVariacao(
                 SELECT
             PRG.prg_id_ecommerce AS "id",
             PRO.pro_codigo       AS "pro_codigo",
+            PRO.pro_ref AS "reference",
             
             -- Soma dos estoques de todas as lojas do IN (estoque_grades)
             CAST(SUM(${estoque}) AS INTEGER) AS "stock",
