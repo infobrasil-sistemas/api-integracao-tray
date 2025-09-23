@@ -10,9 +10,9 @@ export async function tratarTokens(loja: ILojaTray, conexao: any) {
         const dataExpiracaoAccessToken = dayjs(loja.LTR_EXPIRATION_ACCESS_TOKEN);
 
         // Verifica se está faltando 1 minuto ou menos para expirar
-        if (dataAtual.isAfter(dataExpiracaoAccessToken.subtract(2, 'minute'))) {
+        if (dataAtual.isAfter(dataExpiracaoAccessToken.subtract(10, 'minute'))) {
             const dataExpiracaoRefreshToken = dayjs(loja.LTR_EXPIRATION_REFRESH_TOKEN);
-            if (dataAtual.isAfter(dataExpiracaoRefreshToken.subtract(2, 'minute'))) {
+            if (dataAtual.isAfter(dataExpiracaoRefreshToken.subtract(10, 'minute'))) {
                 accessToken = await atualizarTokens(loja, conexao);
             } else {
                 accessToken = await atualizarAccessToken(loja, conexao);

@@ -5,6 +5,7 @@ import logger from './utils/logger';
 import { inicializarLoja } from './controllers/integracao/inicializarLoja';
 import { atualizarLoja } from './controllers/integracao/atualizarLoja';
 import { atualizarDadosEnderecoController } from './controllers/integracao/atualizarDadosEnderecoController';
+import { RessincronizarProdutos } from './jobs/ressincronizarProdutos';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.put(`/endereco/atualizar`, atualizarDadosEnderecoController);
 
 app.listen(PORT, async () => {
   logger.info(`API rodando na porta ${PORT}.`);
+  await RessincronizarProdutos()
   // Se quiser agendar via API (em vez do serviço scheduler), descomente:
   // await upsertSchedulers();
 });
