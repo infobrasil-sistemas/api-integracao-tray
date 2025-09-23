@@ -10,7 +10,6 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
       FROM PRODUTOS PRO
       WHERE PRO.PRO_ID_ECOMMERCE IS NULL
         AND (PRO.PRO_REF = ? OR PRO.PRO_CODIGO = ?)
-      LIMIT 1
     `;
 
         const candidato: { pro_codigo: number } | undefined = await new Promise((resolve, reject) => {
@@ -27,8 +26,8 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
         const updateSql = `
       UPDATE PRODUTOS PRO
       SET 
-        PRO_ID_ECOMMERCE = ?,
-        PRO_ECOMMERCE = "S"
+        PRO.PRO_ID_ECOMMERCE = ?,
+        PRO.PRO_ECOMMERCE = "S"
       WHERE PRO.PRO_CODIGO = ?
     `;
 
