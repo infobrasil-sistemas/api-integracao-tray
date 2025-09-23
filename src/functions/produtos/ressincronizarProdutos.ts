@@ -10,6 +10,7 @@ import logger from "../../utils/logger";
 export async function ressincronizarProdutos(loja: ILojaTray, conexao: IConnectionOptions, accessToken: string) {
     try {
         const produtos = await getAllProducts(loja, accessToken)
+        console.log(produtos)
         let totalProdutosRessincronizados = 0
         // for (const produto of produtos) {
         //     const pro_codigo: string | null = await ressincronizarProduto(loja, conexao, produto)
