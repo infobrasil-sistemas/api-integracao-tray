@@ -21,6 +21,9 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
 
         // Se não achou nenhum candidato que satisfaça o WHERE, não tem o que atualizar
         if (!candidato) return null;
+        console.log(JSON.stringify(candidato))
+        console.log(JSON.stringify(produto))
+
 
         // 2) Executa o UPDATE
         const updateSql = `
