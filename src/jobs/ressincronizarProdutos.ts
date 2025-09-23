@@ -1,5 +1,6 @@
 import { getApiDatabaseConnection } from '../config/db/database';
 import { getLojaDatabaseConnection } from '../config/db/lojaDatabase';
+import { encontrarProdutosNaoSincronizados } from '../functions/produtos/encontrarProdutosNaoSincronizados';
 import { ressincronizarProdutos } from '../functions/produtos/ressincronizarProdutos';
 import { getLojaDbConfig } from '../services/lojas/consultas/getLojaDbConfig';
 import { getLojasDadosTray } from '../services/lojas/consultas/getLojasDadosTray';
@@ -20,7 +21,7 @@ export async function RessincronizarProdutos() {
                 conexao = await getLojaDatabaseConnection(dadosConexao);
                 const accessToken = await tratarTokens(loja, apiConexao);
 
-                await ressincronizarProdutos(loja, conexao, accessToken);
+                await encontrarProdutosNaoSincronizados(loja, conexao, accessToken);
             } catch (error) {
                 logger.log({
                     level: 'error',
