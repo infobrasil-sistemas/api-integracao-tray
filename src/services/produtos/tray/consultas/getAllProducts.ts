@@ -26,8 +26,8 @@ export async function getAllProducts(loja: ILojaTray, accessToken: string): Prom
                 if (Array.isArray(Products)) {
                     for (const produto of Products) {
                         produtos.push({
-                            id: parseInt(produto.id),
-                            reference: produto.reference
+                            id: parseInt(produto.Product.id),
+                            reference: produto.Product.reference
                         });
                     }
                 }
