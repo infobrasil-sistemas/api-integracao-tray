@@ -15,16 +15,18 @@ export async function encontrarProdutosNaoSincronizados(loja: ILojaTray, conexao
             level: 'info',
             message: `Total produtos da loja ${loja.LTR_CNPJ}: ${produtos.length}.`
         });
-        const produtosNaoSincronizados: number[] = []
+        const produtosNaoSincronizadosIds: number[] = []
+        const produtosNaoSincronizadosRefs: string[] = []
         for (const produto of produtos) {
             const pro_codigo: string | null = await encontrarRelacaoProduto(loja, conexao, produto.id)
             if (!pro_codigo) {
-                produtosNaoSincronizados.push(produto.id)
+                produtosNaoSincronizadosIds.push(produto.id)
+                produtosNaoSincronizadosRefs.push(produto.reference)
             }
         }
         logger.log({
             level: 'info',
-            message: `Produtos não sincronizados da loja ${loja.LTR_CNPJ}:${produtosNaoSincronizados} .`
+            message: `Produtos não sincronizados da loja ${loja.LTR_CNPJ}: ${produtosNaoSincronizadosIds} / ${produtosNaoSincronizadosRefs} .`
         });
     } catch (error) {
         logger.log({
