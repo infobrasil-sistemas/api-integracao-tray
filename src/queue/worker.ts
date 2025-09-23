@@ -17,13 +17,13 @@ export const jobWorker = new Worker<JobData>(
 
     switch (jobType) {
       case 'estoques':
-        await withTimeout(SincronizarEstoques(), 30 * 60 * 1000, 'SincronizarEstoques');
+        //await withTimeout(SincronizarEstoques(), 30 * 60 * 1000, 'SincronizarEstoques');
         break;
       case 'produtos':
-        await withTimeout(SincronizarProdutos(), 5 * 60 * 1000, 'SincronizarProdutos');
+        //await withTimeout(SincronizarProdutos(), 5 * 60 * 1000, 'SincronizarProdutos');
         break;
       case 'categorias':
-        await withTimeout(SincronizarCategorias(), 5 * 60 * 1000, 'SincronizarCategorias');
+        //await withTimeout(SincronizarCategorias(), 5 * 60 * 1000, 'SincronizarCategorias');
         break;
       default:
         throw new Error(`Job não implementado: ${String(jobType)}`);
