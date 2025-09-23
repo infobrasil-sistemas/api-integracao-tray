@@ -27,7 +27,7 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
       UPDATE PRODUTOS PRO
       SET 
         PRO.PRO_ID_ECOMMERCE = ?,
-        PRO.PRO_ECOMMERCE = "S"
+        PRO.PRO_ECOMMERCE = 'S'
       WHERE PRO.PRO_CODIGO = ?
     `;
 
