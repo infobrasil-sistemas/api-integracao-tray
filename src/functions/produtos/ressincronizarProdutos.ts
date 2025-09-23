@@ -17,6 +17,7 @@ export async function ressincronizarProdutos(loja: ILojaTray, conexao: IConnecti
         let totalProdutosRessincronizados = 0
         for (const produto of produtos) {
             const pro_codigo: string | null = await ressincronizarProduto(loja, conexao, produto)
+            console.log(pro_codigo)
             if (pro_codigo) {
                 logger.log({
                     level: 'info',

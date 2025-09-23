@@ -4,7 +4,12 @@ import logger from "../../../utils/logger";
 
 export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produto: { id: number, reference: string }): Promise<any> {
     try {
-
+        if(!produto.reference){
+            logger.log({
+            level: 'info',
+            message: `Produto ${produto.id} sem referencia.`
+        });
+        }
         const selectSql = `
       SELECT PRO.PRO_CODIGO AS pro_codigo
       FROM PRODUTOS PRO
@@ -12,7 +17,7 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
         AND (PRO.PRO_REF = ? OR PRO.PRO_CODIGO = ?)
     `;
 
-        const candidato: { pro_codigo: number } | undefined = await new Promise((resolve, reject) => {
+        const candidato: { PRO_CODIGO: number } | undefined = await new Promise((resolve, reject) => {
             conexao.query(selectSql, [produto.reference, produto.reference], (err: any, rows: any[]) => {
                 if (err) return reject(err);
                 resolve(rows?.[0]);
@@ -34,18 +39,17 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
       WHERE PRO.PRO_CODIGO = ?
     `;
 
-        const params = [produto.id, candidato.pro_codigo];
+        const params = [produto.id, candidato.PRO_CODIGO];
 
-        const result: { affectedRows: number } = await new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             conexao.query(updateSql, params, (err: any, res: any) => {
                 if (err) return reject(err);
                 resolve(res);
             });
         });
 
-        return candidato.pro_codigo;
+        return candidato.PRO_CODIGO;
         
-
     } catch (error: any) {
         logger.log({
             level: 'error',
