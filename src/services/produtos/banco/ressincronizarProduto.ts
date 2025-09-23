@@ -28,7 +28,7 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
       UPDATE PRODUTOS PRO
       SET 
         PRO_ID_ECOMMERCE = ?,
-        PRO_ECOMMERCE = 'S'
+        PRO_ECOMMERCE = "S"
       WHERE PRO.PRO_CODIGO = ?
     `;
 
@@ -41,17 +41,13 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
             });
         });
 
-        // 3) Se atualizou pelo menos 1 linha, retorna o PRO_CODIGO; senão null
-        if (result?.affectedRows && result.affectedRows > 0) {
-            return candidato.pro_codigo;
-        }
-
-        return null;
+        return candidato.pro_codigo;
+        
 
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro ao ressincronizar produto ${produto.id} da loja ${loja.LTR_CNPJ}`
+            message: `Erro ao ressincronizar produto ${produto.id} da loja ${loja.LTR_CNPJ} -> ${error} / ${error?.message}`
         });
     }
 
