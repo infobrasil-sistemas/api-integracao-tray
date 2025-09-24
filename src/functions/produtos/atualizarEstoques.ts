@@ -10,7 +10,7 @@ import { IEstoqueProduto } from "../../services/produtos/interfaces";
 export async function atualizarEstoques(loja: ILojaTray, conexao: any, access_token: string) {
     try {
         const estoqueProdutosComVariacao = await getEstoqueProdutosComVariacao(loja, conexao);
-        const idsProdutosComVariacao = new Set(estoqueProdutosComVariacao.map((produto: IEstoqueProduto) => produto.pro_codigo));
+        const idsProdutosComVariacao = new Set(estoqueProdutosComVariacao.map((produto: IEstoqueProduto) => produto.reference));
         const estoqueProdutosSemVariacao = await getEstoqueProdutosSemVariacao(loja, conexao, Array.from(idsProdutosComVariacao));
         if (estoqueProdutosSemVariacao.length > 0) {
             for (const estoqueProdutoSemVariacao of estoqueProdutosSemVariacao) {
