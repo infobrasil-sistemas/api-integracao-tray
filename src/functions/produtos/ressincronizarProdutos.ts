@@ -14,27 +14,27 @@ export async function ressincronizarProdutos(loja: ILojaTray, conexao: IConnecti
             level: 'info',
             message: `Total produtos da loja ${loja.LTR_CNPJ}: ${produtos.length}.`
         });
-        // let totalProdutosRessincronizados = 0
-        // for (const produto of produtos) {
-        //     const pro_codigo: string | null = await ressincronizarProduto(loja, conexao, produto)
-        //     console.log(pro_codigo)
-        //     if (pro_codigo) {
-        //         logger.log({
-        //             level: 'info',
-        //             message: `Produto ${produto.id} ressincronizado com o produto ${pro_codigo} na infobrasil`
-        //         });
-        //         totalProdutosRessincronizados++
-        //     } else {
-        //         logger.log({
-        //             level: 'info',
-        //             message: `Produto ${produto.id} já está sincronizado.`
-        //         });
-        //     }
-        // }
-        // logger.log({
-        //     level: 'info',
-        //     message: `Total produtos ressincronizados da loja ${loja.LTR_CNPJ}: ${totalProdutosRessincronizados}.`
-        // });
+        let totalProdutosRessincronizados = 0
+        for (const produto of produtos) {
+            const pro_codigo: string | null = await ressincronizarProduto(loja, conexao, produto)
+            console.log(pro_codigo)
+            if (pro_codigo) {
+                logger.log({
+                    level: 'info',
+                    message: `Produto ${produto.id} ressincronizado com o produto ${pro_codigo} na infobrasil`
+                });
+                totalProdutosRessincronizados++
+            } else {
+                logger.log({
+                    level: 'info',
+                    message: `Produto ${produto.id} já está sincronizado.`
+                });
+            }
+        }
+        logger.log({
+            level: 'info',
+            message: `Total produtos ressincronizados da loja ${loja.LTR_CNPJ}: ${totalProdutosRessincronizados}.`
+        });
     } catch (error) {
         logger.log({
             level: 'error',

@@ -4,17 +4,18 @@ import logger from "../../../utils/logger";
 
 export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produto: { id: number, reference: string }): Promise<any> {
     try {
-        if(!produto.reference){
+        if (!produto.reference) {
             logger.log({
-            level: 'info',
-            message: `Produto ${produto.id} sem referencia.`
-        });
+                level: 'info',
+                message: `Produto ${produto.id} sem referencia.`
+            });
         }
         const selectSql = `
       SELECT PRO.PRO_CODIGO AS pro_codigo
       FROM PRODUTOS PRO
-      WHERE PRO.PRO_ID_ECOMMERCE IS NULL
-        AND (PRO.PRO_REF = ? OR PRO.PRO_CODIGO = ?)
+      WHERE PRO.PRO_ID_ECOMMERCE IS NULL 
+      AND PRO.PRO_SITUACAO = 'A'
+      AND (PRO.PRO_REF = ? OR PRO.PRO_CODIGO = ?)
     `;
 
         const candidato: { PRO_CODIGO: number } | undefined = await new Promise((resolve, reject) => {
@@ -26,8 +27,6 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
 
         // Se não achou nenhum candidato que satisfaça o WHERE, não tem o que atualizar
         if (!candidato) return null;
-        console.log(JSON.stringify(candidato))
-        console.log(JSON.stringify(produto))
 
 
         // 2) Executa o UPDATE
@@ -49,12 +48,11 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
         });
 
         return candidato.PRO_CODIGO;
-        
+
     } catch (error: any) {
         logger.log({
             level: 'error',
             message: `Erro ao ressincronizar produto ${produto.id} da loja ${loja.LTR_CNPJ} -> ${error} / ${error?.message}`
         });
     }
-
 }

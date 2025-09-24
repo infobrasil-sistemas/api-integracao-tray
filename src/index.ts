@@ -24,7 +24,7 @@ app.put(`/endereco/atualizar`, atualizarDadosEnderecoController);
 
 app.listen(PORT, async () => {
   logger.info(`API rodando na porta ${PORT}.`);
-  //await RessincronizarProdutos()
+  await RessincronizarProdutos()
   // Se quiser agendar via API (em vez do serviço scheduler), descomente:
   // await upsertSchedulers();
 });
