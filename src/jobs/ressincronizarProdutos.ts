@@ -21,7 +21,7 @@ export async function RessincronizarProdutos() {
                 conexao = await getLojaDatabaseConnection(dadosConexao);
                 const accessToken = await tratarTokens(loja, apiConexao);
 
-                await ressincronizarProdutos(loja, conexao, accessToken);
+                await encontrarProdutosNaoSincronizados(loja, conexao, accessToken);
             } catch (error) {
                 logger.log({
                     level: 'error',
