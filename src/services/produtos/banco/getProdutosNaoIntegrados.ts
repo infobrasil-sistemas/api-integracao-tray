@@ -43,7 +43,7 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): P
 
         0 AS "stock",
 
-        GRU.gru_id_ecommerce AS "category_id",
+        --GRU.gru_id_ecommerce AS "category_id",
         0 AS "available",
         null AS "availability",
         null AS "availability_days",
@@ -59,7 +59,7 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): P
         null AS "local"
     FROM PRODUTOS PRO
     JOIN MARCAS MAR ON MAR.mar_codigo = PRO.mar_codigo
-    JOIN GRUPOSPRO GRU ON PRO.gru_codigo = GRU.gru_codigo
+    --JOIN GRUPOSPRO GRU ON PRO.gru_codigo = GRU.gru_codigo
     WHERE PRO.PRO_ECOMMERCE = 'S' AND PRO.PRO_ID_ECOMMERCE is null AND PRO.PRO_SITUACAO = 'A'
 `;
 
