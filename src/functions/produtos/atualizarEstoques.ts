@@ -12,7 +12,6 @@ export async function atualizarEstoques(loja: ILojaTray, conexao: any, access_to
         const estoqueProdutosComVariacao = await getEstoqueProdutosComVariacao(loja, conexao);
         const idsProdutosComVariacao = new Set(estoqueProdutosComVariacao.map((produto: IEstoqueProduto) => produto.reference));
         const estoqueProdutosSemVariacao = await getEstoqueProdutosSemVariacao(loja, conexao, Array.from(idsProdutosComVariacao));
-        console.log(JSON.stringify(estoqueProdutosSemVariacao))
         if (estoqueProdutosSemVariacao.length > 0) {
             for (const estoqueProdutoSemVariacao of estoqueProdutosSemVariacao) {
                 await atualizarEstoque(loja, conexao, access_token, estoqueProdutoSemVariacao)
