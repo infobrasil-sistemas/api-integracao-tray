@@ -77,6 +77,8 @@ export async function getEstoqueProdutosSemVariacao(
             PRO.pro_codigo
         `;
 
+        console.log(query)
+
         // Definir os parâmetros corretamente
         const params = [
             ...lojasEstoque,
