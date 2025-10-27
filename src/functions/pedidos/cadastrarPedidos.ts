@@ -35,13 +35,19 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
 
                     try {
                         const cli_codigo = await upsertCliente(loja, transaction, pedido.Customer)
+
+                        logger.log({
+                            level: 'info',
+                            message: `upsert cliente OK`
+                        });
+
                         const ven_numero = await cadastrarPedido(loja, transaction, pedido, cli_codigo)
 
                         logger.log({
                             level: 'info',
-                            message: `upsert cliente + venda OK`
+                            message: `cadastrar venda OK`
                         });
-                        
+
                         let descontoTotalItens = 0
                         for (const produtoVendido of pedido.ProductsSold) {
                             const desconto = produtoVendido.quantity * (produtoVendido.original_price - produtoVendido.price)
