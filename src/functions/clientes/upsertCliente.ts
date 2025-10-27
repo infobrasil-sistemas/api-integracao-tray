@@ -9,7 +9,15 @@ import logger from "../../utils/logger";
 export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: ICustomerWithDeliveryAddress): Promise<number> {
     try {
         const documento = cliente.cpf ? cliente.cpf : cliente.cnpj
+        logger.log({
+                level: 'info',
+                message: `get codigo cliente`
+        });
         const clienteCodigo = await getCodigoCliente(loja, transaction, cliente.id, documento!)
+        logger.log({
+                level: 'info',
+                message: `get codigo cliente OK`
+        });
 
         let munCodigo: number | null = null
         let endereco: ICustomerAddress | null = null
@@ -72,27 +80,13 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
         };
 
         if (clienteCodigo) {
-            logger.log({
-                level: 'info',
-                message: `atualizar cliente`
-            });
+
             await atualizarCliente(loja, transaction, clienteComMunCodigo)
-            logger.log({
-                level: 'info',
-                message: `atualizar cliente OK`
-            });
             return clienteCodigo
         }
         else {
-            logger.log({
-                level: 'info',
-                message: `cadastrar cliente`
-            });
+
             const clienteCodigo = await cadastrarCliente(loja, transaction, clienteComMunCodigo)
-            logger.log({
-                level: 'info',
-                message: `cadastrar cliente OK`
-            });
             return clienteCodigo
         }
     } catch (error) {

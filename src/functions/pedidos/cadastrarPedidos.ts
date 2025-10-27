@@ -36,17 +36,7 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                     try {
                         const cli_codigo = await upsertCliente(loja, transaction, pedido.Customer)
 
-                        logger.log({
-                            level: 'info',
-                            message: `upsert cliente OK`
-                        });
-
                         const ven_numero = await cadastrarPedido(loja, transaction, pedido, cli_codigo)
-
-                        logger.log({
-                            level: 'info',
-                            message: `cadastrar venda OK`
-                        });
 
                         let descontoTotalItens = 0
                         for (const produtoVendido of pedido.ProductsSold) {
@@ -61,18 +51,8 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                             }
                         }
 
-                        logger.log({
-                            level: 'info',
-                            message: `produtos da venda OK`
-                        });
-
                         await atualizarFinanceiroPedido(loja, transaction, pedido, ven_numero, descontoTotalItens)
                         await atualizarStatusPedidoSincronizado(loja, access_token, pedido.id)
-
-                        logger.log({
-                            level: 'info',
-                            message: `financeiro e status OK`
-                        });
 
                         await new Promise((resolve, reject) => {
                             transaction.commit((err: any) => {
