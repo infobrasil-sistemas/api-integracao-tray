@@ -4,6 +4,7 @@ import { getMunCodigoByCityName } from "../../services/clientes/consultas/getMun
 import { atualizarCliente } from "../../services/clientes/envios/atualizarCliente";
 import { cadastrarCliente } from "../../services/clientes/envios/cadastrarCliente";
 import { ICustomerAddress, ICustomerWithDeliveryAddress } from "../../services/pedidos/interfaces";
+import logger from "../../utils/logger";
 
 export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: ICustomerWithDeliveryAddress): Promise<number> {
     try {
@@ -71,11 +72,28 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
         };
 
         if (clienteCodigo) {
+            logger.log({
+                level: 'info',
+                message: `atualizar cliente`
+            });
             await atualizarCliente(loja, transaction, clienteComMunCodigo)
+            logger.log({
+                level: 'info',
+                message: `atualizar cliente OK`
+            });
             return clienteCodigo
         }
         else {
-            return await cadastrarCliente(loja, transaction, clienteComMunCodigo)
+            logger.log({
+                level: 'info',
+                message: `cadastrar cliente`
+            });
+            const clienteCodigo = await cadastrarCliente(loja, transaction, clienteComMunCodigo)
+            logger.log({
+                level: 'info',
+                message: `cadastrar cliente OK`
+            });
+            return clienteCodigo
         }
     } catch (error) {
         throw error
