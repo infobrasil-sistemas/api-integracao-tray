@@ -5,11 +5,6 @@ import { sanitizeCity } from '../../../utils/sanitizeCity';
 export async function getMunCodigoByCityName(loja: ILojaTray, transaction: any, city: string): Promise<number | null> {
     try {
         const sanitizedCity = sanitizeCity(city)
-        
-        logger.log({
-            level: 'error',
-            message: `${city} - ${sanitizedCity}`
-        });
 
         const query = `
         SELECT MUN.MUN_CODIGO FROM MUNICIPIOS MUN
@@ -19,7 +14,7 @@ export async function getMunCodigoByCityName(loja: ILojaTray, transaction: any, 
         return new Promise((resolve, reject) => {
             transaction.query(query, [], (err: any, result: any) => {
                 if (err) {
-                    return reject(err);
+                    return reject(new Error(`Erro ao obter código do municipio ${city} da loja ${loja.LTR_CNPJ} -> ${err}`));
                 }
                 resolve(result[0]?.MUN_CODIGO || null);
             });
