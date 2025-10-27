@@ -35,7 +35,6 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
 
                     try {
                         const cli_codigo = await upsertCliente(loja, transaction, pedido.Customer)
-
                         const ven_numero = await cadastrarPedido(loja, transaction, pedido, cli_codigo)
 
                         let descontoTotalItens = 0

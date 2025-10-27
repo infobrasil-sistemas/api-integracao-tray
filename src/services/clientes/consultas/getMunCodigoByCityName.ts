@@ -1,9 +1,15 @@
 import { ILojaTray } from '../../../interfaces/ILojaTray';
+import logger from '../../../utils/logger';
 import { sanitizeCity } from '../../../utils/sanitizeCity';
 
 export async function getMunCodigoByCityName(loja: ILojaTray, transaction: any, city: string): Promise<number | null> {
     try {
         const sanitizedCity = sanitizeCity(city)
+        
+        logger.log({
+            level: 'error',
+            message: `${city} - ${sanitizedCity}`
+        });
 
         const query = `
         SELECT MUN.MUN_CODIGO FROM MUNICIPIOS MUN
