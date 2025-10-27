@@ -9,15 +9,8 @@ import logger from "../../utils/logger";
 export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: ICustomerWithDeliveryAddress): Promise<number> {
     try {
         const documento = cliente.cpf ? cliente.cpf : cliente.cnpj
-        logger.log({
-                level: 'info',
-                message: `get codigo cliente`
-        });
+
         const clienteCodigo = await getCodigoCliente(loja, transaction, cliente.id, documento!)
-        logger.log({
-                level: 'info',
-                message: `get codigo cliente OK`
-        });
 
         let munCodigo: number | null = null
         let endereco: ICustomerAddress | null = null
@@ -26,7 +19,16 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
 
         if (cliente.CustomerAddresses) {
             for (const address of cliente.CustomerAddresses) {
+                logger.log({
+                    level: 'info',
+                    message: `get mun codigo`
+                });
                 const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, address.city);
+
+                logger.log({
+                    level: 'info',
+                    message: `get codigo cliente OK`
+                });
 
                 if (!codigoMunicipio) {
                     throw new Error(`Município não encontrado para a cidade "${address.city}" ao processar o endereço ${address.id} do cliente ${cliente.id}`);
@@ -49,8 +51,15 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
             }
         }
         else {
+            logger.log({
+                level: 'info',
+                message: `get mun codigo by city name`
+            });
             const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, cliente.city);
-
+            logger.log({
+                level: 'info',
+                message: `get mun codigo by city name ok`
+            });
             if (!codigoMunicipio) {
                 throw new Error(`Município não encontrado para a cidade "${cliente.city}" ao processar o endereço do cliente ${cliente.id}`);
             }
@@ -80,12 +89,10 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
         };
 
         if (clienteCodigo) {
-
             await atualizarCliente(loja, transaction, clienteComMunCodigo)
             return clienteCodigo
         }
         else {
-
             const clienteCodigo = await cadastrarCliente(loja, transaction, clienteComMunCodigo)
             return clienteCodigo
         }
