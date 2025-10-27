@@ -17,18 +17,14 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
         let munCodigoEnt: number | null = null
         let enderecoEnt: ICustomerAddress | null = null
 
-        if (cliente.CustomerAddresses) {
+        if (cliente.CustomerAddresses.length > 0) {
             for (const address of cliente.CustomerAddresses) {
-                logger.log({
-                    level: 'info',
-                    message: `get mun codigo`
-                });
-                const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, address.city);
 
-                logger.log({
-                    level: 'info',
-                    message: `get codigo cliente OK`
-                });
+                if (!address.city) {
+                    throw new Error(`Cliente ${cliente.id} sem Cidade/Municipio no endereço ${address.id}`);
+                }
+
+                const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, address.city);
 
                 if (!codigoMunicipio) {
                     throw new Error(`Município não encontrado para a cidade "${address.city}" ao processar o endereço ${address.id} do cliente ${cliente.id}`);
@@ -51,15 +47,8 @@ export async function upsertCliente(loja: ILojaTray, transaction: any, cliente: 
             }
         }
         else {
-            logger.log({
-                level: 'info',
-                message: `get mun codigo by city name`
-            });
             const codigoMunicipio = await getMunCodigoByCityName(loja, transaction, cliente.city);
-            logger.log({
-                level: 'info',
-                message: `get mun codigo by city name ok`
-            });
+
             if (!codigoMunicipio) {
                 throw new Error(`Município não encontrado para a cidade "${cliente.city}" ao processar o endereço do cliente ${cliente.id}`);
             }
