@@ -37,6 +37,11 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                         const cli_codigo = await upsertCliente(loja, transaction, pedido.Customer)
                         const ven_numero = await cadastrarPedido(loja, transaction, pedido, cli_codigo)
 
+                        logger.log({
+                            level: 'info',
+                            message: `upsert cliente + venda OK`
+                        });
+                        
                         let descontoTotalItens = 0
                         for (const produtoVendido of pedido.ProductsSold) {
                             const desconto = produtoVendido.quantity * (produtoVendido.original_price - produtoVendido.price)
@@ -49,8 +54,19 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                                 await cadastrarProdutoVendido(loja, transaction, produtoVendido, nossoProduto, ven_numero, desconto)
                             }
                         }
+
+                        logger.log({
+                            level: 'info',
+                            message: `produtos da venda OK`
+                        });
+
                         await atualizarFinanceiroPedido(loja, transaction, pedido, ven_numero, descontoTotalItens)
                         await atualizarStatusPedidoSincronizado(loja, access_token, pedido.id)
+
+                        logger.log({
+                            level: 'info',
+                            message: `financeiro e status OK`
+                        });
 
                         await new Promise((resolve, reject) => {
                             transaction.commit((err: any) => {
