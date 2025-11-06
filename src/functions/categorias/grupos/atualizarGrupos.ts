@@ -22,7 +22,7 @@ export async function atualizarGrupos(loja: ILojaTray, conexao: any, accessToken
                 if (axios.isAxiosError(error)) {
                     logger.log({
                         level: 'error',
-                        message: `Erro ao atualizar o grupo ${grupoIntegrado.name} da loja ${loja.LTR_CNPJ} -> 
+                        message: `Erro ao atualizar o grupo ${grupoIntegrado.name} da loja ${loja.LTR_NOME} -> 
                         Status: ${error.response?.status || 'Sem status'} 
                         Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                         Endpoint: ${error.response?.data.url || ''}`
@@ -30,7 +30,7 @@ export async function atualizarGrupos(loja: ILojaTray, conexao: any, accessToken
                 } else {
                     logger.log({
                         level: 'error',
-                        message: `Erro inesperado ao atualizar o grupo ${grupoIntegrado.name} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                        message: `Erro inesperado ao atualizar o grupo ${grupoIntegrado.name} da loja ${loja.LTR_NOME} -> ${error.message}`
                     });
                 }
             }
@@ -38,7 +38,7 @@ export async function atualizarGrupos(loja: ILojaTray, conexao: any, accessToken
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao atualizar grupos da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao atualizar grupos da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 

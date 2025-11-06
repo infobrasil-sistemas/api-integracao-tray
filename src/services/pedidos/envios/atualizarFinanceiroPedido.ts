@@ -79,6 +79,6 @@ export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: an
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao atualizar financeiro do pedido ${VEN_NUMERO} da loja ${loja.LTR_CNPJ} -> ${error}`);
+        throw new Error(`Erro ao atualizar financeiro do pedido ${VEN_NUMERO} da loja ${loja.LTR_NOME} -> ${error}`);
     }
 }

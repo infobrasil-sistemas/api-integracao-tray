@@ -21,9 +21,9 @@ export async function cadastrarStatusSincronizado(loja: ILojaTrayInicializar, ac
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro ao cadastrar status SINCRONIZADO na inicialização da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao cadastrar status SINCRONIZADO na inicialização da loja ${loja.LTR_NOME} -> ${error}`
         });
-        throw new Error(`Erro ao cadastrar status SINCRONIZADO na inicialização da loja ${loja.LTR_CNPJ} -> ${error}`)
+        throw new Error(`Erro ao cadastrar status SINCRONIZADO na inicialização da loja ${loja.LTR_NOME} -> ${error}`)
     }
 
 }

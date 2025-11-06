@@ -20,6 +20,6 @@ export async function getCodigoCliente(loja: ILojaTray, transaction: any, id: nu
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter código do cliente ${id} da loja ${loja.LTR_CNPJ} -> ${error}`)
+        throw new Error(`Erro ao obter código do cliente ${id} da loja ${loja.LTR_NOME} -> ${error}`)
     }
 }

@@ -20,7 +20,7 @@ export async function atualizarSecoes(loja: ILojaTray, conexao: any, accessToken
                 if (axios.isAxiosError(error)) {
                     logger.log({
                         level: 'error',
-                        message: `Erro ao atualizar a seção ${secaoIntegrada.name} da loja ${loja.LTR_CNPJ} -> 
+                        message: `Erro ao atualizar a seção ${secaoIntegrada.name} da loja ${loja.LTR_NOME} -> 
                         Status: ${error.response?.status || 'Sem status'} 
                         Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                         Endpoint: ${error.response?.data.url || ''}`
@@ -28,7 +28,7 @@ export async function atualizarSecoes(loja: ILojaTray, conexao: any, accessToken
                 } else {
                     logger.log({
                         level: 'error',
-                        message: `Erro inesperado ao atualizar a seção ${secaoIntegrada.name} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                        message: `Erro inesperado ao atualizar a seção ${secaoIntegrada.name} da loja ${loja.LTR_NOME} -> ${error.message}`
                     });
                 }
             }
@@ -36,7 +36,7 @@ export async function atualizarSecoes(loja: ILojaTray, conexao: any, accessToken
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao atualizar seções da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao atualizar seções da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 

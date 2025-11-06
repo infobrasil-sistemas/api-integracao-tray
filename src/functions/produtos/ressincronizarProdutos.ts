@@ -12,7 +12,7 @@ export async function ressincronizarProdutos(loja: ILojaTray, conexao: IConnecti
         const produtos = await getAllProducts(loja, accessToken)
         logger.log({
             level: 'info',
-            message: `Total produtos da loja ${loja.LTR_CNPJ}: ${produtos.length}.`
+            message: `Total produtos da loja ${loja.LTR_NOME}: ${produtos.length}.`
         });
         let totalProdutosRessincronizados = 0
         for (const produto of produtos) {
@@ -32,12 +32,12 @@ export async function ressincronizarProdutos(loja: ILojaTray, conexao: IConnecti
         }
         logger.log({
             level: 'info',
-            message: `Total produtos ressincronizados da loja ${loja.LTR_CNPJ}: ${totalProdutosRessincronizados}.`
+            message: `Total produtos ressincronizados da loja ${loja.LTR_NOME}: ${totalProdutosRessincronizados}.`
         });
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao ressincronizar produtos da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao ressincronizar produtos da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 }

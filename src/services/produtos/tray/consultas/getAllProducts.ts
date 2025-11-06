@@ -37,10 +37,10 @@ export async function getAllProducts(loja: ILojaTray, accessToken: string): Prom
                 page++;
             } else {
                 logger.error(
-                    `Erro ao buscar produtos da loja ${loja.LTR_CNPJ} -> ${response.data.message}`
+                    `Erro ao buscar produtos da loja ${loja.LTR_NOME} -> ${response.data.message}`
                 );
                 throw new Error(
-                    `Erro ao buscar produtos da loja ${loja.LTR_CNPJ} -> ${response.data.message}`
+                    `Erro ao buscar produtos da loja ${loja.LTR_NOME} -> ${response.data.message}`
                 );
             }
         } while (page <= totalPages);

@@ -44,9 +44,9 @@ export async function getEndereco(loja: ILojaTray, accessToken: string, id: numb
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro ao buscar endereço ${id} da loja ${loja.LTR_CNPJ} na tray -> ${response.data.message}`
+                message: `Erro ao buscar endereço ${id} da loja ${loja.LTR_NOME} na tray -> ${response.data.message}`
             });
-            throw new Error(`Erro ao buscar endereço ${id} da loja ${loja.LTR_CNPJ} na tray -> ${response.data.message}`);
+            throw new Error(`Erro ao buscar endereço ${id} da loja ${loja.LTR_NOME} na tray -> ${response.data.message}`);
         }
     } catch (error) {
         logger.log({

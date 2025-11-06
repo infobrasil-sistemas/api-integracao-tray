@@ -64,6 +64,6 @@ export async function getProdutosIntegrados(loja: ILojaTray, conexao: any): Prom
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter produtos integrados da loja ${loja.LTR_CNPJ}`)
+        throw new Error(`Erro ao obter produtos integrados da loja ${loja.LTR_NOME}`)
     }
 }

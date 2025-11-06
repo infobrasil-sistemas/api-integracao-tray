@@ -14,12 +14,12 @@ export async function getMunCodigoByCityName(loja: ILojaTray, transaction: any, 
         return new Promise((resolve, reject) => {
             transaction.query(query, [], (err: any, result: any) => {
                 if (err) {
-                    return reject(new Error(`Erro ao obter código do municipio ${city} da loja ${loja.LTR_CNPJ} -> ${err}`));
+                    return reject(new Error(`Erro ao obter código do municipio ${city} da loja ${loja.LTR_NOME} -> ${err}`));
                 }
                 resolve(result[0]?.MUN_CODIGO || null);
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter código do municipio ${city} da loja ${loja.LTR_CNPJ} -> ${error}`)
+        throw new Error(`Erro ao obter código do municipio ${city} da loja ${loja.LTR_NOME} -> ${error}`)
     }
 }

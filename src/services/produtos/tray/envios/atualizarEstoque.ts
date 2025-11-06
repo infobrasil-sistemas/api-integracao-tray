@@ -35,7 +35,7 @@ export async function atualizarEstoque(loja: ILojaTray, conexao: any, accessToke
         if (axios.isAxiosError(error)) {
             logger.log({
                 level: 'error',
-                message: `Erro ao atualizar estoque do produto ${estoque.reference} da loja ${loja.LTR_CNPJ} -> 
+                message: `Erro ao atualizar estoque do produto ${estoque.reference} da loja ${loja.LTR_NOME} -> 
                 Status: ${error.response?.status || 'Sem status'} 
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
@@ -44,13 +44,13 @@ export async function atualizarEstoque(loja: ILojaTray, conexao: any, accessToke
             //     await dessincronizarProdutoExcluido(loja, conexao, estoque.pro_codigo)
             //     logger.log({
             //         level: 'info',
-            //         message: `Produto excluido ${estoque.pro_codigo} da loja ${loja.LTR_CNPJ} dessincronizado com sucesso.`
+            //         message: `Produto excluido ${estoque.pro_codigo} da loja ${loja.LTR_NOME} dessincronizado com sucesso.`
             //     });
             // }
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro inesperado ao atualizar estoque do produto ${estoque.reference} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                message: `Erro inesperado ao atualizar estoque do produto ${estoque.reference} da loja ${loja.LTR_NOME} -> ${error.message}`
             });
         }
     }

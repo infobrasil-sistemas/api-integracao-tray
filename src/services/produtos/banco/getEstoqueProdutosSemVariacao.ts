@@ -94,6 +94,6 @@ export async function getEstoqueProdutosSemVariacao(
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter estoque dos produtos da loja ${loja.LTR_CNPJ}: ${error}`);
+        throw new Error(`Erro ao obter estoque dos produtos da loja ${loja.LTR_NOME}: ${error}`);
     }
 }

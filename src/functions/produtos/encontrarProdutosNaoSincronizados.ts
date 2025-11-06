@@ -13,7 +13,7 @@ export async function encontrarProdutosNaoSincronizados(loja: ILojaTray, conexao
         const produtos = await getAllProducts(loja, accessToken)
         logger.log({
             level: 'info',
-            message: `Total produtos da loja ${loja.LTR_CNPJ}: ${produtos.length}.`
+            message: `Total produtos da loja ${loja.LTR_NOME}: ${produtos.length}.`
         });
         const produtosNaoSincronizadosIds: number[] = []
         const produtosNaoSincronizadosRefs: string[] = []
@@ -26,12 +26,12 @@ export async function encontrarProdutosNaoSincronizados(loja: ILojaTray, conexao
         }
         logger.log({
             level: 'info',
-            message: `Produtos não sincronizados da loja ${loja.LTR_CNPJ}: ${produtosNaoSincronizadosIds} / ${produtosNaoSincronizadosRefs} .`
+            message: `Produtos não sincronizados da loja ${loja.LTR_NOME}: ${produtosNaoSincronizadosIds} / ${produtosNaoSincronizadosRefs} .`
         });
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao encontrar produtos nao sincronizados da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao encontrar produtos nao sincronizados da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 }

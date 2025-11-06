@@ -39,7 +39,7 @@ export async function cadastrarVariacao(loja: ILojaTray, conexao: any, accessTok
         if (axios.isAxiosError(error)) {
             logger.log({
                 level: 'error',
-                message: `Erro ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} -> 
+                message: `Erro ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_NOME} -> 
                 Status: ${error.response?.status || 'Sem status'} 
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
@@ -47,7 +47,7 @@ export async function cadastrarVariacao(loja: ILojaTray, conexao: any, accessTok
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro inesperado ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                message: `Erro inesperado ao cadastrar variação ${produtoVariacao.ean} da loja ${loja.LTR_NOME} -> ${error.message}`
             });
         }
     }

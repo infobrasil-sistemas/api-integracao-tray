@@ -17,7 +17,7 @@ export async function cadastrarSecoes(loja: ILojaTray, conexao: IConnectionOptio
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao cadastrar seções da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao cadastrar seções da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 }

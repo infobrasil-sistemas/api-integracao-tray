@@ -19,6 +19,6 @@ export async function getProdutosComVariacoes(loja: ILojaTray, conexao: any): Pr
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter produtos com variação da loja ${loja.LTR_CNPJ}`)
+        throw new Error(`Erro ao obter produtos com variação da loja ${loja.LTR_NOME}`)
     }
 }

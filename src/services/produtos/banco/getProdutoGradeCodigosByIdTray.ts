@@ -32,7 +32,7 @@ export async function getProdutoGradeCodigosByIdTray(loja: ILojaTray, transactio
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter códigos do produto grade ${id} da loja ${loja.LTR_CNPJ} -> ${error}`)
+        throw new Error(`Erro ao obter códigos do produto grade ${id} da loja ${loja.LTR_NOME} -> ${error}`)
     }
 
 }

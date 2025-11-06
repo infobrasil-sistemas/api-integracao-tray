@@ -16,9 +16,9 @@ export async function getCategorias(loja: ILojaTray, accessToken: string) {
         else {
             logger.log({
                 level: 'error',
-                message: `Erro ao buscar categorias da loja ${loja.LTR_CNPJ} -> ${response.data.message}`
+                message: `Erro ao buscar categorias da loja ${loja.LTR_NOME} -> ${response.data.message}`
             });
-            throw new Error(`Erro ao buscar categorias da loja ${loja.LTR_CNPJ} -> ${response.data.message}`)
+            throw new Error(`Erro ao buscar categorias da loja ${loja.LTR_NOME} -> ${response.data.message}`)
         }
     } catch (error) {
         logger.log({

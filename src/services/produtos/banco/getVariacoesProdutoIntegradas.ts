@@ -32,7 +32,7 @@ export async function getVariacoesProdutoIntegradas(loja: ILojaTray, conexao: an
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter variacoes do produto ${product_id} da loja ${loja.LTR_CNPJ}`)
+        throw new Error(`Erro ao obter variacoes do produto ${product_id} da loja ${loja.LTR_NOME}`)
     }
 
 

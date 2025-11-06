@@ -52,7 +52,7 @@ export async function ressincronizarProduto(loja: ILojaTray, conexao: any, produ
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro ao ressincronizar produto ${produto.id} da loja ${loja.LTR_CNPJ} -> ${error} / ${error?.message}`
+            message: `Erro ao ressincronizar produto ${produto.id} da loja ${loja.LTR_NOME} -> ${error} / ${error?.message}`
         });
     }
 }

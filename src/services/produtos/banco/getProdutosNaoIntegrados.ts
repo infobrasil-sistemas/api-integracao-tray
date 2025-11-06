@@ -76,7 +76,7 @@ export async function getProdutosNaoIntegrados(loja: ILojaTray, conexao: any): P
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter produtos nao integrados da loja ${loja.LTR_CNPJ}`)
+        throw new Error(`Erro ao obter produtos nao integrados da loja ${loja.LTR_NOME}`)
     }
 
 

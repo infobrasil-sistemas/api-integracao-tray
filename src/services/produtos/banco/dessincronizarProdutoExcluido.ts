@@ -27,7 +27,7 @@ export async function dessincronizarProdutoExcluido(loja: ILojaTray, conexao: an
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro ao dessincronizar produto excluido ${PRO_CODIGO} da loja ${loja.LTR_CNPJ}`
+            message: `Erro ao dessincronizar produto excluido ${PRO_CODIGO} da loja ${loja.LTR_NOME}`
         });
     }
 

@@ -34,7 +34,7 @@ export async function getPedidosAEnviar(loja: ILojaTray, accessToken: string): P
     return idOrders;
   } catch (error) {
     throw new Error(
-      `Erro ao buscar pedidos a enviar da loja ${loja.LTR_CNPJ}: ${error}`
+      `Erro ao buscar pedidos a enviar da loja ${loja.LTR_NOME}: ${error}`
     );
   }
 }

@@ -51,7 +51,7 @@ export async function getPedido(loja: ILojaTray, accessToken: string, id_pedido:
             formaPagamento = 'CARTAO';
         }
         else {
-            throw new Error(`Impossivel integrar pedido ${id} da loja ${loja.LTR_CNPJ} -> Forma de pagamento ausente ou inválida`);
+            throw new Error(`Impossivel integrar pedido ${id} da loja ${loja.LTR_NOME} -> Forma de pagamento ausente ou inválida`);
         }
 
         return {

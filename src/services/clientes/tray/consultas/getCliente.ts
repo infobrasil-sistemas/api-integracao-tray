@@ -72,9 +72,9 @@ export async function getCliente(loja: ILojaTray, accessToken: string, id: numbe
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro ao buscar cliente ${id} da loja ${loja.LTR_CNPJ} na tray -> ${response.data.message}`
+                message: `Erro ao buscar cliente ${id} da loja ${loja.LTR_NOME} na tray -> ${response.data.message}`
             });
-            throw new Error(`Erro ao buscar produto ${id} da loja ${loja.LTR_CNPJ} na tray -> ${response.data.message}`);
+            throw new Error(`Erro ao buscar produto ${id} da loja ${loja.LTR_NOME} na tray -> ${response.data.message}`);
         }
     } catch (error) {
         logger.log({

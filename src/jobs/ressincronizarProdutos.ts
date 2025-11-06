@@ -25,7 +25,7 @@ export async function RessincronizarProdutos() {
             } catch (error) {
                 logger.log({
                     level: 'error',
-                    message: `Erro na ressincronização de produtos da loja ${loja.LTR_CNPJ} -> ${error}`,
+                    message: `Erro na ressincronização de produtos da loja ${loja.LTR_NOME} -> ${error}`,
                 });
             } finally {
                 if (conexao) {

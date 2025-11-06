@@ -25,7 +25,7 @@ export async function atualizarProdutos(loja: ILojaTray, conexao: any, access_to
                 } catch (error) {
                     logger.log({
                         level: 'error',
-                        message: `Erro ao atualizar variações do produto ${produtoIntegrado.name} da loja ${loja.LTR_CNPJ} -> ${error}`
+                        message: `Erro ao atualizar variações do produto ${produtoIntegrado.name} da loja ${loja.LTR_NOME} -> ${error}`
                     });
                 }
             }
@@ -33,7 +33,7 @@ export async function atualizarProdutos(loja: ILojaTray, conexao: any, access_to
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro na rotina atualizar produtos da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro na rotina atualizar produtos da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 }

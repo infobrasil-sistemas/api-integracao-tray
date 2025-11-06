@@ -28,7 +28,7 @@ export async function getProdutoCodigoByIdTray(loja: ILojaTray, transaction: any
             });
         });
     } catch (error) {
-        throw new Error(`Erro ao obter código do produto ${id} da loja ${loja.LTR_CNPJ} -> ${error}`)
+        throw new Error(`Erro ao obter código do produto ${id} da loja ${loja.LTR_NOME} -> ${error}`)
     }
 
 }

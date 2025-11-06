@@ -44,16 +44,16 @@ export async function atualizarTokens(loja: ILojaTray, conexao: any) {
 
         logger.log({
             level: 'info',
-            message: `Tokens da loja ${loja.LTR_CNPJ} atualizados com sucesso.`
+            message: `Tokens da loja ${loja.LTR_NOME} atualizados com sucesso.`
         });
 
         return response.data.access_token
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao atualizar tokens da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao atualizar tokens da loja ${loja.LTR_NOME} -> ${error}`
         });
-        throw new Error(`Erro ao atualizar tokens da loja ${loja.LTR_CNPJ} -> ${error}`)
+        throw new Error(`Erro ao atualizar tokens da loja ${loja.LTR_NOME} -> ${error}`)
     }
 
 }

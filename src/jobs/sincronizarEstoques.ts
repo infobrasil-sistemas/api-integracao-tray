@@ -30,7 +30,7 @@ export async function SincronizarEstoques() {
       } catch (error) {
         logger.log({
           level: 'error',
-          message: `Erro na sincronização de estoques e pedidos da loja ${loja.LTR_CNPJ} -> ${error}`,
+          message: `Erro na sincronização de estoques e pedidos da loja ${loja.LTR_NOME} -> ${error}`,
         });
       } finally {
         if (conexao) {

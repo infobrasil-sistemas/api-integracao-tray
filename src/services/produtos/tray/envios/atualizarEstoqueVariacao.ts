@@ -33,7 +33,7 @@ export async function atualizarEstoqueVariacao(loja: ILojaTray, accessToken: str
         if (axios.isAxiosError(error)) {
             logger.log({
                 level: 'error',
-                message: `Erro ao atualizar estoque da variação ${estoque.id} da loja ${loja.LTR_CNPJ} -> 
+                message: `Erro ao atualizar estoque da variação ${estoque.id} da loja ${loja.LTR_NOME} -> 
                 Status: ${error.response?.status || 'Sem status'} 
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
@@ -41,7 +41,7 @@ export async function atualizarEstoqueVariacao(loja: ILojaTray, accessToken: str
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro inesperado ao atualizar estoque da variação ${estoque.id} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                message: `Erro inesperado ao atualizar estoque da variação ${estoque.id} da loja ${loja.LTR_NOME} -> ${error.message}`
             });
         }
     }

@@ -26,7 +26,7 @@ export async function atualizarEstoques(loja: ILojaTray, conexao: any, access_to
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro na rotina atualizar estoques da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro na rotina atualizar estoques da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 }

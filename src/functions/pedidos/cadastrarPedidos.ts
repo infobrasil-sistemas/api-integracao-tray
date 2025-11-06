@@ -25,7 +25,7 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                             if (err) {
                                 logger.log({
                                     level: 'error',
-                                    message: `Erro ao iniciar transação no banco da loja ${loja.LTR_CNPJ}: ${err}`
+                                    message: `Erro ao iniciar transação no banco da loja ${loja.LTR_NOME}: ${err}`
                                 });
                                 return reject(err);
                             }
@@ -57,7 +57,7 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                             transaction.commit((err: any) => {
                                 if (err) {
                                     transaction.rollback();
-                                    reject(`Erro ao fazer commit do pedido ${pedido.id} da loja ${loja.LTR_CNPJ}: ${err}`);
+                                    reject(`Erro ao fazer commit do pedido ${pedido.id} da loja ${loja.LTR_NOME}: ${err}`);
                                 }
                                 resolve(true);
                             });
@@ -67,7 +67,7 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
                         transaction.rollback();
                         logger.log({
                             level: 'error',
-                            message: `Erro ao sincronizar pedido ${pedido.id} da loja ${loja.LTR_CNPJ} -> ${error}`
+                            message: `Erro ao sincronizar pedido ${pedido.id} da loja ${loja.LTR_NOME} -> ${error}`
                         });
                     }
                 }
@@ -77,7 +77,7 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
         if (axios.isAxiosError(error)) {
             logger.log({
                 level: 'error',
-                message: `Erro na rotina cadastrar pedidos da loja ${loja.LTR_CNPJ} -> 
+                message: `Erro na rotina cadastrar pedidos da loja ${loja.LTR_NOME} -> 
                 Status: ${error.response?.status || 'Sem status'} 
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
@@ -85,7 +85,7 @@ export async function cadastrarPedidos(loja: ILojaTray, conexao: any, access_tok
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro inesperado na rotina cadastrar pedidos da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                message: `Erro inesperado na rotina cadastrar pedidos da loja ${loja.LTR_NOME} -> ${error.message}`
             });
         }
     }

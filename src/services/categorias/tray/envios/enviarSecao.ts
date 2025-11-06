@@ -38,7 +38,7 @@ export async function enviarSecao(loja: ILojaTray, conexao: any, accessToken: st
         if (axios.isAxiosError(error)) {
             logger.log({
                 level: 'error',
-                message: `Erro ao cadastrar seção ${secao.name} da loja ${loja.LTR_CNPJ} -> 
+                message: `Erro ao cadastrar seção ${secao.name} da loja ${loja.LTR_NOME} -> 
                 Status: ${error.response?.status || 'Sem status'} 
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
@@ -46,7 +46,7 @@ export async function enviarSecao(loja: ILojaTray, conexao: any, accessToken: st
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro inesperado ao cadastrar seção ${secao.name} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                message: `Erro inesperado ao cadastrar seção ${secao.name} da loja ${loja.LTR_NOME} -> ${error.message}`
             });
         }
     }

@@ -15,7 +15,7 @@ export async function cadastrarGrupos(loja: ILojaTray, conexao: IConnectionOptio
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro ao cadastrar grupos da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro ao cadastrar grupos da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 

@@ -11,7 +11,7 @@ export async function getPedidoCompleto(loja: ILojaTray, access_token: string, i
         if (axios.isAxiosError(error)) {
             logger.log({
                 level: 'error',
-                message: `Erro ao obter dados do pedido ${id} da loja ${loja.LTR_CNPJ} -> 
+                message: `Erro ao obter dados do pedido ${id} da loja ${loja.LTR_NOME} -> 
                 Status: ${error.response?.status || 'Sem status'} 
                 Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
                 Endpoint: ${error.response?.data.url || ''}`
@@ -19,7 +19,7 @@ export async function getPedidoCompleto(loja: ILojaTray, access_token: string, i
         } else {
             logger.log({
                 level: 'error',
-                message: `Erro inesperado ao obter dados do pedido ${id} da loja ${loja.LTR_CNPJ} -> ${error.message}`
+                message: `Erro inesperado ao obter dados do pedido ${id} da loja ${loja.LTR_NOME} -> ${error.message}`
             });
         }
     }

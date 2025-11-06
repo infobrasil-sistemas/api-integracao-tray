@@ -34,7 +34,7 @@ export async function cadastrarProdutos(loja: ILojaTray, conexao: any, access_to
     } catch (error) {
         logger.log({
             level: 'error',
-            message: `Erro na rotina cadastrar produtos da loja ${loja.LTR_CNPJ} -> ${error}`
+            message: `Erro na rotina cadastrar produtos da loja ${loja.LTR_NOME} -> ${error}`
         });
     }
 

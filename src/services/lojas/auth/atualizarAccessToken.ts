@@ -37,7 +37,7 @@ export async function atualizarAccessToken(loja: ILojaTray, conexao: any) {
 
         logger.log({
             level: 'info',
-            message: `Access token da loja ${loja.LTR_CNPJ} atualizado com sucesso.`
+            message: `Access token da loja ${loja.LTR_NOME} atualizado com sucesso.`
         });
 
         return response.data.access_token
@@ -45,7 +45,7 @@ export async function atualizarAccessToken(loja: ILojaTray, conexao: any) {
     } catch (error: any) {
         logger.log({
             level: 'error',
-            message: `Erro ao atualizar Access token da loja ${loja.LTR_CNPJ} -> 
+            message: `Erro ao atualizar Access token da loja ${loja.LTR_NOME} -> 
             Status: ${error.response?.status || 'Sem status'} 
             Mensagem: ${JSON.stringify(error.response?.data.causes) || error.message} 
             Endpoint: ${error.response?.data.url || ''}`
