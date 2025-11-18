@@ -35,7 +35,7 @@ export async function getPedido(loja: ILojaTray, accessToken: string, id_pedido:
             ProductsSold,
         } = pedido;
 
-        let formaPagamento = '';
+        let formaPagamento: string | null = '';
         const metodoPagamentoLower = payment_method
             .toLowerCase()
             .normalize("NFD")
@@ -50,9 +50,12 @@ export async function getPedido(loja: ILojaTray, accessToken: string, id_pedido:
         } else if (metodoPagamentoLower.includes('cartao')) {
             formaPagamento = 'CARTAO';
         }
-        else {
-            throw new Error(`Impossivel integrar pedido ${id} da loja ${loja.LTR_NOME} -> Forma de pagamento ausente ou inválida: ${metodoPagamentoLower} / ${payment_method}`);
+        else{
+            formaPagamento = null
         }
+        // else {
+        //     throw new Error(`Impossivel integrar pedido ${id} da loja ${loja.LTR_NOME} -> Forma de pagamento ausente ou inválida: ${metodoPagamentoLower} / ${payment_method}`);
+        // }
 
         return {
             id: parseInt(id),

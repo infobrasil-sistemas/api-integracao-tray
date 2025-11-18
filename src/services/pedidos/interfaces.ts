@@ -116,7 +116,7 @@ export interface IOrder {
     payment_method_rate?: number; // Taxa do meio de pagamento
     installment?: number; // Quantidade de parcelas
     delivery_time?: string; // Tempo de entrega
-    payment_method: string; // Meio de pagamento
+    payment_method: string | null; // Meio de pagamento
     total: number; // Valor total do pedido
     payment_date: Date; // Data de pagamento
     interest?: number; // Juros do pedido

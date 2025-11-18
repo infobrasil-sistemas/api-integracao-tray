@@ -8,18 +8,26 @@ export async function atualizarFinanceiroPedido(loja: ILojaTray, transaction: an
         let PP1_CODIGO;
         const data = dayjs(pedido.date).format('YYYY-MM-DD')
 
-        if (pedido.payment_method.toLowerCase().includes('boleto')) {
-            FP1_CODIGO = 9997;
-            PP1_CODIGO = pedido.installment || 1
-        } else if (pedido.payment_method.toLowerCase().includes('pix')) {
-            FP1_CODIGO = 9998;
-            PP1_CODIGO = 99
-        } else if (pedido.payment_method.toLowerCase().includes('cartao')) {
-            FP1_CODIGO = 9999;
-            PP1_CODIGO = pedido.installment || 1
-        } else {
-            throw new Error('A forma de pagamento do pedido é inexistente ou inválida')
+        if (pedido.payment_method) {
+            if (pedido.payment_method.toLowerCase().includes('boleto')) {
+                FP1_CODIGO = 9997;
+                PP1_CODIGO = pedido.installment || 1
+            } else if (pedido.payment_method.toLowerCase().includes('pix')) {
+                FP1_CODIGO = 9998;
+                PP1_CODIGO = 99
+            } else if (pedido.payment_method.toLowerCase().includes('cartao')) {
+                FP1_CODIGO = 9999;
+                PP1_CODIGO = pedido.installment || 1
+            }
         }
+        else {
+            FP1_CODIGO = null;
+            PP1_CODIGO = null
+        }
+
+        // else {
+        //     throw new Error('A forma de pagamento do pedido é inexistente ou inválida')
+        // }
 
         const descontoTotalVenda = descontoTotalItens + (pedido.discount || 0)
         const totalBruto = pedido.partial_total + descontoTotalItens
