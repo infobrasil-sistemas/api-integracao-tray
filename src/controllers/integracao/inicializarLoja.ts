@@ -47,7 +47,9 @@ const inicializarLojaSchema = z.object({
     LTR_ESTOQUE_MINIMO: z.number(),
     LTR_SINCRONIZA_ALTERACOES: z.string(),
     USU_CODIGO: z.number().nullish(),
-    LTR_SINCRONIZA_PROMOCOES: z.string()
+    LTR_SINCRONIZA_PROMOCOES: z.string(),
+    LTR_NOME: z.string(),
+    LTR_SINCRONIZA_CADASTROS: z.string()
 });
 
 export async function inicializarLoja(req: Request, res: Response) {
@@ -104,7 +106,9 @@ export async function inicializarLoja(req: Request, res: Response) {
             DAD_CODIGO: DAD_CODIGO,
             LTR_SINCRONIZA_ALTERACOES: data.LTR_SINCRONIZA_ALTERACOES,
             USU_CODIGO: data.USU_CODIGO || undefined,
-            LTR_SINCRONIZA_PROMOCOES: data.LTR_SINCRONIZA_PROMOCOES
+            LTR_SINCRONIZA_PROMOCOES: data.LTR_SINCRONIZA_PROMOCOES,
+            LTR_NOME: data.LTR_NOME,
+            LTR_SINCRONIZA_CADASTROS: data.LTR_SINCRONIZA_CADASTROS
         }
 
         const requestBody = {
@@ -147,11 +151,13 @@ export async function inicializarLoja(req: Request, res: Response) {
         const dadosConexao = await getLojaDbConfig(lojaInicializada.DAD_CODIGO)
         conexaoLoja = await getLojaDatabaseConnection(dadosConexao);
 
-        await cadastrarCategorias(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
-        operacoes.categorias = 'SUCESSO'
+        if (lojaCadastrada.LTR_SINCRONIZA_CADASTROS === 'S') {
+            await cadastrarCategorias(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
+            operacoes.categorias = 'SUCESSO'
 
-        await cadastrarProdutos(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
-        operacoes.produtos = 'SUCESSO'
+            await cadastrarProdutos(lojaCadastrada, conexaoLoja, lojaCadastrada.LTR_ACCESS_TOKEN)
+            operacoes.produtos = 'SUCESSO'
+        }
 
         await cadastrarFormasPagamentoEcommerce(lojaCadastrada, conexaoLoja)
         operacoes.fpgs_ecommerce = 'SUCESSO'

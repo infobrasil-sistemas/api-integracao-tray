@@ -4,7 +4,6 @@ import { cadastrarPedidos } from '../functions/pedidos/cadastrarPedidos';
 import { atualizarEstoques } from '../functions/produtos/atualizarEstoques';
 import { getLojaDbConfig } from '../services/lojas/consultas/getLojaDbConfig';
 import { getLojasDadosTray } from '../services/lojas/consultas/getLojasDadosTray';
-import { atualizarUltimaSincronizacaoEstoques, obterUltimaSincronizacaoEstoques } from '../utils/horariosSincronizacoes';
 import logger from '../utils/logger';
 import { tratarTokens } from '../utils/tratarTokens';
 
@@ -25,7 +24,9 @@ export async function SincronizarEstoques() {
         conexao = await getLojaDatabaseConnection(dadosConexao);
         const accessToken = await tratarTokens(loja, apiConexao);
 
-        await cadastrarPedidos(loja, conexao, accessToken)
+        if (loja.LTR_SINCRONIZA_CADASTROS === 'S') {
+          await cadastrarPedidos(loja, conexao, accessToken)
+        }
         await atualizarEstoques(loja, conexao, accessToken);
       } catch (error) {
         logger.log({

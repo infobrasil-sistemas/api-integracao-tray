@@ -25,6 +25,7 @@ export interface ILojaTrayInicializada {
   USU_CODIGO?: number | null
   LTR_SINCRONIZA_PROMOCOES: string
   LTR_NOME: string
+  LTR_SINCRONIZA_CADASTROS: string
 }
 
 export interface ILojaTrayInicializar {
@@ -43,7 +44,9 @@ export interface ILojaTrayInicializar {
   DAD_CODIGO: number
   LTR_SINCRONIZA_ALTERACOES: string
   USU_CODIGO?: number | null,
-  LTR_SINCRONIZA_PROMOCOES: string
+  LTR_SINCRONIZA_PROMOCOES: string,
+  LTR_NOME: string,
+  LTR_SINCRONIZA_CADASTROS: string
 }
 
 export interface ILojaTrayAtualizar {

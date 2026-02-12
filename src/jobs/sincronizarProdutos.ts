@@ -21,10 +21,13 @@ export async function SincronizarProdutos() {
                 conexao = await getLojaDatabaseConnection(dadosConexao);
                 const accessToken = await tratarTokens(loja, apiConexao);
 
-                if(loja.LTR_SINCRONIZA_ALTERACOES === 'S'){
-                    await atualizarProdutos(loja, conexao, accessToken);
+                if (loja.LTR_SINCRONIZA_CADASTROS === 'S') {
+                    if (loja.LTR_SINCRONIZA_ALTERACOES === 'S') {
+                        await atualizarProdutos(loja, conexao, accessToken);
+                    }
+                    await cadastrarProdutos(loja, conexao, accessToken);
                 }
-                await cadastrarProdutos(loja, conexao, accessToken);
+
             } catch (error) {
                 logger.log({
                     level: 'error',
